@@ -2041,3 +2041,21 @@ body.en .lang-en {
     font-size: 0.9rem;
   }
 }
+
+/* ===== Researcher Email ===== */
+.researcher-card__email {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+}
+
+.researcher-card__email a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.researcher-card__email a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
