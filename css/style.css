@@ -559,7 +559,7 @@ main {
 
 .home-about__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
   margin-top: 48px;
 }
@@ -1739,7 +1739,7 @@ main {
   }
 
   .hero__visual {
-    order: -1;
+    order: 1;
   }
 
   .hero__visual-card {
