@@ -166,6 +166,25 @@
     });
   });
 
+  // ===== Language Toggle =====
+  const langToggle = document.getElementById('lang-toggle');
+  if (langToggle) {
+    const langBtns = langToggle.querySelectorAll('.lang-toggle__btn');
+    langBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        langBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (lang === 'en') {
+          document.body.classList.add('en');
+        } else {
+          document.body.classList.remove('en');
+        }
+      });
+    });
+  }
+
   // ===== Initialize =====
   function init() {
     handleScroll();

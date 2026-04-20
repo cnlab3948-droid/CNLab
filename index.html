@@ -6,7 +6,7 @@
   <meta name="description" content="영남대학교 인지신경실험실 (CNLab) - 인지심리학 연구, 실험 참여, 논문, 세미나 정보">
   <meta name="keywords" content="CNLab, 인지신경실험실, 영남대학교, 인지심리학, cognitive neuroscience, psychology">
   <meta property="og:title" content="CNLab | 영남대학교 인지신경실험실">
-  <meta property="og:description" content="인지심리학 연구실 - 주의, 작업기억, 인지통제 연구">
+  <meta property="og:description" content="인지심리학 연구실 - 인지, 정서, 언어 처리 연구">
   <meta property="og:type" content="website">
   <title>CNLab | 영남대학교 인지신경실험실</title>
   <link rel="stylesheet" href="css/style.css">
@@ -27,12 +27,33 @@
 
       <div class="nav__links" id="nav-links">
         <a href="#home" class="nav__link active" data-section="home">HOME</a>
-        <a href="#researchers" class="nav__link" data-section="researchers">연구원</a>
-        <a href="#research" class="nav__link" data-section="research">연구</a>
-        <a href="#experiment" class="nav__link" data-section="experiment">실험</a>
-        <a href="#survey" class="nav__link" data-section="survey">설문</a>
-        <a href="#schedule" class="nav__link" data-section="schedule">일정</a>
-        <a href="#announcements" class="nav__link" data-section="announcements">공지사항</a>
+        <a href="#researchers" class="nav__link" data-section="researchers">
+          <span class="lang-ko">연구원</span><span class="lang-en">People</span>
+        </a>
+        <a href="#research" class="nav__link" data-section="research">
+          <span class="lang-ko">연구</span><span class="lang-en">Research</span>
+        </a>
+        <a href="#publications" class="nav__link" data-section="publications">
+          <span class="lang-ko">논문</span><span class="lang-en">Publications</span>
+        </a>
+        <a href="#experiment" class="nav__link" data-section="experiment">
+          <span class="lang-ko">실험</span><span class="lang-en">Experiment</span>
+        </a>
+        <a href="#survey" class="nav__link" data-section="survey">
+          <span class="lang-ko">설문</span><span class="lang-en">Survey</span>
+        </a>
+        <a href="#schedule" class="nav__link" data-section="schedule">
+          <span class="lang-ko">일정</span><span class="lang-en">Schedule</span>
+        </a>
+        <a href="#announcements" class="nav__link" data-section="announcements">
+          <span class="lang-ko">공지사항</span><span class="lang-en">Notice</span>
+        </a>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-toggle__btn active" data-lang="ko">KR</button>
+        <button class="lang-toggle__btn" data-lang="en">EN</button>
       </div>
 
       <button class="nav__hamburger" id="nav-hamburger" aria-label="메뉴 열기">
@@ -68,24 +89,29 @@
           <div class="hero__text">
             <div class="hero__badge">
               <span class="hero__badge-dot"></span>
-              영남대학교 인지신경실험실
+              <span class="lang-ko">영남대학교 인지신경실험실</span>
+              <span class="lang-en">Yeungnam University</span>
             </div>
             <h1 class="hero__title">
               Welcome to<br><span>CNLab</span>
             </h1>
-            <p class="hero__subtitle">Cognitive Neuroscience Laboratory</p>
+            <p class="hero__subtitle">
+              <span class="lang-ko">Cognitive Neuroscience Laboratory</span>
+              <span class="lang-en">Cognitive Neuroscience Laboratory</span>
+            </p>
             <p class="hero__description">
-              인지신경실험실(CNLab)은 인간의 인지 과정을 과학적으로 탐구합니다.
-              주의, 작업기억, 인지통제 등 다양한 인지 기능의 메커니즘을 
-              행동 실험과 신경과학적 방법론을 통해 연구합니다.
+              <span class="lang-ko">인지신경실험실은 인간의 인지·정서·언어 처리 과정이 행동과 뇌 신호에서 어떻게 나타나는지 탐구합니다. 본 연구실은 EEG 및 행동 실험을 중심으로, 실시간 처리 과정과 개인차를 정량적으로 모델링하는 연구를 수행합니다.</span>
+              <span class="lang-en">The Cognitive Neuropsychology Laboratory investigates how cognitive, affective, and language processing are reflected in behavior and neural signals. We primarily employ EEG and behavioral experiments, with an emphasis on quantitative modeling of real-time processing and individual differences.</span>
             </p>
             <div class="hero__actions">
               <a href="#experiment" class="btn btn--primary btn--lg" data-nav="experiment">
                 <span class="btn__icon">🧪</span>
-                실험 참여하기
+                <span class="lang-ko">실험 참여하기</span>
+                <span class="lang-en">Participate</span>
               </a>
               <a href="#announcements" class="btn btn--outline btn--lg" data-nav="announcements">
-                공지사항 보기
+                <span class="lang-ko">공지사항 보기</span>
+                <span class="lang-en">Notices</span>
               </a>
             </div>
           </div>
@@ -95,23 +121,35 @@
               <div class="hero__stats">
                 <div class="hero__stat">
                   <div class="hero__stat-icon">🧠</div>
-                  <div class="hero__stat-value">3+</div>
-                  <div class="hero__stat-label">연구 분야</div>
+                  <div class="hero__stat-value">4</div>
+                  <div class="hero__stat-label">
+                    <span class="lang-ko">연구 분야</span>
+                    <span class="lang-en">Research Areas</span>
+                  </div>
                 </div>
                 <div class="hero__stat">
                   <div class="hero__stat-icon">📄</div>
                   <div class="hero__stat-value">10+</div>
-                  <div class="hero__stat-label">학술 논문</div>
+                  <div class="hero__stat-label">
+                    <span class="lang-ko">학술 논문</span>
+                    <span class="lang-en">Publications</span>
+                  </div>
                 </div>
                 <div class="hero__stat">
                   <div class="hero__stat-icon">👥</div>
-                  <div class="hero__stat-value">5+</div>
-                  <div class="hero__stat-label">연구원</div>
+                  <div class="hero__stat-value">11</div>
+                  <div class="hero__stat-label">
+                    <span class="lang-ko">연구원</span>
+                    <span class="lang-en">Members</span>
+                  </div>
                 </div>
                 <div class="hero__stat">
                   <div class="hero__stat-icon">🎓</div>
                   <div class="hero__stat-value">2013</div>
-                  <div class="hero__stat-label">설립 연도</div>
+                  <div class="hero__stat-label">
+                    <span class="lang-ko">설립 연도</span>
+                    <span class="lang-en">Established</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,72 +162,68 @@
         <div class="container">
           <div class="section__header">
             <span class="section__label">Research Areas</span>
-            <h2 class="section__title">주요 연구 분야</h2>
+            <h2 class="section__title">
+              <span class="lang-ko">주요 연구 분야</span>
+              <span class="lang-en">Research Areas</span>
+            </h2>
             <p class="section__description">
-              CNLab은 인간의 인지 메커니즘을 다양한 관점에서 연구합니다.
+              <span class="lang-ko">CNLab은 인간의 인지 메커니즘을 다양한 관점에서 연구합니다.</span>
+              <span class="lang-en">CNLab investigates human cognitive mechanisms from various perspectives.</span>
             </p>
           </div>
 
           <div class="home-about__grid">
             <div class="home-about__card animate-on-scroll">
-              <div class="home-about__card-icon">❤️</div>
-              <h3 class="home-about__card-title">정서 (Emotion)</h3>
+              <div class="home-about__card-icon">🧠</div>
+              <h3 class="home-about__card-title">
+                <span class="lang-ko">인지 처리</span>
+                <span class="lang-en">Cognitive Processing</span>
+              </h3>
               <p class="home-about__card-text">
-                정서가 인지 과정에 미치는 영향을 연구합니다. 
-                감정 조절, 정서적 주의 편향, 정서와 기억의 상호작용 등을 탐구합니다.
+                <span class="lang-ko">인간의 인지 과정에서 나타나는 주의, 기억, 실행 기능 등 다양한 처리 메커니즘을 행동 실험과 신경과학적 방법론으로 연구합니다.</span>
+                <span class="lang-en">We investigate attentional, memory, and executive processing mechanisms through behavioral experiments and neuroscientific methodologies.</span>
+              </p>
+            </div>
+
+            <div class="home-about__card animate-on-scroll">
+              <div class="home-about__card-icon">❤️</div>
+              <h3 class="home-about__card-title">
+                <span class="lang-ko">정서 처리</span>
+                <span class="lang-en">Affective Processing</span>
+              </h3>
+              <p class="home-about__card-text">
+                <span class="lang-ko">정서가 인지 과정에 미치는 영향을 연구합니다. 감정 조절, 정서적 주의 편향, 정서와 기억의 상호작용 등을 탐구합니다.</span>
+                <span class="lang-en">We study the influence of affect on cognitive processes, including emotion regulation, affective attentional bias, and emotion-memory interactions.</span>
               </p>
             </div>
 
             <div class="home-about__card animate-on-scroll">
               <div class="home-about__card-icon">💬</div>
-              <h3 class="home-about__card-title">언어 (Language)</h3>
+              <h3 class="home-about__card-title">
+                <span class="lang-ko">언어 처리</span>
+                <span class="lang-en">Language Processing</span>
+              </h3>
               <p class="home-about__card-text">
-                언어 처리의 인지적 메커니즘을 연구합니다. 
-                언어 이해, 산출, 읽기 과정에서의 인지 기능을 탐구합니다.
+                <span class="lang-ko">언어 처리의 인지적 메커니즘을 연구합니다. 언어 이해, 산출, 읽기 과정에서의 실시간 처리 과정을 탐구합니다.</span>
+                <span class="lang-en">We examine the cognitive mechanisms of language processing, including real-time comprehension, production, and reading.</span>
               </p>
             </div>
 
             <div class="home-about__card animate-on-scroll">
-              <div class="home-about__card-icon">🎯</div>
-              <h3 class="home-about__card-title">의사결정 (Decision Making)</h3>
+              <div class="home-about__card-icon">📊</div>
+              <h3 class="home-about__card-title">
+                <span class="lang-ko">뇌파/행동 연구</span>
+                <span class="lang-en">EEG & Behavioral Research</span>
+              </h3>
               <p class="home-about__card-text">
-                인간의 판단과 의사결정 과정을 연구합니다. 
-                불확실성 하의 선택, 위험 지각, 인지 편향 등을 탐구합니다.
-              </p>
-            </div>
-
-            <div class="home-about__card animate-on-scroll">
-              <div class="home-about__card-icon">🧠</div>
-              <h3 class="home-about__card-title">작업기억 (Working Memory)</h3>
-              <p class="home-about__card-text">
-                정보의 일시적 저장과 처리를 담당하는 작업기억의 용량, 
-                정밀도, 갱신 과정을 탐구합니다. 시각 작업기억을 중심으로 연구합니다.
+                <span class="lang-ko">EEG 및 행동 실험을 중심으로, 실시간 처리 과정과 개인차를 정량적으로 모델링하는 연구를 수행합니다.</span>
+                <span class="lang-en">We conduct quantitative modeling of real-time processing and individual differences using EEG and behavioral experiments.</span>
               </p>
             </div>
           </div>
         </div>
       </div>
 
-    </section>
-
-    <!-- ============================
-         Research Section
-         ============================ -->
-    <section class="section" id="research" data-section="research">
-      <div class="container">
-        <div class="section__header">
-          <span class="section__label">Research</span>
-          <h2 class="section__title">연구</h2>
-          <p class="section__description">
-            CNLab에서 수행 중인 연구 프로젝트와 학술 성과를 소개합니다.
-          </p>
-        </div>
-
-        <div class="empty-state" style="padding: 80px 24px;">
-          <div class="empty-state__icon">📚</div>
-          <p class="empty-state__text">연구 내용이 준비 중입니다.</p>
-        </div>
-      </div>
     </section>
 
     <!-- ============================
@@ -199,77 +233,242 @@
       <div class="container">
         <div class="section__header">
           <span class="section__label">Our Team</span>
-          <h2 class="section__title">연구원 소개</h2>
+          <h2 class="section__title">
+            <span class="lang-ko">연구원 소개</span>
+            <span class="lang-en">People</span>
+          </h2>
           <p class="section__description">
-            CNLab의 연구를 이끌어가는 구성원들을 소개합니다.
+            <span class="lang-ko">CNLab의 연구를 이끌어가는 구성원들을 소개합니다.</span>
+            <span class="lang-en">Meet the members of CNLab.</span>
           </p>
         </div>
 
-        <!-- Featured: Professor -->
+        <!-- Featured: PI -->
         <div class="researcher-featured animate-on-scroll">
           <div class="researcher-featured__photo">
             <div class="researcher-featured__photo-placeholder">👤</div>
           </div>
           <div class="researcher-featured__info">
-            <h3>지도교수</h3>
-            <p class="researcher-featured__role">교수 · Lab Director</p>
+            <h3>이윤형 (Yoonhyung Lee)</h3>
+            <p class="researcher-featured__role">Principal Investigator</p>
             <p class="researcher-featured__bio">
-              영남대학교 심리학과 교수. 인지심리학 전공.
-              인간의 주의, 작업기억, 인지통제에 관한 행동 실험 및 
-              신경과학적 연구를 수행하고 있습니다.
+              <span class="lang-ko">영남대학교 심리학과 교수. 인지심리학 전공. 인간의 인지·정서·언어 처리 과정이 행동과 뇌 신호에서 어떻게 나타나는지 연구합니다.</span>
+              <span class="lang-en">Professor, Department of Psychology, Yeungnam University. Specializing in cognitive psychology, investigating how cognitive, affective, and language processing are reflected in behavior and neural signals.</span>
             </p>
             <div class="researcher-featured__tags">
               <span class="researcher-tag">인지심리학</span>
-              <span class="researcher-tag">주의</span>
-              <span class="researcher-tag">작업기억</span>
-              <span class="researcher-tag">인지통제</span>
+              <span class="researcher-tag">EEG</span>
+              <span class="researcher-tag">정서</span>
+              <span class="researcher-tag">언어</span>
             </div>
           </div>
         </div>
 
-        <!-- Lab Members -->
+        <!-- Ph.D. Candidates -->
         <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 24px; color: var(--color-text);">
-          연구실 구성원
+          <span class="lang-ko">박사과정</span>
+          <span class="lang-en">Ph.D. Candidates</span>
+        </h3>
+        <div class="researchers__grid" style="margin-bottom: 48px;">
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo">
+              <div class="researcher-card__photo-placeholder">👤</div>
+            </div>
+            <h4 class="researcher-card__name">권은혜</h4>
+            <p class="researcher-card__role">
+              <span class="lang-ko">박사과정</span>
+              <span class="lang-en">Ph.D. Candidate</span>
+            </p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo">
+              <div class="researcher-card__photo-placeholder">👤</div>
+            </div>
+            <h4 class="researcher-card__name">남예은</h4>
+            <p class="researcher-card__role">
+              <span class="lang-ko">박사과정</span>
+              <span class="lang-en">Ph.D. Candidate</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- M.A. Students -->
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 24px; color: var(--color-text);">
+          <span class="lang-ko">석사과정</span>
+          <span class="lang-en">M.A. Students</span>
+        </h3>
+        <div class="researchers__grid" style="margin-bottom: 48px;">
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">김보원</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">송서하</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">이부영</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">이준희</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">정영훈</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+          <div class="researcher-card animate-on-scroll">
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">황성연</h4>
+            <p class="researcher-card__role"><span class="lang-ko">석사과정</span><span class="lang-en">M.A. Student</span></p>
+          </div>
+        </div>
+
+        <!-- Affiliated & Undergraduates -->
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 24px; color: var(--color-text);">
+          <span class="lang-ko">기타 구성원</span>
+          <span class="lang-en">Other Members</span>
         </h3>
         <div class="researchers__grid">
-
           <div class="researcher-card animate-on-scroll">
-            <div class="researcher-card__photo">
-              <div class="researcher-card__photo-placeholder">👤</div>
-            </div>
-            <h4 class="researcher-card__name">연구원 1</h4>
-            <p class="researcher-card__role">석사과정</p>
-            <p class="researcher-card__interest">시각적 주의 · 주의 포착</p>
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">이태강 (Taegang Lee)</h4>
+            <p class="researcher-card__role">Affiliated</p>
           </div>
-
           <div class="researcher-card animate-on-scroll">
-            <div class="researcher-card__photo">
-              <div class="researcher-card__photo-placeholder">👤</div>
-            </div>
-            <h4 class="researcher-card__name">연구원 2</h4>
-            <p class="researcher-card__role">석사과정</p>
-            <p class="researcher-card__interest">작업기억 · 인지통제</p>
+            <div class="researcher-card__photo"><div class="researcher-card__photo-placeholder">👤</div></div>
+            <h4 class="researcher-card__name">조혜린</h4>
+            <p class="researcher-card__role">
+              <span class="lang-ko">학부생</span>
+              <span class="lang-en">Undergraduate</span>
+            </p>
           </div>
-
-          <div class="researcher-card animate-on-scroll">
-            <div class="researcher-card__photo">
-              <div class="researcher-card__photo-placeholder">👤</div>
-            </div>
-            <h4 class="researcher-card__name">연구원 3</h4>
-            <p class="researcher-card__role">학부 연구생</p>
-            <p class="researcher-card__interest">인지 노화 · 실행 기능</p>
-          </div>
-
-          <div class="researcher-card animate-on-scroll">
-            <div class="researcher-card__photo">
-              <div class="researcher-card__photo-placeholder">👤</div>
-            </div>
-            <h4 class="researcher-card__name">연구원 4</h4>
-            <p class="researcher-card__role">학부 연구생</p>
-            <p class="researcher-card__interest">선택적 주의 · 감정과 인지</p>
-          </div>
-
         </div>
+      </div>
+    </section>
+
+    <!-- ============================
+         Research Section
+         ============================ -->
+    <section class="section" id="research" data-section="research">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__label">Research</span>
+          <h2 class="section__title">
+            <span class="lang-ko">연구</span>
+            <span class="lang-en">Research</span>
+          </h2>
+          <p class="section__description">
+            <span class="lang-ko">CNLab에서 수행 중인 연구 프로젝트와 학술 성과를 소개합니다.</span>
+            <span class="lang-en">Learn about our ongoing research projects and academic achievements.</span>
+          </p>
+        </div>
+
+        <!-- Research Keywords -->
+        <div style="margin-bottom: 48px;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; color: var(--color-text);">
+            <span class="lang-ko">연구 키워드</span>
+            <span class="lang-en">Keywords</span>
+          </h3>
+          <div class="research-tags">
+            <span class="research-tag">인지 처리 <span class="research-tag__en">Cognitive Processing</span></span>
+            <span class="research-tag">정서 처리 <span class="research-tag__en">Affective Processing</span></span>
+            <span class="research-tag">언어 처리 <span class="research-tag__en">Language Processing</span></span>
+            <span class="research-tag">뇌파/행동 연구 <span class="research-tag__en">EEG & Behavioral Research</span></span>
+          </div>
+        </div>
+
+        <!-- Ongoing Projects -->
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; color: var(--color-text);">
+            <span class="lang-ko">진행 중 프로젝트</span>
+            <span class="lang-en">Ongoing Projects</span>
+          </h3>
+          <div class="empty-state" style="padding: 48px 24px;">
+            <div class="empty-state__icon">🔬</div>
+            <p class="empty-state__text">
+              <span class="lang-ko">현재 진행 중 프로젝트는 곧 업데이트될 예정입니다.</span>
+              <span class="lang-en">Ongoing projects will be updated soon.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================
+         Publications Section
+         ============================ -->
+    <section class="section" id="publications" data-section="publications">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__label">Publications</span>
+          <h2 class="section__title">
+            <span class="lang-ko">논문</span>
+            <span class="lang-en">Publications</span>
+          </h2>
+          <p class="section__description">
+            <span class="lang-ko">CNLab의 학술 논문 및 학회 발표 목록입니다.</span>
+            <span class="lang-en">A list of journal articles and conference presentations from CNLab.</span>
+          </p>
+        </div>
+
+        <!-- Journal Articles -->
+        <div class="pub-section">
+          <h3 class="pub-section__title">
+            <span class="pub-section__icon">📄</span>
+            <span class="lang-ko">학술지 논문</span>
+            <span class="lang-en">Journal Articles</span>
+          </h3>
+          <div class="pub-list" id="pub-journal-list">
+            <div class="empty-state" style="padding: 40px 24px;">
+              <p class="empty-state__text">
+                <span class="lang-ko">추가된 항목이 없습니다.</span>
+                <span class="lang-en">No items yet.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conference Presentations - Oral -->
+        <div class="pub-section">
+          <h3 class="pub-section__title">
+            <span class="pub-section__icon">🎤</span>
+            <span class="lang-ko">학회 발표 — Oral</span>
+            <span class="lang-en">Conference Presentations — Oral</span>
+          </h3>
+          <div class="pub-list" id="pub-oral-list">
+            <div class="empty-state" style="padding: 40px 24px;">
+              <p class="empty-state__text">
+                <span class="lang-ko">추가된 항목이 없습니다.</span>
+                <span class="lang-en">No items yet.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conference Presentations - Poster -->
+        <div class="pub-section">
+          <h3 class="pub-section__title">
+            <span class="pub-section__icon">📋</span>
+            <span class="lang-ko">학회 발표 — Poster</span>
+            <span class="lang-en">Conference Presentations — Poster</span>
+          </h3>
+          <div class="pub-list" id="pub-poster-list">
+            <div class="empty-state" style="padding: 40px 24px;">
+              <p class="empty-state__text">
+                <span class="lang-ko">추가된 항목이 없습니다.</span>
+                <span class="lang-en">No items yet.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -280,17 +479,27 @@
       <div class="container">
         <div class="section__header">
           <span class="section__label">Experiment</span>
-          <h2 class="section__title">온라인 실험</h2>
+          <h2 class="section__title">
+            <span class="lang-ko">온라인 실험</span>
+            <span class="lang-en">Online Experiment</span>
+          </h2>
           <p class="section__description">
-            웹 브라우저에서 반응시간(RT)을 측정하는 시범 실험입니다.
-            <code>performance.now()</code> API를 사용하여 밀리초 단위 정밀도로 측정합니다.
+            <span class="lang-ko">웹 브라우저에서 반응시간(RT)을 측정하는 시범 실험입니다.
+            <code>performance.now()</code> API를 사용하여 밀리초 단위 정밀도로 측정합니다.</span>
+            <span class="lang-en">A demonstration experiment measuring reaction time (RT) in web browsers using the <code>performance.now()</code> API with millisecond precision.</span>
           </p>
         </div>
 
         <!-- Experiment Type Tabs -->
         <div class="experiment__tabs">
-          <button class="experiment__tab active" data-exp-tab="simple-rt" id="exp-tab-simple">단순 반응시간</button>
-          <button class="experiment__tab" data-exp-tab="choice-rt" id="exp-tab-choice">선택 반응시간</button>
+          <button class="experiment__tab active" data-exp-tab="simple-rt" id="exp-tab-simple">
+            <span class="lang-ko">단순 반응시간</span>
+            <span class="lang-en">Simple RT</span>
+          </button>
+          <button class="experiment__tab" data-exp-tab="choice-rt" id="exp-tab-choice">
+            <span class="lang-ko">선택 반응시간</span>
+            <span class="lang-en">Choice RT</span>
+          </button>
         </div>
 
         <!-- Simple RT Panel -->
@@ -366,62 +575,47 @@
       <div class="container">
         <div class="section__header">
           <span class="section__label">Survey</span>
-          <h2 class="section__title">설문조사</h2>
+          <h2 class="section__title">
+            <span class="lang-ko">설문조사</span>
+            <span class="lang-en">Survey</span>
+          </h2>
           <p class="section__description">
-            현재 진행 중인 설문조사에 참여해주세요. 여러분의 소중한 응답이 연구에 큰 도움이 됩니다.
+            <span class="lang-ko">현재 진행 중인 설문조사에 참여해주세요. 여러분의 소중한 응답이 연구에 큰 도움이 됩니다.</span>
+            <span class="lang-en">Please participate in our ongoing surveys. Your responses are invaluable to our research.</span>
           </p>
         </div>
 
         <div class="survey__grid" id="survey-grid">
-
-          <!-- Survey Card 1 -->
           <div class="survey-card">
             <div class="survey-card__status survey-card__status--active">진행중</div>
             <h3 class="survey-card__title">인지 스타일과 의사결정 설문조사</h3>
-            <p class="survey-card__description">
-              일상적인 의사결정 상황에서의 인지 스타일을 측정하는 설문조사입니다. 
-              약 15분 정도 소요됩니다.
-            </p>
+            <p class="survey-card__description">일상적인 의사결정 상황에서의 인지 스타일을 측정하는 설문조사입니다. 약 15분 정도 소요됩니다.</p>
             <div class="survey-card__meta">
               <span class="survey-card__meta-item">⏱️ 약 15분</span>
               <span class="survey-card__meta-item">📅 ~2026.05.31</span>
             </div>
-            <button class="btn btn--primary btn--sm" onclick="openSurveyModal('인지 스타일과 의사결정 설문조사', 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true')">
-              참여하기 →
-            </button>
+            <button class="btn btn--primary btn--sm" onclick="openSurveyModal('인지 스타일과 의사결정 설문조사', 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true')">참여하기 →</button>
           </div>
-
-          <!-- Survey Card 2 -->
           <div class="survey-card">
             <div class="survey-card__status survey-card__status--active">진행중</div>
             <h3 class="survey-card__title">주의력 자기보고 설문</h3>
-            <p class="survey-card__description">
-              일상생활에서 경험하는 주의력 관련 행동 패턴을 측정합니다. 
-              주의 실패, 집중력 등에 관한 질문에 응답해주세요.
-            </p>
+            <p class="survey-card__description">일상생활에서 경험하는 주의력 관련 행동 패턴을 측정합니다.</p>
             <div class="survey-card__meta">
               <span class="survey-card__meta-item">⏱️ 약 10분</span>
               <span class="survey-card__meta-item">📅 ~2026.06.15</span>
             </div>
-            <button class="btn btn--primary btn--sm" onclick="openSurveyModal('주의력 자기보고 설문', 'https://docs.google.com/forms/d/e/YOUR_FORM_ID_2/viewform?embedded=true')">
-              참여하기 →
-            </button>
+            <button class="btn btn--primary btn--sm" onclick="openSurveyModal('주의력 자기보고 설문', 'https://docs.google.com/forms/d/e/YOUR_FORM_ID_2/viewform?embedded=true')">참여하기 →</button>
           </div>
-
-          <!-- Survey Card 3 - Closed -->
           <div class="survey-card">
             <div class="survey-card__status survey-card__status--closed">종료됨</div>
             <h3 class="survey-card__title">실험 참여 경험 설문</h3>
-            <p class="survey-card__description">
-              이전 학기 실험에 참여하셨던 분들의 경험을 수집하는 설문조사입니다.
-            </p>
+            <p class="survey-card__description">이전 학기 실험에 참여하셨던 분들의 경험을 수집하는 설문조사입니다.</p>
             <div class="survey-card__meta">
               <span class="survey-card__meta-item">⏱️ 약 5분</span>
               <span class="survey-card__meta-item">📅 종료</span>
             </div>
             <button class="btn btn--ghost btn--sm" disabled>마감됨</button>
           </div>
-
         </div>
       </div>
     </section>
@@ -447,32 +641,22 @@
       <div class="container">
         <div class="section__header">
           <span class="section__label">Schedule</span>
-          <h2 class="section__title">공식 일정</h2>
+          <h2 class="section__title">
+            <span class="lang-ko">공식 일정</span>
+            <span class="lang-en">Schedule</span>
+          </h2>
           <p class="section__description">
-            세미나, 실험 일정, 학술대회 등 CNLab의 주요 일정을 확인하세요.
+            <span class="lang-ko">세미나, 실험 일정, 학술대회 등 CNLab의 주요 일정을 확인하세요.</span>
+            <span class="lang-en">Check CNLab's official schedule for seminars, experiments, and conferences.</span>
           </p>
         </div>
 
         <div class="schedule__calendar-wrapper">
-          <!-- 
-            Google Calendar를 연동하려면:
-            1. Google Calendar에서 캘린더를 '공개'로 설정
-            2. 설정 > 캘린더 통합 > 임베드 코드에서 iframe URL 복사
-            3. 아래 주석을 해제하고 src에 URL 붙여넣기
-          -->
           <!-- <iframe src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Asia%2FSeoul" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe> -->
-          
           <div class="schedule__calendar-placeholder" id="calendar-placeholder">
             <div class="schedule__calendar-placeholder-icon">📅</div>
             <h3>Google Calendar 연동 예정</h3>
-            <p>
-              구글 캘린더가 연동되면 이 자리에 연구실 일정이 표시됩니다.
-              세미나, 실험, 학술대회 등의 일정을 한눈에 확인할 수 있습니다.
-            </p>
-            <br>
-            <p style="font-size: 0.8rem; color: var(--color-text-tertiary);">
-              관리자: vercel.json 또는 index.html에서 Google Calendar iframe URL을 설정하세요.
-            </p>
+            <p>구글 캘린더가 연동되면 이 자리에 연구실 일정이 표시됩니다.</p>
           </div>
         </div>
 
@@ -480,22 +664,22 @@
           <div class="schedule__info-card animate-on-scroll">
             <div class="schedule__info-icon">📍</div>
             <div class="schedule__info-text">
-              <h4>연구실 위치</h4>
-              <p>영남대학교 심리학과 건물<br>인지신경실험실 (CNLab)</p>
+              <h4><span class="lang-ko">연구실 위치</span><span class="lang-en">Location</span></h4>
+              <p>영남대학교 심리학과<br>인지신경실험실 (CNLab)</p>
             </div>
           </div>
           <div class="schedule__info-card animate-on-scroll">
             <div class="schedule__info-icon">🕐</div>
             <div class="schedule__info-text">
-              <h4>정기 세미나</h4>
-              <p>매주 금요일 오후 3시<br>저널클럽 & 연구 발표</p>
+              <h4><span class="lang-ko">정기 세미나</span><span class="lang-en">Weekly Seminar</span></h4>
+              <p><span class="lang-ko">매주 금요일 오후 3시<br>저널클럽 &amp; 연구 발표</span><span class="lang-en">Every Friday 3 PM<br>Journal Club &amp; Research</span></p>
             </div>
           </div>
           <div class="schedule__info-card animate-on-scroll">
             <div class="schedule__info-icon">📧</div>
             <div class="schedule__info-text">
-              <h4>문의</h4>
-              <p>cnlab@yu.ac.kr<br>연구 참여 및 입학 상담</p>
+              <h4><span class="lang-ko">문의</span><span class="lang-en">Contact</span></h4>
+              <p>cnlab@yu.ac.kr</p>
             </div>
           </div>
         </div>
@@ -509,13 +693,16 @@
       <div class="container">
         <div class="section__header">
           <span class="section__label">Notice</span>
-          <h2 class="section__title">공지사항</h2>
+          <h2 class="section__title">
+            <span class="lang-ko">공지사항</span>
+            <span class="lang-en">Announcements</span>
+          </h2>
           <p class="section__description">
-            연구 참여 모집, 세미나 안내 등 CNLab의 소식을 확인하세요.
+            <span class="lang-ko">연구 참여 모집, 세미나 안내 등 CNLab의 소식을 확인하세요.</span>
+            <span class="lang-en">Check the latest news from CNLab.</span>
           </p>
         </div>
 
-        <!-- Category Tabs -->
         <div class="announcements__tabs" id="announcement-tabs">
           <button class="announcements__tab active" data-category="전체">전체</button>
           <button class="announcements__tab" data-category="연구참여">연구참여</button>
@@ -523,16 +710,13 @@
           <button class="announcements__tab" data-category="기타">기타</button>
         </div>
 
-        <!-- Announcement List -->
         <div class="announcements__list" id="announcement-list">
-          <!-- Dynamically loaded by announcements.js -->
           <div class="empty-state">
             <div class="spinner" style="margin: 0 auto;"></div>
             <p class="empty-state__text" style="margin-top: 16px;">공지사항을 불러오는 중...</p>
           </div>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination" id="announcement-pagination"></div>
       </div>
     </section>
@@ -567,36 +751,41 @@
             <span class="footer__logo-text">CNLab</span>
           </div>
           <p class="footer__description">
-            영남대학교 인지신경실험실 (Cognitive Neuroscience Lab).<br>
-            인간의 인지 과정을 과학적으로 탐구하며,
-            주의, 작업기억, 인지통제 연구를 수행합니다.
+            <span class="lang-ko">영남대학교 인지신경실험실 (Cognitive Neuroscience Lab).<br>
+            인간의 인지·정서·언어 처리 과정을 과학적으로 탐구합니다.</span>
+            <span class="lang-en">Cognitive Neuroscience Laboratory, Yeungnam University.<br>
+            Investigating cognitive, affective, and language processing.</span>
           </p>
         </div>
 
         <div>
-          <h4 class="footer__section-title">바로가기</h4>
+          <h4 class="footer__section-title">
+            <span class="lang-ko">바로가기</span>
+            <span class="lang-en">Quick Links</span>
+          </h4>
           <div class="footer__links">
-            <a href="#home" class="footer__link" data-nav="home">홈</a>
-            <a href="#researchers" class="footer__link" data-nav="researchers">연구원</a>
-            <a href="#research" class="footer__link" data-nav="research">연구</a>
-            <a href="#experiment" class="footer__link" data-nav="experiment">실험</a>
-            <a href="#survey" class="footer__link" data-nav="survey">설문</a>
-            <a href="#announcements" class="footer__link" data-nav="announcements">공지사항</a>
+            <a href="#home" class="footer__link" data-nav="home">HOME</a>
+            <a href="#researchers" class="footer__link" data-nav="researchers"><span class="lang-ko">연구원</span><span class="lang-en">People</span></a>
+            <a href="#research" class="footer__link" data-nav="research"><span class="lang-ko">연구</span><span class="lang-en">Research</span></a>
+            <a href="#publications" class="footer__link" data-nav="publications"><span class="lang-ko">논문</span><span class="lang-en">Publications</span></a>
+            <a href="#experiment" class="footer__link" data-nav="experiment"><span class="lang-ko">실험</span><span class="lang-en">Experiment</span></a>
           </div>
         </div>
 
         <div>
-          <h4 class="footer__section-title">연락처</h4>
+          <h4 class="footer__section-title">
+            <span class="lang-ko">연락처</span>
+            <span class="lang-en">Contact</span>
+          </h4>
           <div class="footer__links">
             <span class="footer__link">📧 cnlab@yu.ac.kr</span>
             <span class="footer__link">📍 영남대학교 심리학과</span>
-            <span class="footer__link">🌐 영남대학교 인지신경실험실</span>
           </div>
         </div>
       </div>
 
       <div class="footer__bottom">
-        <span>© 2024–2026 CNLab, Yeungnam University. All rights reserved.</span>
+        <span>© 2013–2026 CNLab, Yeungnam University. All rights reserved.</span>
         <span>Cognitive Neuroscience Laboratory</span>
       </div>
     </div>
