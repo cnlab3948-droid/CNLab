@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>CNLab 홈페이지 직접 업데이트 가이드</title>
+<style>
+  body {
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fff;
+  }
+  h1 { border-bottom: 2px solid #1E40AF; padding-bottom: 15px; color: #1E40AF; }
+  h2 { color: #1e3a8a; margin-top: 40px; border-bottom: 1px solid #ccc; padding-bottom: 8px; }
+  pre { background-color: #f4f4f4; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', monospace; }
+  code { color: #d63384; font-weight: bold; }
+  blockquote { background: #fff3cd; border-left: 5px solid #ffecb5; margin: 1.5em 0; padding: 1em; font-weight: bold; color: #664d03; }
+  .highlight { background-color: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
+  li { margin-bottom: 10px; }
+  @media print {
+    body { padding: 0; }
+    h1 { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>📝 CNLab 홈페이지 직접 업데이트 가이드</h1>
+<p>이 문서에서는 개발자나 별도의 코딩 지식 없이도 연구실 인원 누구나 직접 <strong>공지사항을 추가</strong>하거나 <strong>구성원, 논문 내용 등을 수정</strong>하는 방법을 안내합니다. 모든 작업은 프로그램 설치 없이 <strong>GitHub 웹사이트</strong>에서 바로 가능합니다.</p>
+
+<h2>1. 📢 공지사항 추가/수정하기</h2>
+<p>공지사항 전용 파일인 <code class="highlight">announcements.json</code> 파일에 양식에 맞춰 짧은 텍스트만 적어주면 알아서 홈페이지에 예쁘게 반영됩니다.</p>
+<ol>
+  <li><code>cnlab3948-droid</code> 계정으로 <a href="https://github.com">GitHub</a>에 로그인합니다.</li>
+  <li><strong>[CNLab 저장소(Repository)]</strong>에 들어갑니다.</li>
+  <li>파일 목록에서 <code>data</code> 폴더를 클릭하고, 그 안의 <code>announcements.json</code> 파일을 클릭합니다.</li>
+  <li>열린 파일의 오른쪽 위에 있는 <strong>펜(Edit) 모양 아이콘 ✏️</strong>을 클릭합니다.</li>
+  <li>기존 양식을 참고하여 새로운 내용을 추가하거나 수정합니다.</li>
+</ol>
+
+<p><strong>✅ 작성 양식 예시:</strong></p>
+<pre>{
+  "id": 6,                                  // 게시글 번호 (안 겹치게 숫자로 입력)
+  "category": "알림",                        // 카테고리 (알림, 연구참여, 세미나 등)
+  "title": "여기에 제목을 적으세요",
+  "date": "2026-05-01",                     // 작성 날짜 (YYYY-MM-DD)
+  "summary": "간단한 요약을 적습니다.",
+  "content": "이곳에 상세 내용을 적습니다.\n\n줄바꿈은 \\n 으로 적어야 합니다.",
+  "pinned": true                            // 상단 고정 여부 (true 또는 false)
+}</pre>
+<blockquote>
+  주의: 중괄호 { }와 쉼표(,) 위치를 꼭 기존 글들과 똑같이 맞춰주세요. 가장 마지막 게시글의 괄호 } 뒤에는 쉼표가 없어야 문법 에러가 나지 않습니다.
+</blockquote>
+
+<h2>2. 👨‍🔬 구성원 / 📄 논문 / 🔬 연구 분야 수정하기</h2>
+<p>이 정보들은 메인 파일인 <code class="highlight">index.html</code> 파일에 직접 텍스트로 박혀있어서, 파일 내에서 글자만 찾아서 바꾸면 됩니다.</p>
+<ol>
+  <li>GitHub 저장소 첫 화면에서 이번에는 <code>index.html</code> 파일을 클릭합니다.</li>
+  <li>오른쪽 위의 펜 모양 아이콘 ✏️을 클릭해 편집 모드(Edit)로 들어갑니다.</li>
+  <li>바꾸고 싶은 내용의 글자를 찾습니다. (윈도우 기준 <strong>Ctrl + F</strong>를 눌러 원하는 사람 이름이나 논문 제목을 검색하면 순식간에 찾을 수 있습니다.)</li>
+  <li>찾았으면 해당 한글이나 영어 텍스트만 지우고 새로운 내용을 타이핑합니다.</li>
+</ol>
+<blockquote>
+  ⚠️ 매우 중요한 주의사항: 절대 자잘하게 적혀있는 꺾쇠 괄호 코드들(예: &lt;p&gt;, &lt;div class="..."&gt;, &lt;span&gt; 등)은 한 글자도 지우거나 건드리지 마세요. 화면이 깨집니다. 꺾쇠 바깥에 있는 까만색 일반 텍스트 글자만 지우고 새로 쓰거나, 기존 줄을 통째로 복사해서 붙여넣기하세요.
+</blockquote>
+
+<h2>3. 💾 저장 및 홈페이지에 동기화하기 (가장 중요)</h2>
+<p>GitHub에서는 단순히 텍스트를 고쳤다고 끝나는 것이 아닙니다. 수정한 뒤, 최종 <strong>'저장 및 확정(Commit)'</strong>을 해주어야 실제 웹사이트에 연동됩니다.</p>
+<ol>
+  <li>텍스트 수정을 마친 화면의 우측 상단을 보시면 초록색 <strong>[Commit changes...]</strong> 버튼이 활성화되어 있습니다. 이를 클릭하세요.</li>
+  <li>조그만 창이 뜨면, 내가 이번에 무엇을 바꾸었는지 짧은 메모(Update message)를 씁니다.<br>
+     <em>예시: "공지사항 모집글 추가", "논문 1편 추가" 등</em></li>
+  <li>메모란 아래의 초록색 <strong>[Commit changes]</strong> 버튼을 진짜로 한 번 더 누릅니다.</li>
+</ol>
+
+<p style="font-size: 1.2em; font-weight: bold; background: #eff6ff; padding: 20px; border-radius: 8px; margin-top: 30px;">
+  🎉 끝입니다! <br>
+  위의 과정이 끝나고 나서 약 1분 ~ 2분 뒤에 <code>cnlab3948-droid.github.io/CNLab/</code> 홈페이지에 직접 들어가 새로고침을 해보세요. 방금 내가 수정한 최신 내용이 사이트에 적용된 것을 확인하실 수 있습니다!
+</p>
+
+</body>
+</html>
