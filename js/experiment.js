@@ -9,7 +9,7 @@
 
   // ===== Configuration =====
   const CONFIG = {
-    gasUrl: '', // 여기에 Google Apps Script 웹앱 URL을 붙여넣으세요.
+    gasUrl: 'https://script.google.com/macros/s/AKfycbw9YRLxQyGhxfUOWZMyaf-YTgMSDv_83lU1F8ANUfOBMBQGt0ljBO65DwiXRjq9Korz/exec', // Google Apps Script URL
     simple: {
       totalTrials: 10,
       fixationMin: 1000,   // ms
