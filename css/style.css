@@ -1776,7 +1776,7 @@ main {
     position: fixed;
     top: 0;
     right: -100%;
-    bottom: 0;
+    height: 100vh;
     width: 260px;
     background: #ffffff;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
