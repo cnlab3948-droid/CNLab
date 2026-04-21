@@ -12,7 +12,14 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 </head>
-<body>
+<body class="theme-dark">
+
+  <!-- ===== CMS Global Loader ===== -->
+  <div class="cms-loading-overlay" id="cms-loading">
+    <div class="cms-loading-text">
+      데이터를 동기화하는 중 <span class="cms-loading-dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+  </div>
 
   <!-- ===== Navigation ===== -->
   <nav class="nav" id="navbar">
@@ -408,12 +415,11 @@
             <span class="lang-ko">진행 중 프로젝트</span>
             <span class="lang-en">Ongoing Projects</span>
           </h3>
-          <div class="empty-state" style="padding: 48px 24px;">
-            <div class="empty-state__icon">🔬</div>
-            <p class="empty-state__text">
-              <span class="lang-ko">현재 진행 중 프로젝트는 곧 업데이트될 예정입니다.</span>
-              <span class="lang-en">Ongoing projects will be updated soon.</span>
-            </p>
+          <div class="research__grid" id="research-list">
+            <div class="empty-state" style="padding: 48px 24px; grid-column: 1 / -1;">
+              <div class="empty-state__icon">⏳</div>
+              <p class="empty-state__text">데이터를 불러오는 중입니다...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -626,15 +632,9 @@
         </div>
 
         <div class="survey__grid" id="survey-grid">
-          <div class="survey-card">
-            <div class="survey-card__status survey-card__status--active">진행중</div>
-            <h3 class="survey-card__title">사진 기반 문장 서술 과제</h3>
-            <p class="survey-card__description">사진 속 장면을 자유롭게 상상해서 짧은 글로 써보는 과제입니다. 약 25분 정도 소요됩니다.</p>
-            <div class="survey-card__meta">
-              <span class="survey-card__meta-item">⏱️ 약 25분</span>
-              <span class="survey-card__meta-item">📅 ~2026.05.31</span>
-            </div>
-            <button class="btn btn--primary btn--sm" onclick="window.open('https://pse-983.pages.dev/', '_blank')">참여하기 →</button>
+          <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
+            <div class="empty-state__icon">⏳</div>
+            <p class="empty-state__text">데이터를 불러오는 중입니다...</p>
           </div>
         </div>
       </div>
@@ -843,6 +843,7 @@
   </div>
 
   <!-- ===== Scripts ===== -->
+  <script src="js/cms.js"></script>
   <script src="js/app.js"></script>
   <script src="js/experiment.js"></script>
   <script src="js/survey.js"></script>

@@ -8,7 +8,6 @@
 
   // ===== Configuration =====
   const ITEMS_PER_PAGE = 5;
-  const DATA_URL = 'data/announcements.json';
 
   // ===== State =====
   let allAnnouncements = [];
@@ -27,11 +26,9 @@
   const modalBody = document.getElementById('announcement-modal-body');
 
   // ===== Load Data =====
-  async function loadAnnouncements() {
+  function loadAnnouncements() {
     try {
-      const response = await fetch(DATA_URL);
-      if (!response.ok) throw new Error('Failed to fetch');
-      allAnnouncements = await response.json();
+      allAnnouncements = window.__cnlab_cms_data.announcements || [];
 
       // Sort: pinned first, then by date descending
       allAnnouncements.sort((a, b) => {
@@ -188,5 +185,5 @@
   window.__cnlab_goToPage = goToPage;
 
   // ===== Initialize =====
-  loadAnnouncements();
+  window.addEventListener('cmsDataReady', loadAnnouncements);
 })();
