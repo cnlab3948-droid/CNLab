@@ -1782,9 +1782,12 @@ main {
     backdrop-filter: blur(20px);
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    justify-content: flex-start;
+    padding-top: calc(var(--nav-height) + 24px);
+    padding-bottom: 32px;
+    gap: 4px;
     z-index: 999;
+    overflow-y: auto;
   }
 
   .nav__links.open {
@@ -1792,8 +1795,11 @@ main {
   }
 
   .nav__link {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     padding: 12px 32px;
+    width: 80%;
+    text-align: center;
+    border-radius: var(--radius-md);
   }
 
   .nav__hamburger {
