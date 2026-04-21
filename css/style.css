@@ -1778,14 +1778,14 @@ main {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 248, 255, 0.96) 100%);
     backdrop-filter: blur(20px);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: calc(var(--nav-height) + 24px);
-    padding-bottom: 32px;
-    gap: 4px;
+    padding-top: calc(var(--nav-height) + 40px);
+    padding-bottom: 48px;
+    gap: 8px;
     z-index: 999;
     overflow-y: auto;
   }
@@ -1795,9 +1795,9 @@ main {
   }
 
   .nav__link {
-    font-size: 1.05rem;
-    padding: 12px 32px;
-    width: 80%;
+    font-size: 1.1rem;
+    padding: 16px 32px;
+    width: 85%;
     text-align: center;
     border-radius: var(--radius-md);
   }
