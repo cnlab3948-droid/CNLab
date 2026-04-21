@@ -9,6 +9,7 @@
 
   // ===== Configuration =====
   const CONFIG = {
+    gasUrl: '', // 여기에 Google Apps Script 웹앱 URL을 붙여넣으세요.
     simple: {
       totalTrials: 10,
       fixationMin: 1000,   // ms
@@ -56,7 +57,15 @@
   const btnStartSimple = document.getElementById('btn-start-simple');
 
   function startSimpleRT() {
-    simpleState = { running: true, trialNum: 0, data: [], stimulusOnset: 0, phase: 'idle', timeoutId: null };
+    const sex = document.getElementById('simple-subj-sex').value;
+    const age = document.getElementById('simple-subj-age').value;
+    
+    if(!sex || !age) {
+      alert("실험을 시작하기 전에 성별과 만 나이를 모두 입력해주세요.");
+      return;
+    }
+
+    simpleState = { running: true, trialNum: 0, data: [], stimulusOnset: 0, phase: 'idle', timeoutId: null, subjectInfo: {sex, age} };
     btnStartSimple.disabled = true;
     btnStartSimple.textContent = '실험 진행 중...';
     simpleProgress.style.display = 'block';
@@ -115,6 +124,22 @@
     const sdRT = stdDev(rts);
     const minRT = Math.min(...rts);
     const maxRT = Math.max(...rts);
+
+    // Google Sheets 연동 전송
+    if (CONFIG.gasUrl && CONFIG.gasUrl.includes('script.google.com')) {
+      fetch(CONFIG.gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          task: 'SimpleRT',
+          sex: simpleState.subjectInfo.sex,
+          age: simpleState.subjectInfo.age,
+          avgRT: Math.round(avgRT),
+          accuracy: '-',
+          rts: rts.map(r => r.toFixed(1)).join(', ')
+        })
+      }).catch(e => console.error("Google Sheets 전송 중 에러 발생:", e));
+    }
 
     // Show results in canvas
     simpleDisplay.innerHTML = '';
@@ -196,6 +221,17 @@
     `;
 
     simpleControls.innerHTML = `
+      <div class="experiment__participant-info" style="background: var(--color-bg-tertiary); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+        <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+        <select id="simple-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+          <option value="">선택</option>
+          <option value="남성">남성</option>
+          <option value="여성">여성</option>
+          <option value="기타">기타</option>
+        </select>
+        <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+        <input type="number" id="simple-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+      </div>
       <div class="experiment__instructions">
         <strong>📋 실험 방법:</strong><br>
         1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>
@@ -226,7 +262,15 @@
   const btnStartChoice = document.getElementById('btn-start-choice');
 
   function startChoiceRT() {
-    choiceState = { running: true, trialNum: 0, data: [], stimulusOnset: 0, phase: 'idle', currentStimulus: null, timeoutId: null };
+    const sex = document.getElementById('choice-subj-sex').value;
+    const age = document.getElementById('choice-subj-age').value;
+    
+    if(!sex || !age) {
+      alert("실험을 시작하기 전에 성별과 만 나이를 모두 입력해주세요.");
+      return;
+    }
+
+    choiceState = { running: true, trialNum: 0, data: [], stimulusOnset: 0, phase: 'idle', currentStimulus: null, timeoutId: null, subjectInfo: {sex, age} };
     btnStartChoice.disabled = true;
     btnStartChoice.textContent = '실험 진행 중...';
     choiceProgress.style.display = 'block';
@@ -299,6 +343,22 @@
     const accuracy = (correctTrials.length / choiceState.data.length) * 100;
     const minRT = correctRTs.length > 0 ? Math.min(...correctRTs) : 0;
     const maxRT = correctRTs.length > 0 ? Math.max(...correctRTs) : 0;
+
+    // Google Sheets 연동 전송
+    if (CONFIG.gasUrl && CONFIG.gasUrl.includes('script.google.com')) {
+      fetch(CONFIG.gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          task: 'ChoiceRT',
+          sex: choiceState.subjectInfo.sex,
+          age: choiceState.subjectInfo.age,
+          avgRT: Math.round(avgRT),
+          accuracy: accuracy.toFixed(0) + '%',
+          rts: choiceState.data.map(d => d.rt.toFixed(1) + (d.correct ? '' : '(X)')).join(', ')
+        })
+      }).catch(e => console.error("Google Sheets 전송 중 에러 발생:", e));
+    }
 
     choiceDisplay.innerHTML = '';
 
@@ -380,6 +440,17 @@
     `;
 
     choiceControls.innerHTML = `
+      <div class="experiment__participant-info" style="background: var(--color-bg-tertiary); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+        <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+        <select id="choice-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+          <option value="">선택</option>
+          <option value="남성">남성</option>
+          <option value="여성">여성</option>
+          <option value="기타">기타</option>
+        </select>
+        <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+        <input type="number" id="choice-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+      </div>
       <div class="experiment__instructions">
         <strong>📋 실험 방법:</strong><br>
         1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>

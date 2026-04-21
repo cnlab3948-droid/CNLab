@@ -532,6 +532,17 @@
               </div>
             </div>
             <div class="experiment__controls" id="simple-rt-controls">
+              <div class="experiment__participant-info" style="background: var(--color-bg-tertiary); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+                <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+                <select id="simple-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+                  <option value="">선택</option>
+                  <option value="남성">남성</option>
+                  <option value="여성">여성</option>
+                  <option value="기타">기타</option>
+                </select>
+                <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+                <input type="number" id="simple-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+              </div>
               <div class="experiment__instructions">
                 <strong>📋 실험 방법:</strong><br>
                 1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>
@@ -563,6 +574,17 @@
               </div>
             </div>
             <div class="experiment__controls" id="choice-rt-controls">
+              <div class="experiment__participant-info" style="background: var(--color-bg-tertiary); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+                <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+                <select id="choice-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+                  <option value="">선택</option>
+                  <option value="남성">남성</option>
+                  <option value="여성">여성</option>
+                  <option value="기타">기타</option>
+                </select>
+                <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+                <input type="number" id="choice-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem;">
+              </div>
               <div class="experiment__instructions">
                 <strong>📋 실험 방법:</strong><br>
                 1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>
@@ -613,26 +635,6 @@
               <span class="survey-card__meta-item">📅 ~2026.05.31</span>
             </div>
             <button class="btn btn--primary btn--sm" onclick="window.open('https://pse-983.pages.dev/', '_blank')">참여하기 →</button>
-          </div>
-          <div class="survey-card">
-            <div class="survey-card__status survey-card__status--active">진행중</div>
-            <h3 class="survey-card__title">주의력 자기보고 설문</h3>
-            <p class="survey-card__description">일상생활에서 경험하는 주의력 관련 행동 패턴을 측정합니다.</p>
-            <div class="survey-card__meta">
-              <span class="survey-card__meta-item">⏱️ 약 10분</span>
-              <span class="survey-card__meta-item">📅 ~2026.06.15</span>
-            </div>
-            <button class="btn btn--primary btn--sm" onclick="window.open('https://docs.google.com/forms/d/e/YOUR_FORM_ID_2/viewform', '_blank')">참여하기 →</button>
-          </div>
-          <div class="survey-card">
-            <div class="survey-card__status survey-card__status--closed">종료됨</div>
-            <h3 class="survey-card__title">실험 참여 경험 설문</h3>
-            <p class="survey-card__description">이전 학기 실험에 참여하셨던 분들의 경험을 수집하는 설문조사입니다.</p>
-            <div class="survey-card__meta">
-              <span class="survey-card__meta-item">⏱️ 약 5분</span>
-              <span class="survey-card__meta-item">📅 종료</span>
-            </div>
-            <button class="btn btn--ghost btn--sm" disabled>마감됨</button>
           </div>
         </div>
       </div>
