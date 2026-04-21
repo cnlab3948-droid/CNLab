@@ -1831,11 +1831,6 @@ main {
     gap: 16px;
   }
 
-  .researchers__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
   .section__header {
     padding: 60px 0 32px;
   }
