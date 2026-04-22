@@ -12,7 +12,8 @@
   window.__cnlab_cms_data = {
     announcements: [],
     surveys: [],
-    research: []
+    research: [],
+    publications: []
   };
 
   async function initCMS() {
@@ -38,6 +39,7 @@
     // Render surveys and research
     renderSurveys();
     renderResearch();
+    renderPublications();
 
     // 공지사항 파트에 '데이터 로딩 완료' 신호를 보냅니다.
     window.dispatchEvent(new Event('cmsDataReady'));
@@ -150,6 +152,145 @@
         </div>
       </div>
     `}).join('');
+  }
+
+  function renderPublications() {
+    const publications = window.__cnlab_cms_data.publications || [];
+    
+    const journalList = document.getElementById('pub-journal-list');
+    const oralList = document.getElementById('pub-oral-list');
+    const posterList = document.getElementById('pub-poster-list');
+    
+    if(!journalList || !oralList || !posterList) return;
+
+    // 필터링: 구글 시트의 type_ko 통일
+    const journals = publications.filter(p => (p.type_ko === '학술지' || p.type === '학술지'));
+    const orals = publications.filter(p => (p.type_ko === '구두발표' || p.type === '구두발표'));
+    const posters = publications.filter(p => (p.type_ko === '포스터' || p.type === '포스터'));
+
+    const emptyHtml = `
+        <div class="empty-state" style="padding: 40px 24px;">
+          <div class="empty-state__icon">📄</div>
+          <p class="empty-state__text">
+            <span class="lang-ko">현재 등록된 항목이 없습니다.</span>
+            <span class="lang-en">No items currently available.</span>
+          </p>
+        </div>`;
+
+    // 1. Journal Articles (top 5 + show more)
+    if (journals.length === 0) {
+      journalList.innerHTML = emptyHtml;
+    } else {
+      let html = '';
+      const displayJournals = journals.slice(0, 5);
+      const hiddenJournals = journals.slice(5);
+
+      const renderJournalCard = (item) => {
+        const titleKo = item.title_ko || item.title || '';
+        const titleEn = item.title_en || item.title || '';
+        const authorsKo = item.authors_ko || item.authors || '';
+        const authorsEn = item.authors_en || item.authors || '';
+        const journalKo = item.journal_ko || item.journal || '';
+        const journalEn = item.journal_en || item.journal || '';
+        const issue = item.issue || '';
+        const dateText = item.date || '';
+        const link = item.link || '';
+
+        return `
+          <div class="pub-card animate-on-scroll">
+            <h4 class="pub-card__title">
+              <span class="lang-ko">${titleKo}</span>
+              <span class="lang-en">${titleEn}</span>
+            </h4>
+            <p class="pub-card__authors">
+              <span class="lang-ko">${authorsKo}</span>
+              <span class="lang-en">${authorsEn}</span>
+            </p>
+            <p class="pub-card__journal">
+              <em><span class="lang-ko">${journalKo}</span><span class="lang-en">${journalEn}</span></em> ${issue ? `(${issue})` : ''} · ${dateText}
+              ${link ? `<a href="${link}" target="_blank" style="margin-left:8px; color:var(--color-primary); font-size:0.85em; text-decoration:none; font-weight: 600;">[DOI / Link]</a>` : ''}
+            </p>
+          </div>
+        `;
+      };
+
+      html += displayJournals.map(renderJournalCard).join('');
+      
+      if (hiddenJournals.length > 0) {
+        html += `<div id="hidden-journals" style="display: none;">${hiddenJournals.map(renderJournalCard).join('')}</div>`;
+        html += `
+          <div style="text-align: center; margin-top: 16px;">
+            <button id="btn-show-more-journals" class="btn btn--ghost" style="border: 1px solid var(--color-border); font-size: 0.9rem; padding: 8px 16px;">
+              <span class="lang-ko">더 보기 ∨</span>
+              <span class="lang-en">Show More ∨</span>
+            </button>
+          </div>
+        `;
+      }
+      
+      journalList.innerHTML = html;
+
+      // Event listener for toggle
+      const btnShowMore = document.getElementById('btn-show-more-journals');
+      if (btnShowMore) {
+        btnShowMore.addEventListener('click', () => {
+          const hiddenDiv = document.getElementById('hidden-journals');
+          if (hiddenDiv.style.display === 'none') {
+            hiddenDiv.style.display = 'block';
+            btnShowMore.innerHTML = `
+              <span class="lang-ko">접기 ∧</span>
+              <span class="lang-en">Show Less ∧</span>
+            `;
+          } else {
+            hiddenDiv.style.display = 'none';
+            btnShowMore.innerHTML = `
+              <span class="lang-ko">더 보기 ∨</span>
+              <span class="lang-en">Show More ∨</span>
+            `;
+          }
+        });
+      }
+    }
+
+    // 2. Oral & Poster 
+    const renderConferenceCard = (item) => {
+        const titleKo = item.title_ko || item.title || '';
+        const titleEn = item.title_en || item.title || '';
+        const authorsKo = item.authors_ko || item.authors || '';
+        const authorsEn = item.authors_en || item.authors || '';
+        const journalKo = item.journal_ko || item.journal || '';
+        const journalEn = item.journal_en || item.journal || '';
+        const dateText = item.date || '';
+        const imgUrl = item.image_url || '';
+
+        return `
+          <div class="pub-card animate-on-scroll" style="${imgUrl ? 'display: flex; gap: 24px; align-items: flex-start;' : ''}">
+            <div style="flex: 1;">
+              <h4 class="pub-card__title">
+                <span class="lang-ko">${titleKo}</span>
+                <span class="lang-en">${titleEn}</span>
+              </h4>
+              <p class="pub-card__authors">
+                <span class="lang-ko">${authorsKo}</span>
+                <span class="lang-en">${authorsEn}</span>
+              </p>
+              <p class="pub-card__journal">
+                <em><span class="lang-ko">${journalKo}</span><span class="lang-en">${journalEn}</span></em> · ${dateText}
+              </p>
+            </div>
+            ${imgUrl ? `
+            <div style="flex-shrink: 0; width: 140px; margin-top: 4px;">
+              <img src="${imgUrl}" alt="Conference Photo" style="width: 100%; border-radius: 8px; border: 1px solid var(--color-border); aspect-ratio: 4/3; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+            </div>` : ''}
+          </div>
+        `;
+    };
+
+    if (orals.length === 0) oralList.innerHTML = emptyHtml;
+    else oralList.innerHTML = orals.map(renderConferenceCard).join('');
+
+    if (posters.length === 0) posterList.innerHTML = emptyHtml;
+    else posterList.innerHTML = posters.map(renderConferenceCard).join('');
   }
 
   // DOM 로드 완료 시 CMS 구동 시작

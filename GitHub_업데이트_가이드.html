@@ -135,5 +135,82 @@
         </table>
     </div>
 
+    <div class="card">
+        <h2>📄 5. [논문] 탭 작성법 (학술지 및 학회 발표)</h2>
+        <p>논문과 학회 발표는 각각 따로 탭을 만들지 않고 <strong>[논문]</strong> 단 하나의 탭에서 <code>type_ko</code> 값으로 구분합니다.</p>
+        <div class="tip">
+            <strong>📸 학회 발표에 사진 띄우기:</strong><br>
+            <code>image_url</code> 칸에 구글 드라이브 사진 링크(파일 우클릭 -> 링크 복사)나 이미지 주소를 붙여넣으면 옆에 썸네일 사진첩이 생깁니다. <br>
+            칸을 비워두면 아무것도 나타나지 않고 깔끔하게 텍스트만 표시됩니다.
+        </div>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
+            <thead>
+                <tr>
+                    <th>type_ko<br>(구분 - 한글)</th>
+                    <th>type_en<br>(구분 - 영문)</th>
+                    <th>title_ko<br>(제목)</th>
+                    <th>title_en<br>(제목-영문)</th>
+                    <th>authors_ko<br>(저자)</th>
+                    <th>authors_en<br>(저자-영문)</th>
+                    <th>journal_ko<br>(저널/학회명)</th>
+                    <th>journal_en<br>(저널/학회명-영문)</th>
+                    <th>issue<br>(집/권호)</th>
+                    <th>date<br>(날짜/연도)</th>
+                    <th>link<br>(DOI)</th>
+                    <th>image_url<br>(사진 링크)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>학술지</td>
+                    <td>Journal</td>
+                    <td>문장 처리에서의 노화 효과</td>
+                    <td>Aging Effects in...</td>
+                    <td>이윤형, 홍길동</td>
+                    <td>Lee, Y., & Hong...</td>
+                    <td>한국심리학회지: 인지 및 생물</td>
+                    <td>Korean J. of Exp...</td>
+                    <td>35(2)</td>
+                    <td>2026.05</td>
+                    <td>https://doi.org...</td>
+                    <td>(비워둠)</td>
+                </tr>
+                <tr>
+                    <td>구두발표</td>
+                    <td>Oral</td>
+                    <td>ERP를 활용한 의미망 분석</td>
+                    <td>ERP Analysis...</td>
+                    <td>이윤형, 권은혜</td>
+                    <td>Lee, Y., Kwon...</td>
+                    <td>한국언어학회 하계학술대회</td>
+                    <td>Linguistic Society...</td>
+                    <td>(비워둠)</td>
+                    <td>2026.06.12</td>
+                    <td>(비워둠)</td>
+                    <td>https://imgur.com/myphoto.jpg</td>
+                </tr>
+                <tr>
+                    <td>포스터</td>
+                    <td>Poster</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><strong>type_ko 에는 반드시 다음 세 개 중 하나의 단어만 적어주세요.</strong>: <code>학술지</code>, <code>구두발표</code>, <code>포스터</code> (학술지 논문은 무조건 상단에 5개만 노출되고 "접기/펼치기" 버튼이 생성됩니다.)</li>
+            <li><strong>issue</strong>: 학술지인 경우 "34(1)" 처럼 기입하시고, 학회 발표라면 보통 쓰지 않고 비워둡니다.</li>
+            <li><strong>link</strong>: 학술지의 인터넷 논문 링크(DOI)를 기입하면 웹사이트에 [DOI / Link] 클릭 버튼이 생깁니다.</li>
+        </ul>
+    </div>
+
 </body>
 </html>
