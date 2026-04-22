@@ -72,7 +72,10 @@
       listContainer.innerHTML = `
         <div class="empty-state">
           <div class="empty-state__icon">📭</div>
-          <p class="empty-state__text">해당 카테고리의 공지사항이 없습니다.</p>
+          <p class="empty-state__text">
+             <span class="lang-ko">해당 카테고리의 공지사항이 없습니다.</span>
+             <span class="lang-en">No announcements in this category.</span>
+          </p>
         </div>
       `;
       return;
@@ -80,23 +83,40 @@
 
     listContainer.innerHTML = pageItems
       .map(
-        (item) => `
-        <div class="announcement-item ${item.pinned ? 'announcement-item--pinned' : ''}" 
-             onclick="openAnnouncementModal(${item.id})" 
-             role="button" 
-             tabindex="0"
-             aria-label="${item.title}">
-          <div class="announcement-item__date">${formatDate(item.date)}</div>
-          <div class="announcement-item__content">
-            <span class="announcement-item__category announcement-item__category--${item.category}">
-              ${item.pinned ? '📌 ' : ''}${item.category}
-            </span>
-            <h4 class="announcement-item__title">${item.title}</h4>
-            <p class="announcement-item__summary">${item.summary}</p>
+        (item) => {
+          const categoryKo = item.category_ko || item.category || '';
+          const categoryEn = item.category_en || item.category || '';
+          const titleKo = item.title_ko || item.title || '';
+          const titleEn = item.title_en || item.title || '';
+          const summaryKo = item.summary_ko || item.summary || '';
+          const summaryEn = item.summary_en || item.summary || '';
+
+          return `
+          <div class="announcement-item ${item.pinned ? 'announcement-item--pinned' : ''}" 
+               onclick="openAnnouncementModal(${item.id})" 
+               role="button" 
+               tabindex="0"
+               aria-label="${titleKo}">
+            <div class="announcement-item__date">${formatDate(item.date)}</div>
+            <div class="announcement-item__content">
+              <span class="announcement-item__category announcement-item__category--${item.category}">
+                ${item.pinned ? '📌 ' : ''}
+                <span class="lang-ko">${categoryKo}</span>
+                <span class="lang-en">${categoryEn}</span>
+              </span>
+              <h4 class="announcement-item__title">
+                <span class="lang-ko">${titleKo}</span>
+                <span class="lang-en">${titleEn}</span>
+              </h4>
+              <p class="announcement-item__summary">
+                <span class="lang-ko">${summaryKo}</span>
+                <span class="lang-en">${summaryEn}</span>
+              </p>
+            </div>
+            <span class="announcement-item__arrow">→</span>
           </div>
-          <span class="announcement-item__arrow">→</span>
-        </div>
-      `
+          `;
+        }
       )
       .join('');
   }
@@ -136,13 +156,14 @@
 
   // ===== Category Tabs =====
   tabsContainer.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('announcements__tab')) return;
+    const tab = e.target.closest('.announcements__tab');
+    if (!tab) return;
 
     // Update active tab
-    tabsContainer.querySelectorAll('.announcements__tab').forEach((tab) => tab.classList.remove('active'));
-    e.target.classList.add('active');
+    tabsContainer.querySelectorAll('.announcements__tab').forEach((t) => t.classList.remove('active'));
+    tab.classList.add('active');
 
-    currentCategory = e.target.dataset.category;
+    currentCategory = tab.dataset.category;
     filterAndRender();
   });
 
@@ -151,10 +172,28 @@
     const item = allAnnouncements.find((a) => a.id === id);
     if (!item) return;
 
-    modalCategory.innerHTML = `<span class="announcement-item__category announcement-item__category--${item.category}">${item.category}</span>`;
-    modalTitle.textContent = item.title;
+    const categoryKo = item.category_ko || item.category || '';
+    const categoryEn = item.category_en || item.category || '';
+    const titleKo = item.title_ko || item.title || '';
+    const titleEn = item.title_en || item.title || '';
+    const contentKo = item.content_ko || item.content || '';
+    const contentEn = item.content_en || item.content || '';
+
+    modalCategory.innerHTML = `
+      <span class="announcement-item__category announcement-item__category--${item.category}">
+        <span class="lang-ko">${categoryKo}</span>
+        <span class="lang-en">${categoryEn}</span>
+      </span>
+    `;
+    modalTitle.innerHTML = `
+      <span class="lang-ko">${titleKo}</span>
+      <span class="lang-en">${titleEn}</span>
+    `;
     modalDate.textContent = formatDate(item.date);
-    modalBody.textContent = item.content;
+    modalBody.innerHTML = `
+      <div class="lang-ko" style="white-space: pre-line;">${contentKo}</div>
+      <div class="lang-en" style="white-space: pre-line;">${contentEn}</div>
+    `;
 
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';

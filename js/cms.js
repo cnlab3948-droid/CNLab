@@ -52,27 +52,60 @@
       container.innerHTML = `
         <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
           <div class="empty-state__icon">📝</div>
-          <p class="empty-state__text">현재 등록된 설문조사가 없습니다.</p>
+          <p class="empty-state__text">
+             <span class="lang-ko">현재 등록된 설문조사가 없습니다.</span>
+             <span class="lang-en">No surveys currently available.</span>
+          </p>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = surveys.map(s => `
+    container.innerHTML = surveys.map(s => {
+      const isActive = s.status_ko === '진행중' || s.status === '진행중';
+      const statusClass = isActive ? 'active' : 'closed';
+      
+      const statusKo = s.status_ko || s.status || '';
+      const statusEn = s.status_en || s.status || '';
+      const titleKo = s.title_ko || s.title || '';
+      const titleEn = s.title_en || s.title || '';
+      const descKo = s.description_ko || s.description || '';
+      const descEn = s.description_en || s.description || '';
+      const timeKo = s.time_ko || s.time || '';
+      const timeEn = s.time_en || s.time || '';
+      const dateText = s.date || '';
+
+      return `
       <div class="survey-card">
-        <div class="survey-card__status survey-card__status--${s.status === '진행중' ? 'active' : 'closed'}">${s.status}</div>
-        <h3 class="survey-card__title">${s.title}</h3>
-        <p class="survey-card__description">${s.description}</p>
-        <div class="survey-card__meta">
-          <span class="survey-card__meta-item">⏱️ ${s.time}</span>
-          <span class="survey-card__meta-item">📅 ${s.date}</span>
+        <div class="survey-card__status survey-card__status--${statusClass}">
+          <span class="lang-ko">${statusKo}</span>
+          <span class="lang-en">${statusEn}</span>
         </div>
-        ${s.status === '진행중' 
-          ? `<button class="btn btn--primary btn--sm" onclick="window.open('${s.link}', '_blank')">참여하기 →</button>`
-          : `<button class="btn btn--ghost btn--sm" disabled>마감됨</button>`
+        <h3 class="survey-card__title">
+          <span class="lang-ko">${titleKo}</span>
+          <span class="lang-en">${titleEn}</span>
+        </h3>
+        <p class="survey-card__description">
+          <span class="lang-ko">${descKo}</span>
+          <span class="lang-en">${descEn}</span>
+        </p>
+        <div class="survey-card__meta">
+          <span class="survey-card__meta-item">⏱️ 
+             <span class="lang-ko">${timeKo}</span>
+             <span class="lang-en">${timeEn}</span>
+          </span>
+          <span class="survey-card__meta-item">📅 ${dateText}</span>
+        </div>
+        ${isActive 
+          ? `<button class="btn btn--primary btn--sm" onclick="window.open('${s.link}', '_blank')">
+               <span class="lang-ko">참여하기 →</span><span class="lang-en">Participate →</span>
+             </button>`
+          : `<button class="btn btn--ghost btn--sm" disabled>
+               <span class="lang-ko">마감됨</span><span class="lang-en">Closed</span>
+             </button>`
         }
       </div>
-    `).join('');
+    `}).join('');
   }
 
   function renderResearch() {
@@ -93,16 +126,30 @@
        return;
     }
 
-    // 연구 프로젝트 카드 HTML 생성
-    container.innerHTML = researchPosts.map(r => `
+    // 연구 프로젝트 카드 HTML 생성 (더 이상 엑셀 아이콘 셀에 의존하지 않고 멋진 고정 템플릿 사용)
+    container.innerHTML = researchPosts.map(r => {
+      const titleKo = r.title_ko || r.title || '';
+      const titleEn = r.title_en || r.title || '';
+      const contentKo = r.content_ko || r.content || '';
+      const contentEn = r.content_en || r.content || '';
+
+      return `
       <div class="schedule__info-card" style="align-items: flex-start; padding: 32px;">
-        <div class="schedule__info-icon" style="flex-shrink: 0;">${r.icon || '🔬'}</div>
+        <div class="schedule__info-icon" style="flex-shrink: 0; background: var(--color-bg-secondary); border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--color-primary); border: 1px solid var(--color-border);">
+          🔬
+        </div>
         <div class="schedule__info-text">
-          <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; line-height: 1.4;">${r.title}</h4>
-          <p style="white-space: pre-line; line-height: 1.7; font-size: 0.95rem;">${r.content}</p>
+          <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; line-height: 1.4;">
+            <span class="lang-ko">${titleKo}</span>
+            <span class="lang-en">${titleEn}</span>
+          </h4>
+          <p style="white-space: pre-line; line-height: 1.7; font-size: 0.95rem;">
+            <span class="lang-ko">${contentKo}</span>
+            <span class="lang-en">${contentEn}</span>
+          </p>
         </div>
       </div>
-    `).join('');
+    `}).join('');
   }
 
   // DOM 로드 완료 시 CMS 구동 시작

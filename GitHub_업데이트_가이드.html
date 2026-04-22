@@ -20,138 +20,119 @@
     </style>
 </head>
 <body>
-    <h1>🚀 CNLab 홈페이지 운영 가이드 (구글 시트 연동)</h1>
+    <h1>🚀 CNLab 홈페이지 운영 가이드 (이중언어 지원)</h1>
     
     <div class="notice">
-        <strong>💡 핵심 원칙:</strong> 본 홈페이지는 깃허브(GitHub) 코드를 수정할 필요 없이 <strong>오직 '구글 시트' 하나로 100% 자동 통제</strong>됩니다. 
-        시트에 글을 적고 기다리면, 그 즉시 홈페이지에 반영됩니다. (개발 지식 불필요)
+        <strong>💡 핵심 원칙:</strong> 본 홈페이지는 <strong>구글 시트 수정 하나만으로 100% 자동 통제</strong>되며, 한국어와 영어를 동시에 지원하도록 설계되어 있습니다. 영어 사용자 접속 시 자동으로 영어 데이터가 노출됩니다.
     </div>
 
     <div class="card">
         <h2>📑 1. 구글 시트 기본 구조</h2>
-        <p>구글 시트 하단에 반드시 <strong>네 가지 탭(시트) 이름</strong>이 딱 맞게 존재해야 합니다.</p>
-        <ol>
-            <li><strong>실험기록</strong> : 온라인 실험 참여자들의 데이터들이 컴퓨터에 의해 자동으로 찍히는 곳입니다. (건들지 마세요)</li>
-            <li><strong>공지사항</strong> : 홈페이지의 'News' 섹션을 통제합니다.</li>
-            <li><strong>설문</strong> : 홈페이지의 'Survey' (설문조사) 카드를 통제합니다.</li>
-            <li><strong>연구</strong> : 홈페이지의 'Research' (진행 중인 프로젝트) 영역을 통제합니다.</li>
-        </ol>
+        <p>구글 시트 하단에 반드시 <strong>네 가지 탭(시트) 이름</strong>이 정확히 존재해야 합니다. (실험기록, 공지사항, 설문, 연구)</p>
         <div class="tip">
             <strong>⚠️ 중요 주의사항:</strong><br>
-            각 탭의 <strong>맨 첫 번째 줄(1행)</strong>은 컴퓨터가 데이터를 분류하는 기준인 <strong>헤더(제목표시줄)</strong>입니다. 
-            절대 첫 줄의 영어 철자를 지우거나 한글로 번역하시면 안 됩니다! (2번째 줄부터 글을 자유롭게 쓰시면 됩니다.)
+            각 탭의 <strong>맨 첫 번째 줄(1행)</strong>은 컴퓨터가 데이터를 읽는 <strong>헤더(제목표시줄)</strong>입니다. 
+            <code>_ko</code>(한국어), <code>_en</code>(영어) 등의 철자를 절대로 지우시면 안 됩니다!
         </div>
     </div>
 
     <div class="card">
         <h2>📢 2. [공지사항] 탭 작성법</h2>
-        <p>공지사항의 새 글을 올리려면 2번 줄부터 차례대로 정보를 채워주세요.</p>
-        <table>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
             <thead>
                 <tr>
-                    <th>id (순번)</th>
-                    <th>category (분류)</th>
-                    <th>title (제목)</th>
-                    <th>date (날짜)</th>
-                    <th>summary (요약)</th>
-                    <th>content (상세 내용)</th>
-                    <th>pinned (상단 고정)</th>
+                    <th>id<br>(순번)</th>
+                    <th>category_ko<br>(구분 - 한글)</th>
+                    <th>category_en<br>(구분 - 영문)</th>
+                    <th>title_ko<br>(제목 - 한글)</th>
+                    <th>title_en<br>(제목 - 영문)</th>
+                    <th>summary_ko<br>(요약 - 한글)</th>
+                    <th>summary_en<br>(요약 - 영문)</th>
+                    <th>content_ko<br>(상세 - 한글)</th>
+                    <th>content_en<br>(상세 - 영문)</th>
+                    <th>date<br>(날짜)</th>
+                    <th>pinned<br>(상단 고정)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="code">1</span></td>
-                    <td><span class="code">세미나</span></td>
-                    <td>2026년도 심리언어학회</td>
-                    <td>2026-04-21</td>
-                    <td>2026.05.15-16 심리언어학회 참여</td>
-                    <td>2026년 심리언어학회<br>🗓️ 일정: 2026.05.15<br>📍 장소: 서강대학교</td>
-                    <td><span class="code">true</span></td>
-                </tr>
-                <tr>
-                    <td><span class="code">2</span></td>
-                    <td><span class="code">알림</span></td>
-                    <td>실험 피험자 모집 안내</td>
+                    <td>1</td>
+                    <td>알림</td>
+                    <td>Notice</td>
+                    <td>실험 피험자 모집</td>
+                    <td>Participant Wanted</td>
+                    <td>참여자 모집 안내</td>
+                    <td>Information on...</td>
+                    <td>참여자를 상시 모집합니다.</td>
+                    <td>Recruiting participants.</td>
                     <td>2026-05-10</td>
-                    <td>간단한 내용 요약글</td>
-                    <td>실험 피험자를 상시 모집합니다.</td>
-                    <td><span class="code">false</span></td>
+                    <td>false</td>
                 </tr>
             </tbody>
         </table>
         <ul>
-            <li><strong>id</strong>: 1, 2, 3... 순서대로 부여합니다 (중복 안 됨).</li>
-            <li><strong>content</strong>: 글 안에서 줄바꿈(엔터)을 하려면 엑셀 셀 안에서 <code>Alt + Enter</code> 키를 누르세요.</li>
-            <li><strong>pinned</strong>: <code>true</code>라고 적으면 중요 공지로써 맨 위 파란색 바탕에 고정됩니다. 일반 공지는 <code>false</code>.</li>
+            <li><strong>category</strong>: 홈페이지 탭 메뉴 필터링을 위해 한글은 정확히 [알림, 학회, 실험 안내, 세미나, 기타] 중 하나로 써주세요.</li>
+            <li>글 안에서 줄바꿈을 하려면 엑셀 셀 안에서 <code>Alt + Enter</code>를 누릅니다.</li>
+            <li><strong>pinned</strong>: <code>true</code>(중요 고정) 또는 <code>false</code>(일반).</li>
         </ul>
     </div>
 
     <div class="card">
         <h2>📝 3. [설문] 탭 작성법</h2>
-        <p>모집할 설문이 있을 때 추가하며, 마감된 설문은 진행 상태를 변경해 주시면 홈페이지 버튼이 '마감됨'으로 잠깁니다.</p>
-        <table>
+        <p>설문이 마감되면 status_ko, status_en 값을 각각 진행중->종료됨, Ongoing->Closed 로 변경하시면 버튼이 막힙니다.</p>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
             <thead>
                 <tr>
-                    <th>status (상태)</th>
-                    <th>title (제목)</th>
-                    <th>description (설명)</th>
-                    <th>time (소요시간)</th>
-                    <th>date (마감일시)</th>
-                    <th>link (구글폼 등 링크)</th>
+                    <th>status_ko<br>(상태-한글)</th>
+                    <th>status_en<br>(상태-영문)</th>
+                    <th>title_ko<br>(제목-한글)</th>
+                    <th>title_en<br>(제목-영문)</th>
+                    <th>description_ko<br>(설명-한글)</th>
+                    <th>description_en<br>(설명-영문)</th>
+                    <th>time_ko<br>(소요시간-한글)</th>
+                    <th>time_en<br>(소요시간-영문)</th>
+                    <th>date<br>(마감일)</th>
+                    <th>link<br>(참여 링크)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="code">진행중</span></td>
-                    <td>사진 기반 문장 서술 과제</td>
-                    <td>사진 속 장면을 상상해서 짧은 글로 쓰는 실험입니다.</td>
+                    <td>진행중</td>
+                    <td>Ongoing</td>
+                    <td>사진 기반 서술 과제</td>
+                    <td>Photo Description Task</td>
+                    <td>사진 속 장면 상상...</td>
+                    <td>Imagine the scene...</td>
                     <td>약 25분</td>
+                    <td>Approx. 25 min</td>
                     <td>~2026.05.31</td>
-                    <td>https://pse-983.pages.dev/</td>
-                </tr>
-                <tr>
-                    <td><span class="code">종료됨</span></td>
-                    <td>주의력 자기보고 설문</td>
-                    <td>주의력 성향을 측정하는 인지 설문</td>
-                    <td>약 10분</td>
-                    <td>조기 종료</td>
-                    <td>https://docs.google.com/...</td>
+                    <td>https://...</td>
                 </tr>
             </tbody>
         </table>
-        <ul>
-            <li><strong>status</strong>: 반드시 <code>진행중</code> 또는 <code>종료됨</code> 둘 중 하나만 적어야 색상 뱃지와 버튼 기능이 맞게 작동합니다.</li>
-            <li>설문 카드를 완전히 홈페이지에서 안 보이게 하려면 그냥 그 줄을 아예 지워버리시면 됩니다.</li>
-        </ul>
     </div>
 
     <div class="card">
         <h2>🔬 4. [연구] 탭 작성법</h2>
-        <p>홈페이지의 '진행 중 프로젝트(Ongoing Projects)' 영역에 노출될 연구 카드를 생성합니다.</p>
-        <table>
+        <p>과거에 있었던 아이콘 열(icon)이 삭제되었습니다. 이제 이모티콘을 억지로 치지 않아도 시스템이 알아서 공통 랩 이미지를 제공합니다.</p>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
             <thead>
                 <tr>
-                    <th>icon (이모티콘)</th>
-                    <th>title (연구 프로젝트명)</th>
-                    <th>content (연구 설명)</th>
+                    <th>title_ko<br>(연구명 - 한글)</th>
+                    <th>title_en<br>(연구명 - 영문)</th>
+                    <th>content_ko<br>(연구 설명 - 한글)</th>
+                    <th>content_en<br>(연구 설명 - 영문)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><span class="code">🧠</span></td>
                     <td>노화에 따른 어휘 의미망 변화 연구</td>
+                    <td>Semantic Network Changes in Aging</td>
                     <td>노년층의 인지기능 저하에 따른 어휘망의 변화를...</td>
-                </tr>
-                <tr>
-                    <td><span class="code">📊</span></td>
-                    <td>안구 운동 추적을 통한 읽기 행동 분석</td>
-                    <td>시선 추적기를 활용해 한국어 화자의 문장 처리 양상을 추적...</td>
+                    <td>Investigating semantic network changes...</td>
                 </tr>
             </tbody>
         </table>
-        <ul>
-            <li><strong>icon</strong>: 윈도우(<code>Win + .</code>)나 맥(<code>Cmd + Ctrl + Space</code>) 단축키를 눌러 알맞은 이모티콘을 선택해 넣어주세요. 디자인 포인트가 됩니다!</li>
-        </ul>
     </div>
 
 </body>
