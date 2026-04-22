@@ -7,7 +7,7 @@
   'use strict';
 
   // Google Apps Script 웹앱 URL (doGet)
-  const CMS_URL = 'https://script.google.com/macros/s/AKfycbw9YRLxQyGhxfUOWZMyaf-YTgMSDv_83lU1F8ANUfOBMBQGt0ljBO65DwiXRjq9Korz/exec';
+  const CMS_URL = 'https://script.google.com/macros/s/AKfycbzULFHwmGJc6705tLxbCXQIZvOaO5vtagONWL61hyRmWL-HYuGYkSzCxSKcdGVpCdIV/exec';
 
   window.__cnlab_cms_data = {
     announcements: [],
