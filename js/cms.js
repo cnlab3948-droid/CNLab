@@ -199,18 +199,23 @@
 
         return `
           <div class="pub-card">
-            <h4 class="pub-card__title">
-              <span class="lang-ko">${titleKo}</span>
-              <span class="lang-en">${titleEn}</span>
-            </h4>
-            <p class="pub-card__authors">
-              <span class="lang-ko">${authorsKo}</span>
-              <span class="lang-en">${authorsEn}</span>
-            </p>
-            <p class="pub-card__journal">
-              <em><span class="lang-ko">${journalKo}</span><span class="lang-en">${journalEn}</span></em> ${issue ? `(${issue})` : ''} · ${dateText}
-              ${link ? `<a href="${link}" target="_blank" style="margin-left:8px; color:var(--color-primary); font-size:0.85em; text-decoration:none; font-weight: 600;">[DOI / Link]</a>` : ''}
-            </p>
+            <div class="pub-card__content">
+              <h4 class="pub-card__title">
+                <span class="lang-ko">${titleKo}</span>
+                <span class="lang-en">${titleEn}</span>
+              </h4>
+              <p class="pub-card__authors">
+                <span class="lang-ko">${authorsKo}</span>
+                <span class="lang-en">${authorsEn}</span>
+              </p>
+              <p class="pub-card__journal">
+                <em><span class="lang-ko">${journalKo}</span><span class="lang-en">${journalEn}</span></em> ${issue ? `(${issue})` : ''} · ${dateText}
+              </p>
+            </div>
+            ${link ? `<a href="${link}" target="_blank" class="pub-card__link-btn">
+              <span class="lang-ko">바로가기 ↗</span>
+              <span class="lang-en">Link ↗</span>
+            </a>` : ''}
           </div>
         `;
       };
@@ -265,8 +270,8 @@
         const imgUrl = item.image_url || '';
 
         return `
-          <div class="pub-card" style="${imgUrl ? 'display: flex; gap: 24px; align-items: flex-start;' : ''}">
-            <div style="flex: 1;">
+          <div class="pub-card" style="${imgUrl ? 'align-items: flex-start;' : ''}">
+            <div class="pub-card__content">
               <h4 class="pub-card__title">
                 <span class="lang-ko">${titleKo}</span>
                 <span class="lang-en">${titleEn}</span>
