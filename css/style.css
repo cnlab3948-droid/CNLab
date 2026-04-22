@@ -2078,3 +2078,36 @@ body.en .lang-en {
   color: var(--color-primary-dark);
   text-decoration: underline;
 }
+
+
+/* Publications Card Design */
+.pub-card {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+.pub-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+}
+.pub-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.pub-card__authors {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.pub-card__journal {
+  font-size: 0.9rem;
+  color: #64748b;
+}
