@@ -13,7 +13,8 @@
     announcements: [],
     surveys: [],
     research: [],
-    publications: []
+    journals: [],
+    conferences: []
   };
 
   async function initCMS() {
@@ -155,7 +156,8 @@
   }
 
   function renderPublications() {
-    const publications = window.__cnlab_cms_data.publications || [];
+    const rawJournals = window.__cnlab_cms_data.journals || [];
+    const rawConferences = window.__cnlab_cms_data.conferences || [];
     
     const journalList = document.getElementById('pub-journal-list');
     const oralList = document.getElementById('pub-oral-list');
@@ -163,10 +165,9 @@
     
     if(!journalList || !oralList || !posterList) return;
 
-    // 필터링: 구글 시트의 type_ko 통일
-    const journals = publications.filter(p => (p.type_ko === '학술지' || p.type === '학술지'));
-    const orals = publications.filter(p => (p.type_ko === '구두발표' || p.type === '구두발표'));
-    const posters = publications.filter(p => (p.type_ko === '포스터' || p.type === '포스터'));
+    const journals = rawJournals;
+    const orals = rawConferences.filter(p => (p.type_ko === '구두발표' || p.type === '구두발표' || p.type_en === 'Oral'));
+    const posters = rawConferences.filter(p => (p.type_ko === '포스터' || p.type === '포스터' || p.type_en === 'Poster'));
 
     const emptyHtml = `
         <div class="empty-state" style="padding: 40px 24px;">
