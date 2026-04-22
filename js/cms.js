@@ -198,7 +198,7 @@
         const link = item.link || '';
 
         return `
-          <div class="pub-card animate-on-scroll">
+          <div class="pub-card">
             <h4 class="pub-card__title">
               <span class="lang-ko">${titleKo}</span>
               <span class="lang-en">${titleEn}</span>
@@ -265,7 +265,7 @@
         const imgUrl = item.image_url || '';
 
         return `
-          <div class="pub-card animate-on-scroll" style="${imgUrl ? 'display: flex; gap: 24px; align-items: flex-start;' : ''}">
+          <div class="pub-card" style="${imgUrl ? 'display: flex; gap: 24px; align-items: flex-start;' : ''}">
             <div style="flex: 1;">
               <h4 class="pub-card__title">
                 <span class="lang-ko">${titleKo}</span>
