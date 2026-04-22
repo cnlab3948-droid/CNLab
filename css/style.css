@@ -2139,3 +2139,15 @@ body.en .lang-en {
   background-color: var(--color-primary);
   color: #fff;
 }
+
+
+/* Hide Scrollbars for Modal */
+.announcement-modal__content::-webkit-scrollbar,
+.announcement-modal__body::-webkit-scrollbar {
+  display: none;
+}
+.announcement-modal__content,
+.announcement-modal__body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
