@@ -43,6 +43,8 @@
     renderSurveys();
     renderResearch();
     renderPublications();
+    renderMembers();
+    renderGallery();
 
     // 공지사항 파트에 '데이터 로딩 완료' 신호를 보냅니다.
     window.dispatchEvent(new Event('cmsDataReady'));
