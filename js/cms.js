@@ -34,9 +34,9 @@
           experiments: d.experiments || d['실험'] || [],
           research: d.research || d['연구'] || [],
           journals: d.journals || d['논문'] || [],
-          conferences: d.conferences || d['학회'] || d['학회발표'] || [],
+          conferences: d.conferences || d['학회'] || d['학술대회발표'] || [],
           members: d.members || d['구성원'] || [],
-          gallery: d.gallery || d['사진첩'] || d['사진'] || []
+          gallery: d.gallery || d['gallery'] || []
         };
       }
     } catch (err) {
