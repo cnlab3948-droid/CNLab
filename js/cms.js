@@ -364,7 +364,7 @@
     const list = document.getElementById('members-list');
     if (!list) return;
 
-    let members = window.__cnlab_cms_data.members || [];
+    let members = window.__cnlab_cms_data['구성원'] || window.__cnlab_cms_data.members || [];
     if (members.length === 0) {
       list.innerHTML = `<div class="empty-state" style="padding: 40px 24px; text-align: center;"><div class="empty-state__icon">👥</div><p class="empty-state__text"><span class="lang-ko">아직 등록된 구성원이 없습니다. 스프레드시트를 확인하세요.</span><span class="lang-en">No members registered yet. Please check the spreadsheet.</span></p></div>`;
       return;
