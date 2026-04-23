@@ -28,7 +28,7 @@
 
     <div class="card">
         <h2>📑 1. 구글 시트 기본 구조</h2>
-        <p>구글 시트 하단에 반드시 <strong>네 가지 탭(시트) 이름</strong>이 정확히 존재해야 합니다. (실험기록, 공지사항, 설문, 연구)</p>
+        <p>구글 시트 하단에 <strong>7가지 탭(시트) 이름</strong>이 존재하여 홈페이지를 구축하고 있습니다. (공지사항, 설문, 연구, 논문, 학회, 구성원, gallery)</p>
         <div class="tip">
             <strong>⚠️ 중요 주의사항:</strong><br>
             각 탭의 <strong>맨 첫 번째 줄(1행)</strong>은 컴퓨터가 데이터를 읽는 <strong>헤더(제목표시줄)</strong>입니다. 
@@ -171,10 +171,7 @@
     <div class="card">
         <h2>🎤 6. [학회] 탭 작성법</h2>
         <p>학회 발표(구두/포스터) 데이터 작성란입니다. <code>type_ko</code> 열을 통해 구두발표인지 포스터인지 분류합니다.</p>
-        <div class="tip">
-            <strong>📸 학회 사진 띄우기:</strong><br>
-            <code>image_url</code> 칸에 구글 드라이브 사진 공유 링크나 이미지 주소(imgur 등)를 붙여넣으시면 썸네일 사진첩이 생깁니다. 비워두면 깔끔한 텍스트만 나옵니다!
-        </div>
+        
         <table style="display: block; overflow-x: auto; white-space: nowrap;">
             <thead>
                 <tr>
@@ -187,7 +184,7 @@
                     <th>journal_ko<br>(학회명)</th>
                     <th>journal_en<br>(학회명-영문)</th>
                     <th>date<br>(발표일)</th>
-                    <th>image_url<br>(사진 링크)</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -201,7 +198,7 @@
                     <td>한국언어학회 하계학술대회</td>
                     <td>Linguistic Society...</td>
                     <td>2026.06.12</td>
-                    <td>https://imgur.com/...</td>
+                    
                 </tr>
                 <tr>
                     <td>포스터</td>
@@ -213,13 +210,83 @@
                     <td>...</td>
                     <td>...</td>
                     <td>...</td>
-                    <td>(비워둠)</td>
+                    
                 </tr>
             </tbody>
         </table>
         <ul>
             <li><strong>type_ko 에는 다음 둘 중 하나를 적어주세요</strong>: <code>구두발표</code>, <code>포스터</code> (엑셀 '데이터 확인' 드롭다운 추천)</li>
-            <li><strong>image_url</strong>: 구글 드라이브 우클릭 링크 등 직접 접근이 가능한 웹 주소를 복사/붙여넣으시면 바로 인식됩니다.</li>
+            
+        </ul>
+    </div>
+
+
+    <div class="card">
+        <h2>📸 7. [gallery] 탭 작성법</h2>
+        <p>사진첩용 탭입니다. 캡션이 제거되어 오직 사진만 전시됩니다.</p>
+        <div class="tip">
+            <strong>📁 이미지 파일 반영 규칙:</strong><br>
+            GitHub의 <code>images/conferences/</code> 폴더에 사진을 업로드하신 뒤, 파일명만 적어주면 알아서 연결됩니다.
+        </div>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
+            <thead>
+                <tr>
+                    <th>image_url<br>(사진 파일명)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>poster1.jpg</td>
+                </tr>
+                <tr>
+                    <td>https://imgur.com/example.jpg</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><strong>image_url</strong>: <code>poster1.jpg</code> 등 깃허브 사진 폴더에 있는 파일 이름을 적어주거나, <code>http...</code> 외부 직접 링크를 쓰셔도 됩니다.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>👥 8. [구성원] 탭 작성법</h2>
+        <p>연구진 구성원의 소속과 이메일, 관심 연구 분야를 적는 탭입니다.</p>
+        <div class="tip">
+            <strong>⚠️ 구분(role_ko) 분류 규칙:</strong><br>
+            '구분' 열에 기입된 문자에 따라 홈페이지 상에서 정렬 섹션이 분리됩니다.<br>
+            <code>책임</code>, <code>PI</code> 포함 -> 연구책임자 상단 배치<br>
+            <code>박사과정</code> 포함 -> 박사과정 섹션<br>
+            <code>석사과정</code> 포함 -> 석사과정 섹션<br>
+            나머지 모든 텍스트 -> 학부생 및 기타 구성원 섹션
+        </div>
+        <table style="display: block; overflow-x: auto; white-space: nowrap;">
+            <thead>
+                <tr>
+                    <th>name_ko<br>(이름-한글)</th>
+                    <th>name_en<br>(이름-영문)</th>
+                    <th>role_ko<br>(구분-한글)</th>
+                    <th>role_en<br>(구분-영문)</th>
+                    <th>email<br>(이메일)</th>
+                    <th>keywords_ko<br>(관심분야-한글)</th>
+                    <th>keywords_en<br>(관심분야-영문)</th>
+                    <th>photo_url<br>(개인사진)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>이윤형</td>
+                    <td>Yoonhyoung Lee</td>
+                    <td>Principal Investigator</td>
+                    <td>Principal Investigator</td>
+                    <td>yhlee01...</td>
+                    <td>#뇌과학 #언어</td>
+                    <td>#Language...</td>
+                    <td>교수님.jpg</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><strong>photo_url</strong> (선택사항): GitHub <code>images/members/</code> 폴더 안의 본인 사진 이름을 적어주시면 프로필에 뜹니다 (안 적으면 기본 익명 아이콘 송출).</li>
         </ul>
     </div>
 
