@@ -54,6 +54,7 @@
     renderResearch();
     renderPublications();
     renderGallery();
+    finalizePage();
 
     // 공지사항 파트에 '데이터 로딩 완료' 신호를 보냅니다.
     window.dispatchEvent(new Event('cmsDataReady'));
@@ -468,3 +469,21 @@
     // Append to existing experiment grid (which holds the built-in test)
     container.insertAdjacentHTML('beforeend', html);
   }
+
+  // ===== Global Fixes & Event Routing =====
+  window.openAnnouncementModalById = function(id) {
+    const items = window.__cnlab_cms_data.announcements || [];
+    const item = items.find(i => i.id == id);
+    if (item && typeof openAnnouncementModal === 'function') {
+      openAnnouncementModal(item);
+    }
+  };
+
+  // Add cleanup loader
+  function finalizePage() {
+    const loader = document.getElementById('cms-loading');
+    if (loader) loader.remove();
+    console.log('CMS Finalized and Cleaned.');
+  }
+  
+  // ensure initCMS calls finalizePage
