@@ -27,7 +27,16 @@
       const data = await response.json();
 
       if (data.result === 'success') {
-        window.__cnlab_cms_data = data.data;
+        const d = data.data;
+        window.__cnlab_cms_data = {
+          announcements: d.announcements || d['공지사항'] || [],
+          surveys: d.surveys || d['설문'] || d['실험기록'] || d['실험'] || [],
+          research: d.research || d['연구'] || [],
+          journals: d.journals || d['논문'] || [],
+          conferences: d.conferences || d['학회'] || d['학회발표'] || [],
+          members: d.members || d['구성원'] || [],
+          gallery: d.gallery || d['사진첩'] || d['사진'] || []
+        };
       }
     } catch (err) {
       console.error('CMS 데이터 로드 실패:', err);
