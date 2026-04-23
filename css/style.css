@@ -2213,3 +2213,55 @@ body.en .lang-en {
     column-count: 1;
   }
 }
+
+
+/* ===== Lightbox & Experiment Modals ===== */
+.lightbox-modal {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lightbox-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.experiment-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.experiment-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.experiment-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+.experiment-modal__content {
+  position: relative;
+  z-index: 9991;
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-width: 900px; 
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--color-bg-primary); 
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 32px;
+}
+.experiment-modal.active .experiment-modal__content {
+  transform: translateY(0);
+}

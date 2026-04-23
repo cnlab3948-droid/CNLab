@@ -30,7 +30,8 @@
         const d = data.data;
         window.__cnlab_cms_data = {
           announcements: d.announcements || d['공지사항'] || [],
-          surveys: d.surveys || d['설문'] || d['실험기록'] || d['실험'] || [],
+          surveys: d.surveys || d['설문'] || d['실험기록'] || [],
+          experiments: d.experiments || d['실험'] || [],
           research: d.research || d['연구'] || [],
           journals: d.journals || d['논문'] || [],
           conferences: d.conferences || d['학회'] || d['학회발표'] || [],
@@ -406,3 +407,64 @@
   }
 
 })();
+
+  // ===== Experiments Rendering =====
+  function renderExperiments() {
+    const container = document.getElementById('experiment-grid');
+    if (!container) return;
+    
+    const experiments = window.__cnlab_cms_data.experiments || [];
+    if (experiments.length === 0) return; // if no custom experiments, just leave the built-in one
+    
+    let html = '';
+    experiments.forEach((exp, index) => {
+      const titleKo = exp.title_ko || '';
+      const titleEn = exp.title_en || exp.title_ko || '';
+      const summaryKo = exp.summary_ko || '';
+      const summaryEn = exp.summary_en || exp.summary_ko || '';
+      const statusKo = exp.status_ko || '진행중';
+      const statusEn = exp.status_en || 'Open';
+      const url = exp.url || '#';
+      const duration = exp.duration || 'N/A';
+      const device = exp.device || 'Any Device';
+      
+      const isClosed = statusKo.includes('종료') || statusEn.includes('Closed');
+      const statusClass = isClosed ? 'survey-card__status--closed' : 'survey-card__status--active';
+      const btnClass = isClosed ? 'btn--secondary' : 'btn--primary';
+      const btnDisabled = isClosed ? 'disabled' : '';
+      const btnTextKo = isClosed ? '종료됨' : '참여하기';
+      const btnTextEn = isClosed ? 'Closed' : 'Participate';
+      
+      html += `
+        <div class="survey-card animate-on-scroll" style="animation-delay: ${index * 0.1}s">
+          <div class="survey-card__content">
+            <div class="survey-card__status ${statusClass}">
+              <span class="lang-ko">${statusKo}</span>
+              <span class="lang-en">${statusEn}</span>
+            </div>
+            <h3 class="survey-card__title">
+              <span class="lang-ko">${titleKo}</span>
+              <span class="lang-en">${titleEn}</span>
+            </h3>
+            <p class="survey-card__description">
+              <span class="lang-ko">${summaryKo}</span>
+              <span class="lang-en">${summaryEn}</span>
+            </p>
+            <div class="survey-card__meta">
+              <span>⏱️ ${duration}</span>
+              <span>💻 ${device}</span>
+            </div>
+          </div>
+          <div class="survey-card__footer">
+            <a href="${url}" target="_blank" class="btn ${btnClass}" ${btnDisabled} style="width: 100%; border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);">
+              <span class="lang-ko">${btnTextKo}</span>
+              <span class="lang-en">${btnTextEn}</span>
+            </a>
+          </div>
+        </div>
+      `;
+    });
+    
+    // Append to existing experiment grid (which holds the built-in test)
+    container.insertAdjacentHTML('beforeend', html);
+  }
