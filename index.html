@@ -662,7 +662,7 @@
                <span>&larr;</span> <span class="lang-ko">목록으로 돌아가기</span><span class="lang-en">Back to List</span>
             </button>
           </div>
-          <div class="experiment__area-box" style="background: #111827; border-radius: 16px; padding: 40px; border: 1px solid #374151; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+          <div class="experiment__area-box" style="background: var(--color-bg-primary); border-radius: 16px; padding: 40px; border: 1px solid var(--color-border); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
             
             <div class="experiment__tabs" style="margin-bottom: 24px;">
               <button class="experiment__tab active" id="exp-tab-simple" data-exp-tab="simple-rt">단순 반응시간</button>
@@ -671,14 +671,14 @@
 
             <!-- Panels -->
             <div class="experiment__panel active" id="panel-simple-rt">
-               <div id="simple-rt-canvas" style="height: 300px; background: #000; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                  <div id="simple-rt-display" style="text-align: center; color: white;">
+               <div id="simple-rt-canvas" style="height: 300px; background: #f1f5f9; border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <div id="simple-rt-display" style="text-align: center; color: var(--color-text);">
                     <h3>🟢 단순 반응시간 과제</h3>
                     <p>준비가 되면 아래 시작 버튼을 누르세요.</p>
                   </div>
                </div>
                <div class="experiment__controls">
-                 <div id="simple-rt-instructions" style="background: #1f2937; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: #d1d5db;">
+                 <div id="simple-rt-instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: var(--color-text);">
                    1. 시작 버튼 클릭 -> + 기호 등장<br>2. <b>초록색 원</b>이 나오면 즉시 <b>스페이스바</b> 클릭!<br>3. 총 10회 실시.
                  </div>
                  <button class="btn btn--primary" id="btn-start-simple">실험 시작 (Start)</button>
@@ -686,12 +686,12 @@
             </div>
 
             <div class="experiment__panel" id="panel-choice-rt">
-               <div id="choice-rt-canvas" style="height: 300px; background: #000; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                  <div id="choice-rt-display" style="text-align: center; color: white;">
+               <div id="choice-rt-canvas" style="height: 300px; background: #f1f5f9; border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <div id="choice-rt-display" style="text-align: center; color: var(--color-text);">
                     <h3>🔴🔵 선택 반응시간 과제</h3>
                   </div>
                </div>
-               <div class="experiment__instructions" style="background: #1f2937; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px; font-size: 0.9rem; color: #d1d5db;">
+               <div class="experiment__instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px; font-size: 0.9rem; color: var(--color-text);">
                  <b>빨간 공</b> -> <b>F</b>키 / <b>파란 공</b> -> <b>J</b>키<br>최대한 빠르고 정확하게!
                </div>
                <button class="btn btn--primary" id="btn-start-choice">실험 시작 (Start)</button>
@@ -883,11 +883,13 @@
         document.getElementById('lightbox-img').src = url;
         const modal = document.getElementById('lightbox-modal');
         modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('active'), 10);
         document.body.style.overflow = 'hidden';
       }
       function closeLightbox() {
         const modal = document.getElementById('lightbox-modal');
-        modal.style.display = 'none';
+        modal.classList.remove('active');
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
         document.body.style.overflow = 'auto';
       }
     </script>
