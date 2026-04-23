@@ -54,7 +54,11 @@
     if (currentCategory === '전체') {
       filteredAnnouncements = [...allAnnouncements];
     } else {
-      filteredAnnouncements = allAnnouncements.filter((a) => (a.category || '').trim() === currentCategory);
+      filteredAnnouncements = allAnnouncements.filter((a) => {
+        const catKo = (a.category_ko || a.category || '').trim();
+        const catEn = (a.category_en || a.category || '').trim();
+        return catKo === currentCategory || catEn === currentCategory;
+      });
     }
 
     currentPage = 1;

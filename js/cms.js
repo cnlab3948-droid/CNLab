@@ -245,10 +245,30 @@
         const st = window.__cnlab_journal_state;
         const q = st.searchQuery;
         
+        const synonyms = [
+            ['기억', 'memory'],
+            ['언어', 'language'],
+            ['인지', 'cognition', 'cognitive'],
+            ['정서', 'emotion', 'affective'],
+            ['의사결정', 'decision'],
+            ['학습', 'learning'],
+            ['주의', 'attention'],
+            ['뇌파', 'eeg']
+        ];
+
         st.filtered = journals.filter(item => {
             if (!q) return true;
             const textToSearch = Object.values(item).join(' ').toLowerCase();
-            return textToSearch.includes(q);
+            if (textToSearch.includes(q)) return true;
+
+            for (const group of synonyms) {
+                if (group.some(syn => q.includes(syn))) {
+                    if (group.some(syn => textToSearch.includes(syn))) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         });
 
         const start = (st.currentPage - 1) * st.itemsPerPage;
