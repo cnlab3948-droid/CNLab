@@ -47,7 +47,7 @@ new_funcs = '''
         'PI': { ko: '연구책임자', en: 'Principal Investigator' },
         '박사과정': { ko: '박사과정', en: 'Ph.D. Candidates' },
         '석사과정': { ko: '석사과정', en: 'M.A. Students' },
-        '기타': { ko: '학부생 및 기타 구성원', en: 'Undergraduates & Affiliated' }
+        '기타': { ko: '기타 구성원 및 학부생', en: 'Affiliated & Undergraduates' }
     };
 
     let html = '';
