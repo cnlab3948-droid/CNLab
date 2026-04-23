@@ -391,7 +391,7 @@
         
         if (imgUrl) {
             html += `
-            <div class="gallery-item" onclick="window.open('${imgUrl}', '_blank')">
+            <div class="gallery-item" onclick="openLightbox('${imgUrl}')" style="cursor: pointer;">
                 <img src="${imgUrl}" alt="Gallery Photo" loading="lazy">
             </div>`;
         }

@@ -97,7 +97,7 @@
 
           return `
           <div class="announcement-item ${item.pinned ? 'announcement-item--pinned' : ''}" 
-               onclick="openAnnouncementModal(${item.id})" 
+               onclick="openAnnouncementModal('${item.id}')" 
                role="button" 
                tabindex="0"
                aria-label="${titleKo}">
