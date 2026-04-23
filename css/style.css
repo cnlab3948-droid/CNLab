@@ -23,10 +23,10 @@
   --color-bg-tertiary: #F1F5F9;
   --color-bg-glass: rgba(255, 255, 255, 0.7);
 
-  /* Text */
-  --color-text: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-text-tertiary: #94A3B8;
+  /* Text - High Contrast */
+  --color-text: #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-tertiary: #64748B;
   --color-text-inverse: #FFFFFF;
 
   /* Border */
@@ -2113,12 +2113,12 @@ body.en .lang-en {
 }
 .pub-card__journal {
   font-size: 0.82rem;
-  color: #94a3b8;
+  color: #64748b;
 }
 .pub-card__journal em {
   font-style: normal;
   font-weight: 600;
-  color: #64748b;
+  color: #475569;
 }
 .pub-card__link-btn {
   display: inline-flex;

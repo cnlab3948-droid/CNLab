@@ -54,7 +54,7 @@
     if (currentCategory === '전체') {
       filteredAnnouncements = [...allAnnouncements];
     } else {
-      filteredAnnouncements = allAnnouncements.filter((a) => a.category === currentCategory);
+      filteredAnnouncements = allAnnouncements.filter((a) => (a.category || '').trim() === currentCategory);
     }
 
     currentPage = 1;

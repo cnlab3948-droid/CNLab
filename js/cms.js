@@ -178,15 +178,8 @@
           </p>
         </div>`;
 
-    // 1. Journal Articles (top 5 + show more)
-    if (journals.length === 0) {
-      journalList.innerHTML = emptyHtml;
-    } else {
-      let html = '';
-      const displayJournals = journals.slice(0, 5);
-      const hiddenJournals = journals.slice(5);
-
-      const renderJournalCard = (item) => {
+    // 1. Journal Articles (Pagination & Search)
+    const renderJournalCard = (item) => {
         const titleKo = item.title_ko || item.title || '';
         const titleEn = item.title_en || item.title || '';
         const authorsKo = item.authors_ko || item.authors || '';
@@ -218,44 +211,85 @@
             </a>` : ''}
           </div>
         `;
-      };
+    };
 
-      html += displayJournals.map(renderJournalCard).join('');
-      
-      if (hiddenJournals.length > 0) {
-        html += `<div id="hidden-journals" style="display: none;">${hiddenJournals.map(renderJournalCard).join('')}</div>`;
-        html += `
-          <div style="text-align: center; margin-top: 16px;">
-            <button id="btn-show-more-journals" class="btn btn--ghost" style="border: 1px solid var(--color-border); font-size: 0.9rem; padding: 8px 16px;">
-              <span class="lang-ko">더 보기 ∨</span>
-              <span class="lang-en">Show More ∨</span>
-            </button>
-          </div>
-        `;
-      }
-      
-      journalList.innerHTML = html;
+    if (!window.__cnlab_journal_state) {
+        window.__cnlab_journal_state = {
+            currentPage: 1,
+            itemsPerPage: 10,
+            searchQuery: '',
+            filtered: [...journals]
+        };
 
-      // Event listener for toggle
-      const btnShowMore = document.getElementById('btn-show-more-journals');
-      if (btnShowMore) {
-        btnShowMore.addEventListener('click', () => {
-          const hiddenDiv = document.getElementById('hidden-journals');
-          if (hiddenDiv.style.display === 'none') {
-            hiddenDiv.style.display = 'block';
-            btnShowMore.innerHTML = `
-              <span class="lang-ko">접기 ∧</span>
-              <span class="lang-en">Show Less ∧</span>
-            `;
-          } else {
-            hiddenDiv.style.display = 'none';
-            btnShowMore.innerHTML = `
-              <span class="lang-ko">더 보기 ∨</span>
-              <span class="lang-en">Show More ∨</span>
-            `;
-          }
+        const searchInput = document.getElementById('pub-journal-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                window.__cnlab_journal_state.searchQuery = e.target.value.toLowerCase();
+                window.__cnlab_journal_state.currentPage = 1;
+                filterAndRenderJournals();
+            });
+        }
+    } else {
+        window.__cnlab_journal_state.filtered = [...journals];
+    }
+
+    window.__cnlab_goToJournalPage = function(page) {
+        const st = window.__cnlab_journal_state;
+        const total = Math.ceil(st.filtered.length / st.itemsPerPage);
+        if (page < 1 || page > total) return;
+        st.currentPage = page;
+        filterAndRenderJournals();
+    };
+
+    function filterAndRenderJournals() {
+        const st = window.__cnlab_journal_state;
+        const q = st.searchQuery;
+        
+        st.filtered = journals.filter(item => {
+            if (!q) return true;
+            const textToSearch = Object.values(item).join(' ').toLowerCase();
+            return textToSearch.includes(q);
         });
-      }
+
+        const start = (st.currentPage - 1) * st.itemsPerPage;
+        const end = start + st.itemsPerPage;
+        const pageItems = st.filtered.slice(start, end);
+
+        const pag = document.getElementById('pub-journal-pagination');
+
+        if (pageItems.length === 0) {
+            journalList.innerHTML = emptyHtml;
+            if (pag) pag.innerHTML = '';
+            return;
+        }
+
+        journalList.innerHTML = pageItems.map(renderJournalCard).join('');
+
+        const totalPages = Math.ceil(st.filtered.length / st.itemsPerPage);
+        if (!pag) return;
+        if (totalPages <= 1) {
+            pag.innerHTML = '';
+            return;
+        }
+
+        let pHtml = '';
+        pHtml += `<button class="pagination__btn" style="width: auto; padding: 0 12px;" ${st.currentPage === 1 ? 'disabled' : ''} onclick="window.__cnlab_goToJournalPage(1)">« 처음</button>`;
+        pHtml += `<button class="pagination__btn" style="width: auto; padding: 0 12px;" ${st.currentPage === 1 ? 'disabled' : ''} onclick="window.__cnlab_goToJournalPage(${st.currentPage - 1})">‹ 이전</button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            pHtml += `<button class="pagination__btn ${i === st.currentPage ? 'active' : ''}" onclick="window.__cnlab_goToJournalPage(${i})">${i}</button>`;
+        }
+
+        pHtml += `<button class="pagination__btn" style="width: auto; padding: 0 12px;" ${st.currentPage === totalPages ? 'disabled' : ''} onclick="window.__cnlab_goToJournalPage(${st.currentPage + 1})">다음 ›</button>`;
+        pHtml += `<button class="pagination__btn" style="width: auto; padding: 0 12px;" ${st.currentPage === totalPages ? 'disabled' : ''} onclick="window.__cnlab_goToJournalPage(${totalPages})">마지막 »</button>`;
+        
+        pag.innerHTML = pHtml;
+    }
+
+    if (journals.length === 0) {
+        journalList.innerHTML = emptyHtml;
+    } else {
+        filterAndRenderJournals();
     }
 
     // 2. Oral & Poster 
@@ -267,7 +301,10 @@
         const journalKo = item.journal_ko || item.journal || '';
         const journalEn = item.journal_en || item.journal || '';
         const dateText = item.date || '';
-        const imgUrl = item.image_url || '';
+        let imgUrl = item.image_url || '';
+        if (imgUrl && !imgUrl.startsWith('http')) {
+          imgUrl = `images/conferences/${imgUrl}`;
+        }
 
         return `
           <div class="pub-card" style="${imgUrl ? 'align-items: flex-start;' : ''}">
