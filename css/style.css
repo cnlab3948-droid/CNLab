@@ -2151,3 +2151,65 @@ body.en .lang-en {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+
+/* ==========================================================================
+   Gallery Section (Masonry Collage)
+   ========================================================================== */
+.gallery-grid {
+  column-count: 3;
+  column-gap: 20px;
+  padding: 16px 0;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 20px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background-color: var(--color-bg-secondary);
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  z-index: 10;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+}
+
+.gallery-item:hover img {
+  filter: brightness(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .gallery-grid {
+    column-count: 3;
+    column-gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    column-count: 2;
+    column-gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    column-count: 1;
+  }
+}
