@@ -180,10 +180,10 @@
   }
 
   // ===== jsPsych 초기화 (특정 div 안에서만 작동) =====
-  function initJsPsychInPanel(displayElId) {
+  function initJsPsychInPanel(displayElId, onFinishCallback) {
     return initJsPsych({
       display_element: displayElId,
-      on_close: function () {},
+      on_finish: onFinishCallback || function () {},
     });
   }
 
@@ -206,7 +206,12 @@
     // 실험 중 탭 전환 방지
     disableExpTabs();
 
-    const jsPsych = initJsPsychInPanel('simple-rt-display');
+    // jsPsych 초기화 (on_finish 콜백으로 실험 완료 후 처리)
+    const jsPsych = initJsPsychInPanel('simple-rt-display', function () {
+      enableExpTabs();
+      sendToSheets('SimpleRT', subjectInfo, simpleTrialData);
+      renderResults(simpleControls, simpleDisplay, '단순 반응시간', simpleTrialData, subjectInfo, 'simple');
+    });
     const timeline = [];
     const totalTrials = CONFIG.simple.totalTrials;
 
@@ -255,11 +260,7 @@
       });
     }
 
-    jsPsych.run(timeline).then(() => {
-      enableExpTabs();
-      sendToSheets('SimpleRT', subjectInfo, simpleTrialData);
-      renderResults(simpleControls, simpleDisplay, '단순 반응시간', simpleTrialData, subjectInfo, 'simple');
-    });
+    jsPsych.run(timeline);
   }
 
   // ===== Choice RT 실험 =====
@@ -285,7 +286,12 @@
       { color: '#3B82F6', label: '파랑', key: 'j' },
     ];
 
-    const jsPsych = initJsPsychInPanel('choice-rt-display');
+    // jsPsych 초기화 (on_finish 콜백으로 실험 완료 후 처리)
+    const jsPsych = initJsPsychInPanel('choice-rt-display', function () {
+      enableExpTabs();
+      sendToSheets('ChoiceRT', subjectInfo, choiceTrialData);
+      renderResults(choiceControls, choiceDisplay, '선택 반응시간', choiceTrialData, subjectInfo, 'choice');
+    });
     const timeline = [];
     const totalTrials = CONFIG.choice.totalTrials;
 
@@ -336,11 +342,7 @@
       });
     }
 
-    jsPsych.run(timeline).then(() => {
-      enableExpTabs();
-      sendToSheets('ChoiceRT', subjectInfo, choiceTrialData);
-      renderResults(choiceControls, choiceDisplay, '선택 반응시간', choiceTrialData, subjectInfo, 'choice');
-    });
+    jsPsych.run(timeline);
   }
 
   // ===== 진행도 바 업데이트 =====
