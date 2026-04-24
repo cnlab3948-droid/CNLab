@@ -215,8 +215,8 @@
 
     simpleDisplay.innerHTML = `
       <div class="experiment__info">
-        <h3 style="color: white;">🟢 단순 반응시간 과제</h3>
-        <p style="color: rgba(255,255,255,0.7);">Simple Reaction Time Task</p>
+        <h3>🟢 단순 반응시간 과제</h3>
+        <p style="color: var(--color-text-secondary);">Simple Reaction Time Task</p>
       </div>
     `;
 
@@ -434,8 +434,8 @@
 
     choiceDisplay.innerHTML = `
       <div class="experiment__info">
-        <h3 style="color: white;">🔴🔵 선택 반응시간 과제</h3>
-        <p style="color: rgba(255,255,255,0.7);">Choice Reaction Time Task</p>
+        <h3>🔴🔵 선택 반응시간 과제</h3>
+        <p style="color: var(--color-text-secondary);">Choice Reaction Time Task</p>
       </div>
     `;
 

@@ -625,7 +625,7 @@
           </p>
         </div>
 
-        <!-- Grid View (Default) -->
+        <!-- Grid View (Default) — survey-card 클래스 공유로 설문 탭 병합 대비 -->
         <div id="exp-grid-view">
           <div class="survey__grid" id="experiment-grid">
              <!-- Built-in RT Card -->
@@ -657,44 +657,117 @@
 
         <!-- Inline Test View (Hidden) -->
         <div id="exp-test-view" style="display: none;">
-          <div style="margin-bottom: 30px;">
+          <div style="margin-bottom: 24px;">
             <button onclick="closeRTTestView()" class="btn btn--outline" style="padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px;">
                <span>&larr;</span> <span class="lang-ko">목록으로 돌아가기</span><span class="lang-en">Back to List</span>
             </button>
           </div>
-          <div class="experiment__area-box" style="background: var(--color-bg-primary); border-radius: 16px; padding: 40px; border: 1px solid var(--color-border); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+          <div class="experiment__area-box" style="background: var(--color-bg-primary); border-radius: 16px; padding: 40px; border: 1px solid var(--color-border); box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
             
             <div class="experiment__tabs" style="margin-bottom: 24px;">
-              <button class="experiment__tab active" id="exp-tab-simple" data-exp-tab="simple-rt">단순 반응시간</button>
-              <button class="experiment__tab" id="exp-tab-choice" data-exp-tab="choice-rt">선택 반응시간</button>
+              <button class="experiment__tab active" id="exp-tab-simple" data-exp-tab="simple-rt">
+                <span class="lang-ko">단순 반응시간</span><span class="lang-en">Simple RT</span>
+              </button>
+              <button class="experiment__tab" id="exp-tab-choice" data-exp-tab="choice-rt">
+                <span class="lang-ko">선택 반응시간</span><span class="lang-en">Choice RT</span>
+              </button>
             </div>
 
-            <!-- Panels -->
+            <!-- ===== Simple RT Panel ===== -->
             <div class="experiment__panel active" id="panel-simple-rt">
-               <div id="simple-rt-canvas" style="height: 300px; background: #f1f5f9; border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+               <div id="simple-rt-canvas" tabindex="0" style="height: 300px; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer;">
                   <div id="simple-rt-display" style="text-align: center; color: var(--color-text);">
-                    <h3>🟢 단순 반응시간 과제</h3>
-                    <p>준비가 되면 아래 시작 버튼을 누르세요.</p>
+                    <div class="experiment__info">
+                      <h3>🟢 단순 반응시간 과제</h3>
+                      <p style="color: var(--color-text-secondary);">Simple Reaction Time Task</p>
+                    </div>
                   </div>
                </div>
-               <div class="experiment__controls">
-                 <div id="simple-rt-instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: var(--color-text);">
-                   1. 시작 버튼 클릭 -> + 기호 등장<br>2. <b>초록색 원</b>이 나오면 즉시 <b>스페이스바</b> 클릭!<br>3. 총 10회 실시.
+               <div id="simple-rt-controls">
+                 <!-- 참가자 정보 입력 -->
+                 <div class="experiment__participant-info" style="background: var(--color-bg-tertiary, #f1f5f9); padding: 16px; border-radius: var(--radius-md, 8px); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+                   <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">
+                     <span class="lang-ko">성별:</span><span class="lang-en">Sex:</span>
+                   </label>
+                   <select id="simple-subj-sex" style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary, #fff);">
+                     <option value=""><span class="lang-ko">선택</span></option>
+                     <option value="Male">남성 (Male)</option>
+                     <option value="Female">여성 (Female)</option>
+                     <option value="Other">기타 (Other)</option>
+                   </select>
+                   <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">
+                     <span class="lang-ko">만 나이:</span><span class="lang-en">Age:</span>
+                   </label>
+                   <input type="number" id="simple-subj-age" placeholder="Ex: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 6px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary, #fff);">
                  </div>
-                 <button class="btn btn--primary" id="btn-start-simple">실험 시작 (Start)</button>
+                 <!-- 실험 안내 -->
+                 <div class="experiment__instructions" style="background: var(--color-bg-secondary, #f8fafc); padding: 16px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 16px; font-size: 0.9rem; line-height: 1.6; color: var(--color-text);">
+                   <strong><span class="lang-ko">📋 실험 방법:</span><span class="lang-en">📋 Instructions:</span></strong><br>
+                   <span class="lang-ko">1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.</span><span class="lang-en">1. Press Start, and a <strong>+</strong> appears.</span><br>
+                   <span class="lang-ko">2. 잠시 후 <strong style="color: #10B981;">초록색 원</strong>이 나타나면 최대한 빨리 <strong>스페이스바</strong>를 누르세요.</span><span class="lang-en">2. When a <strong style="color: #10B981;">green circle</strong> appears, press <strong>Spacebar</strong> ASAP.</span><br>
+                   <span class="lang-ko">3. 총 <strong>10회</strong> 시행을 완료한 후 결과가 표시됩니다.</span><span class="lang-en">3. Results are shown after completing <strong>10 trials</strong>.</span>
+                 </div>
+                 <!-- 진행도 바 -->
+                 <div class="experiment__progress" id="simple-rt-progress" style="display: none;">
+                   <div class="experiment__progress-bar" id="simple-rt-progress-bar" style="width: 0%;"></div>
+                 </div>
+                 <!-- 시작 버튼 -->
+                 <div class="experiment__btn-group">
+                   <button class="btn btn--primary" id="btn-start-simple">
+                     <span class="btn__icon">▶</span>
+                     <span class="lang-ko">실험 시작</span><span class="lang-en">Start</span>
+                   </button>
+                 </div>
                </div>
             </div>
 
+            <!-- ===== Choice RT Panel ===== -->
             <div class="experiment__panel" id="panel-choice-rt">
-               <div id="choice-rt-canvas" style="height: 300px; background: #f1f5f9; border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+               <div id="choice-rt-canvas" tabindex="0" style="height: 300px; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer;">
                   <div id="choice-rt-display" style="text-align: center; color: var(--color-text);">
-                    <h3>🔴🔵 선택 반응시간 과제</h3>
+                    <div class="experiment__info">
+                      <h3>🔴🔵 선택 반응시간 과제</h3>
+                      <p style="color: var(--color-text-secondary);">Choice Reaction Time Task</p>
+                    </div>
                   </div>
                </div>
-               <div class="experiment__instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px; font-size: 0.9rem; color: var(--color-text);">
-                 <b>빨간 공</b> -> <b>F</b>키 / <b>파란 공</b> -> <b>J</b>키<br>최대한 빠르고 정확하게!
+               <div id="choice-rt-controls">
+                 <!-- 참가자 정보 입력 -->
+                 <div class="experiment__participant-info" style="background: var(--color-bg-tertiary, #f1f5f9); padding: 16px; border-radius: var(--radius-md, 8px); margin-bottom: 20px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+                   <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">
+                     <span class="lang-ko">성별:</span><span class="lang-en">Sex:</span>
+                   </label>
+                   <select id="choice-subj-sex" style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary, #fff);">
+                     <option value="">선택</option>
+                     <option value="Male">남성 (Male)</option>
+                     <option value="Female">여성 (Female)</option>
+                     <option value="Other">기타 (Other)</option>
+                   </select>
+                   <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">
+                     <span class="lang-ko">만 나이:</span><span class="lang-en">Age:</span>
+                   </label>
+                   <input type="number" id="choice-subj-age" placeholder="Ex: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 6px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary, #fff);">
+                 </div>
+                 <!-- 실험 안내 -->
+                 <div class="experiment__instructions" style="background: var(--color-bg-secondary, #f8fafc); padding: 16px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 16px; font-size: 0.9rem; line-height: 1.6; color: var(--color-text);">
+                   <strong><span class="lang-ko">📋 실험 방법:</span><span class="lang-en">📋 Instructions:</span></strong><br>
+                   <span class="lang-ko">1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.</span><span class="lang-en">1. Press Start, and a <strong>+</strong> appears.</span><br>
+                   <span class="lang-ko">2. <strong style="color: #EF4444;">빨간색 원</strong>이 나타나면 → <strong>F</strong> 키를 누르세요.</span><span class="lang-en">2. If a <strong style="color: #EF4444;">red circle</strong> appears → Press <strong>F</strong>.</span><br>
+                   <span class="lang-ko">3. <strong style="color: #3B82F6;">파란색 원</strong>이 나타나면 → <strong>J</strong> 키를 누르세요.</span><span class="lang-en">3. If a <strong style="color: #3B82F6;">blue circle</strong> appears → Press <strong>J</strong>.</span><br>
+                   <span class="lang-ko">4. 총 <strong>20회</strong> 시행을 완료한 후 결과가 표시됩니다.</span><span class="lang-en">4. Results are shown after completing <strong>20 trials</strong>.</span>
+                 </div>
+                 <!-- 진행도 바 -->
+                 <div class="experiment__progress" id="choice-rt-progress" style="display: none;">
+                   <div class="experiment__progress-bar" id="choice-rt-progress-bar" style="width: 0%;"></div>
+                 </div>
+                 <!-- 시작 버튼 -->
+                 <div class="experiment__btn-group">
+                   <button class="btn btn--primary" id="btn-start-choice">
+                     <span class="btn__icon">▶</span>
+                     <span class="lang-ko">실험 시작</span><span class="lang-en">Start</span>
+                   </button>
+                 </div>
                </div>
-               <button class="btn btn--primary" id="btn-start-choice">실험 시작 (Start)</button>
             </div>
 
           </div>
