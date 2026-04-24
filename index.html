@@ -11,6 +11,9 @@
   <title>CNLab | 영남대학교 인지신경실험실</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/x-icon" href="images/logo.png">
+  <!-- jsPsych v8 CDN (JS만 로드, CSS는 사이트 레이아웃 보호를 위해 의도적으로 제외) -->
+  <script src="https://unpkg.com/jspsych@8.0.0/jspsych.js"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0/dist/index.browser.min.js"></script>
 </head>
 <body class="theme-dark">
 
@@ -1070,7 +1073,7 @@
   <!-- ===== Scripts ===== -->
   <script src="js/cms.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/experiment.js"></script>
+  <script src="js/experiment.js"></script> <!-- jsPsych 기반 -->
   <script src="js/survey.js"></script>
   <script src="js/announcements.js"></script>
 
