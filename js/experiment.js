@@ -13,7 +13,7 @@
 
   // ===== Configuration =====
   const CONFIG = {
-    gasUrl: 'https://script.google.com/macros/s/AKfycbw9YRLxQyGhxfUOWZMyaf-YTgMSDv_83lU1F8ANUfOBMBQGt0ljBO65DwiXRjq9Korz/exec',
+    gasUrl: 'https://script.google.com/macros/s/AKfycbzS3bTGLFxdBolpiFB1vGhCVm9iwWDk3MmpzHqzLUQTcAkNeoUwK-_MxC2myurC2K_k/exec',
     simple: {
       totalTrials: 10,
       fixationMin: 1000,
