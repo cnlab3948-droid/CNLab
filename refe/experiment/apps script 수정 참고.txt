@@ -1,0 +1,42 @@
+**기존 코드가 있다면 삭제 후 입력
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // task 종류에 따라 시트 선택 (없으면 자동 생성)
+    let sheetName = data.task === 'SimpleRT' ? '단순RT' : '선택RT';
+    let sheet = ss.getSheetByName(sheetName);
+    
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+      // 헤더 행 추가
+      if (data.task === 'SimpleRT') {
+        sheet.appendRow(['timestamp', 'sex', 'age', 'trial', 'rt_ms', 'correct']);
+      } else {
+        sheet.appendRow(['timestamp', 'sex', 'age', 'trial', 'stimulus', 'rt_ms', 'correct']);
+      }
+    }
+    
+    // 시행별로 한 행씩 저장
+    const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    
+    data.trials.forEach(t => {
+      if (data.task === 'SimpleRT') {
+        sheet.appendRow([timestamp, data.sex, data.age, t.trial, t.rt, t.correct]);
+      } else {
+        sheet.appendRow([timestamp, data.sex, data.age, t.trial, t.stimulus, t.rt, t.correct]);
+      }
+    });
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}

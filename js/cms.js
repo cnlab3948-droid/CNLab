@@ -50,7 +50,7 @@
     }
 
     // Render surveys and research
-    renderSurveys();
+    renderExperiments();
     renderResearch();
     renderPublications();
     renderGallery();
@@ -58,71 +58,6 @@
 
     // 공지사항 파트에 '데이터 로딩 완료' 신호를 보냅니다.
     window.dispatchEvent(new Event('cmsDataReady'));
-  }
-
-  function renderSurveys() {
-    const container = document.getElementById('survey-grid');
-    if (!container) return;
-    
-    const surveys = window.__cnlab_cms_data.surveys || [];
-    if (surveys.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
-          <div class="empty-state__icon">📝</div>
-          <p class="empty-state__text">
-             <span class="lang-ko">현재 등록된 설문조사가 없습니다.</span>
-             <span class="lang-en">No surveys currently available.</span>
-          </p>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = surveys.map(s => {
-      const isActive = s.status_ko === '진행중' || s.status === '진행중';
-      const statusClass = isActive ? 'active' : 'closed';
-      
-      const statusKo = s.status_ko || s.status || '';
-      const statusEn = s.status_en || s.status || '';
-      const titleKo = s.title_ko || s.title || '';
-      const titleEn = s.title_en || s.title || '';
-      const descKo = s.description_ko || s.description || '';
-      const descEn = s.description_en || s.description || '';
-      const timeKo = s.time_ko || s.time || '';
-      const timeEn = s.time_en || s.time || '';
-      const dateText = s.date || '';
-
-      return `
-      <div class="survey-card">
-        <div class="survey-card__status survey-card__status--${statusClass}">
-          <span class="lang-ko">${statusKo}</span>
-          <span class="lang-en">${statusEn}</span>
-        </div>
-        <h3 class="survey-card__title">
-          <span class="lang-ko">${titleKo}</span>
-          <span class="lang-en">${titleEn}</span>
-        </h3>
-        <p class="survey-card__description">
-          <span class="lang-ko">${descKo}</span>
-          <span class="lang-en">${descEn}</span>
-        </p>
-        <div class="survey-card__meta">
-          <span class="survey-card__meta-item">⏱️ 
-             <span class="lang-ko">${timeKo}</span>
-             <span class="lang-en">${timeEn}</span>
-          </span>
-          <span class="survey-card__meta-item">📅 ${dateText}</span>
-        </div>
-        ${isActive 
-          ? `<button class="btn btn--primary btn--sm" onclick="window.open('${s.link}', '_blank')">
-               <span class="lang-ko">참여하기 →</span><span class="lang-en">Participate →</span>
-             </button>`
-          : `<button class="btn btn--ghost btn--sm" disabled>
-               <span class="lang-ko">마감됨</span><span class="lang-en">Closed</span>
-             </button>`
-        }
-      </div>
-    `}).join('');
   }
 
   function renderResearch() {
@@ -409,66 +344,7 @@
 
 })();
 
-  // ===== Experiments Rendering =====
-  function renderExperiments() {
-    const container = document.getElementById('experiment-grid');
-    if (!container) return;
-    
-    const experiments = window.__cnlab_cms_data.experiments || [];
-    if (experiments.length === 0) return; // if no custom experiments, just leave the built-in one
-    
-    let html = '';
-    experiments.forEach((exp, index) => {
-      const titleKo = exp.title_ko || '';
-      const titleEn = exp.title_en || exp.title_ko || '';
-      const summaryKo = exp.summary_ko || '';
-      const summaryEn = exp.summary_en || exp.summary_ko || '';
-      const statusKo = exp.status_ko || '진행중';
-      const statusEn = exp.status_en || 'Open';
-      const url = exp.url || '#';
-      const duration = exp.duration || 'N/A';
-      const device = exp.device || 'Any Device';
-      
-      const isClosed = statusKo.includes('종료') || statusEn.includes('Closed');
-      const statusClass = isClosed ? 'survey-card__status--closed' : 'survey-card__status--active';
-      const btnClass = isClosed ? 'btn--secondary' : 'btn--primary';
-      const btnDisabled = isClosed ? 'disabled' : '';
-      const btnTextKo = isClosed ? '종료됨' : '참여하기';
-      const btnTextEn = isClosed ? 'Closed' : 'Participate';
-      
-      html += `
-        <div class="survey-card animate-on-scroll" style="animation-delay: ${index * 0.1}s">
-          <div class="survey-card__content">
-            <div class="survey-card__status ${statusClass}">
-              <span class="lang-ko">${statusKo}</span>
-              <span class="lang-en">${statusEn}</span>
-            </div>
-            <h3 class="survey-card__title">
-              <span class="lang-ko">${titleKo}</span>
-              <span class="lang-en">${titleEn}</span>
-            </h3>
-            <p class="survey-card__description">
-              <span class="lang-ko">${summaryKo}</span>
-              <span class="lang-en">${summaryEn}</span>
-            </p>
-            <div class="survey-card__meta">
-              <span>⏱️ ${duration}</span>
-              <span>💻 ${device}</span>
-            </div>
-          </div>
-          <div class="survey-card__footer">
-            <a href="${url}" target="_blank" class="btn ${btnClass}" ${btnDisabled} style="width: 100%; border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);">
-              <span class="lang-ko">${btnTextKo}</span>
-              <span class="lang-en">${btnTextEn}</span>
-            </a>
-          </div>
-        </div>
-      `;
-    });
-    
-    // Append to existing experiment grid (which holds the built-in test)
-    container.insertAdjacentHTML('beforeend', html);
-  }
+
 
   // ===== Global Fixes & Event Routing =====
   window.openAnnouncementModalById = function(id) {

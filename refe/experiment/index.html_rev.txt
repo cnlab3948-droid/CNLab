@@ -1,0 +1,90 @@
+673-686
+
+[before]
+<div class="experiment__controls">
+  <div id="simple-rt-instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: var(--color-text);">
+    1. 시작 버튼 클릭 -> + 기호 등장<br>2. <b>초록색 원</b>이 나오면 즉시 <b>스페이스바</b> 클릭!<br>3. 총 10회 실시.
+  </div>
+  <button class="btn btn--primary" id="btn-start-simple">실험 시작 (Start)</button>
+</div>
+
+[after]
+<div class="experiment__controls" id="simple-rt-controls">
+  <!-- 참여자 정보 입력 -->
+  <div style="background: var(--color-bg-tertiary); padding: 16px; border-radius: 8px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+    <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+    <select id="simple-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary); color: var(--color-text);">
+      <option value="">선택</option>
+      <option value="남성">남성</option>
+      <option value="여성">여성</option>
+      <option value="기타">기타</option>
+    </select>
+    <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+    <input type="number" id="simple-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary); color: var(--color-text);">
+  </div>
+  <!-- 실험 안내 -->
+  <div style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: var(--color-text);">
+    <strong>📋 실험 방법:</strong><br>
+    1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>
+    2. <strong style="color: #10B981;">초록색 원</strong>이 나타나면 최대한 빨리 <strong>스페이스바</strong>를 누르세요.<br>
+    3. 총 <strong>10회</strong> 시행을 완료한 후 결과가 표시됩니다.
+  </div>
+  <div class="experiment__progress" id="simple-rt-progress" style="display: none;">
+    <div class="experiment__progress-bar" id="simple-rt-progress-bar" style="width: 0%;"></div>
+  </div>
+  <div class="experiment__btn-group">
+    <button class="btn btn--primary" id="btn-start-simple">
+      <span class="btn__icon">▶</span> 실험 시작
+    </button>
+  </div>
+</div>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+688-698
+
+[before]
+<div class="experiment__instructions" style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px; font-size: 0.9rem; color: var(--color-text);">
+  <b>빨간 공</b> -> <b>F</b>키 / <b>파란 공</b> -> <b>J</b>키<br>최대한 빠르고 정확하게!
+</div>
+<button class="btn btn--primary" id="btn-start-choice">실험 시작 (Start)</button>
+
+[after]
+<div class="experiment__controls" id="choice-rt-controls">
+  <!-- 참여자 정보 입력 -->
+  <div style="background: var(--color-bg-tertiary); padding: 16px; border-radius: 8px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--color-border); flex-wrap: wrap;">
+    <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">성별:</label>
+    <select id="choice-subj-sex" style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary); color: var(--color-text);">
+      <option value="">선택</option>
+      <option value="남성">남성</option>
+      <option value="여성">여성</option>
+      <option value="기타">기타</option>
+    </select>
+    <label style="font-weight: 600; color: var(--color-text); font-size: 0.9rem;">만 나이:</label>
+    <input type="number" id="choice-subj-age" placeholder="예: 25" min="1" max="100" style="padding: 6px 12px; width: 80px; border-radius: 4px; border: 1px solid var(--color-border); font-family: inherit; font-size: 0.9rem; background: var(--color-bg-primary); color: var(--color-text);">
+  </div>
+  <!-- 실험 안내 -->
+  <div style="background: var(--color-bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; color: var(--color-text);">
+    <strong>📋 실험 방법:</strong><br>
+    1. 시작 버튼을 누르면 화면 중앙에 <strong>+</strong> 기호가 나타납니다.<br>
+    2. <strong style="color: #EF4444;">빨간색 원</strong>이 나타나면 → <strong>F</strong> 키를 누르세요.<br>
+    3. <strong style="color: #3B82F6;">파란색 원</strong>이 나타나면 → <strong>J</strong> 키를 누르세요.<br>
+    4. 총 <strong>20회</strong> 시행을 완료한 후 결과가 표시됩니다.
+  </div>
+  <div class="experiment__progress" id="choice-rt-progress" style="display: none;">
+    <div class="experiment__progress-bar" id="choice-rt-progress-bar" style="width: 0%;"></div>
+  </div>
+  <div class="experiment__btn-group">
+    <button class="btn btn--primary" id="btn-start-choice">
+      <span class="btn__icon">▶</span> 실험 시작
+    </button>
+  </div>
+</div>\
+
+------------------------------------------------------------------------------------------
+
+*CND 추가 / jsPsych
+
+<script src="https://unpkg.com/jspsych@8.0.0/jspsych.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css">
+<script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0/dist/index.browser.min.js"></script>

@@ -1,0 +1,50 @@
+128-135
+
+[before]
+body: JSON.stringify({
+          task: 'SimpleRT',
+          sex: simpleState.subjectInfo.sex,
+          age: simpleState.subjectInfo.age,
+          avgRT: Math.round(avgRT),
+          accuracy: '-',
+          rts: rts.map(r => r.toFixed(1)).join(', ')   // ← 133번째 줄
+        })
+
+[after]
+body: JSON.stringify({
+          task: 'SimpleRT',
+          sex: simpleState.subjectInfo.sex,
+          age: simpleState.subjectInfo.age,
+          trials: simpleState.data.map(d => ({
+            trial: d.trial,
+            rt: d.rt,
+            correct: d.correct
+          }))
+        })
+
+-----------------------------------------------------------------------------------
+
+336-343
+
+[before]
+body: JSON.stringify({
+          task: 'ChoiceRT',
+          sex: choiceState.subjectInfo.sex,
+          age: choiceState.subjectInfo.age,
+          avgRT: Math.round(avgRT),
+          accuracy: accuracy.toFixed(0) + '%',
+          rts: choiceState.data.map(d => d.rt.toFixed(1) + (d.correct ? '' : '(X)')).join(', ')   // ← 341번째 줄
+        })
+
+[after]
+body: JSON.stringify({
+          task: 'ChoiceRT',
+          sex: choiceState.subjectInfo.sex,
+          age: choiceState.subjectInfo.age,
+          trials: choiceState.data.map(d => ({
+            trial: d.trial,
+            stimulus: d.stimulus,
+            rt: d.rt,
+            correct: d.correct
+          }))
+        })
