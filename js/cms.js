@@ -60,6 +60,98 @@
     window.dispatchEvent(new Event('cmsDataReady'));
   }
 
+
+  // ===== Experiments Rendering (3-section: online/offline/survey) =====
+  function renderExperiments() {
+    const experiments = window.__cnlab_cms_data.experiments || [];
+    const surveys = window.__cnlab_cms_data.surveys || [];
+    
+    function renderCards(containerId, items, btnLabelKo, btnLabelEn) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
+            <div class="empty-state__icon">📋</div>
+            <p class="empty-state__text">
+              <span class="lang-ko">현재 등록된 항목이 없습니다.</span>
+              <span class="lang-en">No items currently available.</span>
+            </p>
+          </div>`;
+        return;
+      }
+      
+      container.innerHTML = items.map((item, index) => {
+        const titleKo = item.title_ko || item.title || '';
+        const titleEn = item.title_en || item.title_ko || item.title || '';
+        const descKo = item.summary_ko || item.description_ko || item.description || '';
+        const descEn = item.summary_en || item.description_en || item.description || '';
+        const statusKo = item.status_ko || item.status || '진행중';
+        const statusEn = item.status_en || item.status || 'Open';
+        const url = item.url || item.link || '#';
+        const duration = item.duration || item.time_ko || item.time || '';
+        const device = item.device || '';
+        const dateText = item.date || '';
+        
+        const isClosed = statusKo.includes('종료') || statusKo.includes('마감') || statusEn.includes('Closed');
+        const statusClass = isClosed ? 'survey-card__status--closed' : 'survey-card__status--active';
+        const btnClass = isClosed ? 'btn--secondary' : 'btn--primary';
+        const btnDisabled = isClosed ? 'disabled' : '';
+        
+        return `
+          <div class="survey-card animate-on-scroll" style="animation-delay: ${index * 0.1}s">
+            <div class="survey-card__content">
+              <div class="survey-card__status ${statusClass}">
+                <span class="lang-ko">${statusKo}</span>
+                <span class="lang-en">${statusEn}</span>
+              </div>
+              <h3 class="survey-card__title">
+                <span class="lang-ko">${titleKo}</span>
+                <span class="lang-en">${titleEn}</span>
+              </h3>
+              <p class="survey-card__description">
+                <span class="lang-ko">${descKo}</span>
+                <span class="lang-en">${descEn}</span>
+              </p>
+              <div class="survey-card__meta">
+                ${duration ? `<span>⏱️ ${duration}</span>` : ''}
+                ${device ? `<span>💻 ${device}</span>` : ''}
+                ${dateText ? `<span>📅 ${dateText}</span>` : ''}
+              </div>
+            </div>
+            <div class="survey-card__footer">
+              <a href="${url}" target="_blank" class="btn ${btnClass}" ${btnDisabled} style="width: 100%; border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);">
+                <span class="lang-ko">${isClosed ? '마감됨' : btnLabelKo}</span>
+                <span class="lang-en">${isClosed ? 'Closed' : btnLabelEn}</span>
+              </a>
+            </div>
+          </div>`;
+      }).join('');
+    }
+    
+    // Filter experiments by category
+    const onlineExps = experiments.filter(e => {
+      const cat = (e.category_ko || e.category || '').toLowerCase();
+      return cat.includes('온라인') || cat.includes('online') || cat === '';
+    });
+    const offlineExps = experiments.filter(e => {
+      const cat = (e.category_ko || e.category || '').toLowerCase();
+      return cat.includes('오프라인') || cat.includes('offline');
+    });
+    
+    renderCards('exp-online-grid', onlineExps, '실험하기', 'Participate');
+    renderCards('exp-offline-grid', offlineExps, '신청하기', 'Apply');
+    renderCards('exp-survey-grid', surveys, '설문하기', 'Take Survey');
+  }
+
+  // ===== Cleanup loader =====
+  function finalizePage() {
+    const loader = document.getElementById('cms-loading');
+    if (loader) loader.remove();
+    console.log('CMS Finalized and Cleaned.');
+  }
+
   function renderResearch() {
     const container = document.getElementById('research-list');
     if (!container) return;
@@ -342,24 +434,14 @@
     initCMS();
   }
 
+
 })();
 
-
-
-  // ===== Global Fixes & Event Routing =====
-  window.openAnnouncementModalById = function(id) {
-    const items = window.__cnlab_cms_data.announcements || [];
-    const item = items.find(i => i.id == id);
-    if (item && typeof openAnnouncementModal === 'function') {
-      openAnnouncementModal(item);
-    }
-  };
-
-  // Add cleanup loader
-  function finalizePage() {
-    const loader = document.getElementById('cms-loading');
-    if (loader) loader.remove();
-    console.log('CMS Finalized and Cleaned.');
+// ===== Global Fixes & Event Routing =====
+window.openAnnouncementModalById = function(id) {
+  const items = window.__cnlab_cms_data.announcements || [];
+  const item = items.find(i => i.id == id);
+  if (item && typeof openAnnouncementModal === 'function') {
+    openAnnouncementModal(item);
   }
-  
-  // ensure initCMS calls finalizePage
+};
