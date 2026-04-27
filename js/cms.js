@@ -11,7 +11,7 @@
 
   window.__cnlab_cms_data = {
     announcements: [],
-    surveys: [],
+    experiments: [],
     research: [],
     journals: [],
     conferences: [],
@@ -30,7 +30,6 @@
         const d = data.data;
         window.__cnlab_cms_data = {
           announcements: d.announcements || d['공지사항'] || [],
-          surveys: d.surveys || d['설문'] || d['실험기록'] || [],
           experiments: d.experiments || d['실험'] || [],
           research: d.research || d['연구'] || [],
           journals: d.journals || d['논문'] || [],
@@ -63,8 +62,7 @@
 
   // ===== Experiments Rendering (3-section: online/offline/survey) =====
   function renderExperiments() {
-    const experiments = window.__cnlab_cms_data.experiments || [];
-    const surveys = window.__cnlab_cms_data.surveys || [];
+    const allItems = window.__cnlab_cms_data.experiments || [];
     
     function renderCards(containerId, items, btnLabelKo, btnLabelEn) {
       const container = document.getElementById(containerId);
@@ -130,19 +128,23 @@
       }).join('');
     }
     
-    // Filter experiments by category
-    const onlineExps = experiments.filter(e => {
+    // Filter by category_ko
+    const onlineExps = allItems.filter(e => {
       const cat = (e.category_ko || e.category || '').toLowerCase();
       return cat.includes('온라인') || cat.includes('online') || cat === '';
     });
-    const offlineExps = experiments.filter(e => {
+    const offlineExps = allItems.filter(e => {
       const cat = (e.category_ko || e.category || '').toLowerCase();
       return cat.includes('오프라인') || cat.includes('offline');
+    });
+    const surveyItems = allItems.filter(e => {
+      const cat = (e.category_ko || e.category || '').toLowerCase();
+      return cat.includes('설문') || cat.includes('survey');
     });
     
     renderCards('exp-online-grid', onlineExps, '실험하기', 'Participate');
     renderCards('exp-offline-grid', offlineExps, '신청하기', 'Apply');
-    renderCards('exp-survey-grid', surveys, '설문하기', 'Take Survey');
+    renderCards('exp-survey-grid', surveyItems, '설문하기', 'Take Survey');
   }
 
   // ===== Cleanup loader =====
