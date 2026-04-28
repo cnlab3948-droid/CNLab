@@ -16,6 +16,7 @@
     journals: [],
     conferences: [],
     members: [],
+    news: [],
     gallery: []
   };
 
@@ -35,6 +36,7 @@
           journals: d.journals || d['논문'] || [],
           conferences: d.conferences || d['학회'] || d['학술대회발표'] || [],
           members: d.members || d['구성원'] || [],
+          news: d.news || d['소식'] || [],
           gallery: d.gallery || d['gallery'] || []
         };
       }
@@ -48,10 +50,11 @@
       loader.classList.add('hidden');
     }
 
-    // Render surveys and research
+    // Render all sections
     renderExperiments();
     renderResearch();
     renderPublications();
+    renderNews();
     renderGallery();
     finalizePage();
 
@@ -400,19 +403,75 @@
   }
 
   
+  // ===== News Rendering (연구실 소식) =====
+  function renderNews() {
+    const container = document.getElementById('news-list');
+    if (!container) return;
+
+    const newsItems = (window.__cnlab_cms_data.news || []).filter(item => {
+      const cat = (item.category || '').toLowerCase();
+      return !cat.includes('갤러리') && !cat.includes('gallery');
+    });
+
+    if (newsItems.length === 0) {
+      container.innerHTML = `<div class="empty-state" style="padding: 48px 24px; text-align: center;"><div class="empty-state__icon">📰</div><p class="empty-state__text"><span class="lang-ko">현재 등록된 소식이 없습니다.</span><span class="lang-en">No news available.</span></p></div>`;
+      return;
+    }
+
+    const badgeMap = {
+      '수상': { cls: 'badge-award', icon: '🏆' },
+      '학회': { cls: 'badge-conf', icon: '🎤' },
+      '논문': { cls: 'badge-paper', icon: '📄' },
+      '모집': { cls: 'badge-recruit', icon: '👥' },
+      'award': { cls: 'badge-award', icon: '🏆' },
+      'conference': { cls: 'badge-conf', icon: '🎤' },
+      'paper': { cls: 'badge-paper', icon: '📄' },
+      'recruit': { cls: 'badge-recruit', icon: '👥' },
+    };
+
+    container.innerHTML = newsItems.map(item => {
+      const cat = item.category || item.category_ko || '기타';
+      const catLower = cat.toLowerCase();
+      let badge = { cls: 'badge-etc', icon: '📋' };
+      for (const [key, val] of Object.entries(badgeMap)) {
+        if (catLower.includes(key)) { badge = val; break; }
+      }
+
+      const title = item.title || item.title_ko || '';
+      const desc = item.description || item.summary_ko || item.summary || '';
+      const date = item.date || '';
+
+      return `
+        <div class="news-card animate-on-scroll" style="display: flex; align-items: flex-start; gap: 16px; background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px 22px; transition: box-shadow 0.2s, transform 0.15s; cursor: default;">
+          <span class="news-badge ${badge.cls}" style="flex-shrink: 0; font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; margin-top: 2px;">${badge.icon} ${cat}</span>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin-bottom: 5px; line-height: 1.5;">${title}</div>
+            <div style="font-size: 0.82rem; color: var(--color-text-secondary);">${date}${desc ? ' · ' + desc : ''}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
   // ===== Gallery Rendering =====
   function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     if (!grid) return;
 
-    let gallery = window.__cnlab_cms_data.gallery || [];
-    if (gallery.length === 0) {
+    // Gallery items from '소식' sheet (category=갤러리) + legacy gallery sheet
+    const newsGallery = (window.__cnlab_cms_data.news || []).filter(item => {
+      const cat = (item.category || '').toLowerCase();
+      return cat.includes('갤러리') || cat.includes('gallery');
+    });
+    const legacyGallery = window.__cnlab_cms_data.gallery || [];
+    const allGallery = [...newsGallery, ...legacyGallery];
+
+    if (allGallery.length === 0) {
       grid.innerHTML = `<div class="empty-state" style="padding: 40px 24px; grid-column: 1 / -1; text-align: center;"><div class="empty-state__icon">📸</div><p class="empty-state__text"><span class="lang-ko">현재 등록된 사진이 없습니다.</span><span class="lang-en">No photos available.</span></p></div>`;
       return;
     }
 
     let html = '';
-    gallery.forEach(item => {
+    allGallery.forEach(item => {
         let imgUrl = item.image_url || '';
         if (imgUrl && !imgUrl.startsWith('http')) {
             imgUrl = `images/conferences/${imgUrl}`;

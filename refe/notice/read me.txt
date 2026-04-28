@@ -1,0 +1,6 @@
+notice_section.html — 파일 상단 주석에 통합 방법이 적혀 있음
+
+<style> 블록 → 기존 CSS에 합치거나 <head>에 추가
+HTML 블록 → index.html의 공지사항 위치에 삽입
+<script> 블록 → 기존 JS 파일에 합치거나 </body> 위에 추가
+APPS_SCRIPT_URL 변수에 배포 URL 입력

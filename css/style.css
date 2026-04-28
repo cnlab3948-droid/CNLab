@@ -2214,6 +2214,34 @@ body.en .lang-en {
   }
 }
 
+/* ===== News Section (Lab News Cards) ===== */
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.news-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07) !important;
+  transform: translateY(-1px) !important;
+}
+
+.badge-award  { background: #fef3c7; color: #92400e; }
+.badge-conf   { background: #dbeafe; color: #1e40af; }
+.badge-paper  { background: #d1fae5; color: #065f46; }
+.badge-recruit{ background: #ede9fe; color: #4c1d95; }
+.badge-etc    { background: #f3f4f6; color: #374151; }
+
+@media (max-width: 640px) {
+  .news-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+}
+
+
+
 
 /* ===== Lightbox & Experiment Modals ===== */
 .lightbox-modal {

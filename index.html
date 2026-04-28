@@ -36,17 +36,14 @@
         <a href="#announcements" class="nav__link" data-section="announcements">
           <span class="lang-ko">공지사항</span><span class="lang-en">Notice</span>
         </a>
-        <a href="#schedule" class="nav__link" data-section="schedule">
-          <span class="lang-ko">일정</span><span class="lang-en">Schedule</span>
-        </a>
         <a href="#research" class="nav__link" data-section="research">
           <span class="lang-ko">연구</span><span class="lang-en">Research</span>
         </a>
         <a href="#publications" class="nav__link" data-section="publications">
           <span class="lang-ko">논문</span><span class="lang-en">Publications</span>
         </a>
-        <a href="#gallery" class="nav__link" data-section="gallery">
-          <span class="lang-ko">갤러리</span><span class="lang-en">Gallery</span>
+        <a href="#news" class="nav__link" data-section="news">
+          <span class="lang-ko">소식</span><span class="lang-en">News</span>
         </a>
         <a href="#experiment" class="nav__link" data-section="experiment">
           <span class="lang-ko">실험</span><span class="lang-en">Experiment</span>
@@ -578,31 +575,62 @@
     </section>
 
     <!-- ============================
-         Gallery Section
+         News Section (연구실 소식 + 갤러리)
          ============================ -->
-    <section class="section" id="gallery" data-section="gallery">
+    <section class="section" id="news" data-section="news">
       <div class="container">
         <div class="section__header">
-          <span class="section__label">Gallery</span>
+          <span class="section__label">News</span>
           <h2 class="section__title">
-            <span class="lang-ko">갤러리</span>
-            <span class="lang-en">Gallery</span>
+            <span class="lang-ko">소식</span>
+            <span class="lang-en">News</span>
           </h2>
           <p class="section__description">
-            <span class="lang-ko">연구실의 여러 소식과 학회 활동 사진들을 확인하세요. 사진을 클릭하면 원본 비율로 열립니다.</span>
-            <span class="lang-en">Check out moments and conference photos of our lab. Click on photos to view them in their original proportion.</span>
+            <span class="lang-ko">연구실의 최신 소식과 활동 사진들을 확인하세요.</span>
+            <span class="lang-en">Check out the latest news and activity photos from our lab.</span>
           </p>
         </div>
-        
-        <div class="gallery-grid" id="gallery-grid">
-          <div class="empty-state" style="padding: 40px 24px; grid-column: 1 / -1; text-align: center;">
-            <div class="empty-state__icon">📸</div>
-            <p class="empty-state__text">
-              <span class="lang-ko">사진 데이터를 불러오는 중입니다...</span>
-              <span class="lang-en">Loading gallery data...</span>
-            </p>
+
+        <!-- Lab News Sub-section -->
+        <div class="exp-section" style="margin-bottom: 48px;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; color: var(--color-text); display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.4rem;">📰</span>
+            <span class="lang-ko">연구실 소식</span>
+            <span class="lang-en">Lab News</span>
+          </h3>
+          <div class="news-list" id="news-list">
+            <div class="empty-state" style="padding: 48px 24px; text-align: center;">
+              <div class="empty-state__icon">⏳</div>
+              <p class="empty-state__text">
+                <span class="lang-ko">데이터를 불러오는 중입니다...</span>
+                <span class="lang-en">Loading data...</span>
+              </p>
+            </div>
           </div>
         </div>
+
+        <!-- Gallery Sub-section -->
+        <div class="exp-section">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; color: var(--color-text); display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.4rem;">📸</span>
+            <span class="lang-ko">갤러리</span>
+            <span class="lang-en">Gallery</span>
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 20px;">
+            <span class="lang-ko">사진을 클릭하면 원본 비율로 열립니다.</span>
+            <span class="lang-en">Click on photos to view them in their original proportion.</span>
+          </p>
+          <div class="gallery-grid" id="gallery-grid">
+            <div class="empty-state" style="padding: 40px 24px; grid-column: 1 / -1; text-align: center;">
+              <div class="empty-state__icon">⏳</div>
+              <p class="empty-state__text">
+                <span class="lang-ko">데이터를 불러오는 중입니다...</span>
+                <span class="lang-en">Loading data...</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -680,63 +708,6 @@
       </div>
     </section>
 
-    <!-- ============================
-         Schedule Section
-         ============================ -->
-    <section class="section" id="schedule" data-section="schedule">
-      <div class="container">
-        <div class="section__header">
-          <span class="section__label">Schedule</span>
-          <h2 class="section__title">
-            <span class="lang-ko">공식 일정</span>
-            <span class="lang-en">Schedule</span>
-          </h2>
-          <p class="section__description">
-            <span class="lang-ko">세미나, 실험 일정, 학술대회 등 CNLab의 주요 일정을 확인하세요.</span>
-            <span class="lang-en">Check CNLab's official schedule for seminars, experiments, and conferences.</span>
-          </p>
-        </div>
-
-        <div class="schedule__calendar-wrapper">
-          <!-- <iframe src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Asia%2FSeoul" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe> -->
-          <div class="schedule__calendar-placeholder" id="calendar-placeholder">
-            <div class="schedule__calendar-placeholder-icon">📅</div>
-            <h3>Google Calendar 연동 예정</h3>
-            <p>구글 캘린더가 연동되면 이 자리에 연구실 일정이 표시됩니다.</p>
-          </div>
-        </div>
-
-        <div class="schedule__info">
-          <div class="schedule__info-card animate-on-scroll">
-            <div class="schedule__info-icon">📍</div>
-            <div class="schedule__info-text">
-              <h4><span class="lang-ko">연구실 위치</span><span class="lang-en">Location</span></h4>
-              <p><span class="lang-ko">영남대학교 천마관 304호<br>인지신경실험실 (CNLab)</span><span class="lang-en">Cheonma Hall 304<br>Yeungnam University</span></p>
-            </div>
-          </div>
-          <div class="schedule__info-card animate-on-scroll">
-            <div class="schedule__info-icon">📧</div>
-            <div class="schedule__info-text">
-              <h4><span class="lang-ko">이메일</span><span class="lang-en">Email</span></h4>
-              <p><a href="mailto:cnlab3948@gmail.com">cnlab3948@gmail.com</a></p>
-            </div>
-          </div>
-          <div class="schedule__info-card animate-on-scroll">
-            <div class="schedule__info-icon">📞</div>
-            <div class="schedule__info-text">
-              <h4><span class="lang-ko">전화</span><span class="lang-en">Phone</span></h4>
-              <p>053-810-3948</p>
-            </div>
-          </div>
-          <div class="schedule__info-card animate-on-scroll">
-            <div class="schedule__info-icon">🕐</div>
-            <div class="schedule__info-text">
-              <h4><span class="lang-ko">정기 세미나</span><span class="lang-en">Weekly Seminar</span></h4>
-              <p><span class="lang-ko">매주 금요일 오후 3시<br>저널클럽 &amp; 연구 발표</span><span class="lang-en">Every Friday 3 PM<br>Journal Club &amp; Research</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ============================
