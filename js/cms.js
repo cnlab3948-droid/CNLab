@@ -72,6 +72,8 @@
       if (!container) return;
       
       if (items.length === 0) {
+        // If container already has content (e.g. built-in demo card), don't overwrite
+        if (container.children.length > 0) return;
         container.innerHTML = `
           <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
             <div class="empty-state__icon">📋</div>
@@ -83,7 +85,7 @@
         return;
       }
       
-      container.innerHTML = items.map((item, index) => {
+      container.insertAdjacentHTML('beforeend', items.map((item, index) => {
         const titleKo = item.title_ko || item.title || '';
         const titleEn = item.title_en || item.title_ko || item.title || '';
         const descKo = item.summary_ko || item.description_ko || item.description || '';
@@ -128,7 +130,7 @@
               </a>
             </div>
           </div>`;
-      }).join('');
+      }).join(''));
     }
     
     // Filter by category_ko

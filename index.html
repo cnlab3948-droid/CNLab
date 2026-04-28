@@ -11,6 +11,9 @@
   <title>CNLab | 영남대학교 인지신경실험실</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/x-icon" href="images/logo.png">
+  <!-- jsPsych v8 CDN -->
+  <script src="https://unpkg.com/jspsych@8.2.3/dist/index.browser.js"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0/dist/index.browser.js"></script>
 </head>
 <body class="theme-dark">
 
@@ -659,13 +662,34 @@
             <span class="lang-en">Online Experiments</span>
           </h3>
           <div class="survey__grid" id="exp-online-grid">
-            <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
-              <div class="empty-state__icon">⏳</div>
-              <p class="empty-state__text">
-                <span class="lang-ko">데이터를 불러오는 중입니다...</span>
-                <span class="lang-en">Loading data...</span>
-              </p>
+            <!-- Built-in experiment demo card -->
+            <div class="survey-card animate-on-scroll">
+              <div class="survey-card__content">
+                <div class="survey-card__status survey-card__status--active">
+                  <span class="lang-ko">체험 가능</span>
+                  <span class="lang-en">Available</span>
+                </div>
+                <h3 class="survey-card__title">
+                  <span class="lang-ko">🧪 반응시간 실험 체험</span>
+                  <span class="lang-en">🧪 Reaction Time Demo</span>
+                </h3>
+                <p class="survey-card__description">
+                  <span class="lang-ko">단순 반응시간 과제를 직접 체험해 보세요. 초록색 원이 나타나면 최대한 빠르게 스페이스바를 누르세요!</span>
+                  <span class="lang-en">Try a simple reaction time task. Press spacebar as quickly as possible when a green circle appears!</span>
+                </p>
+                <div class="survey-card__meta">
+                  <span>⏱️ ~2분</span>
+                  <span>💻 PC 권장</span>
+                </div>
+              </div>
+              <div class="survey-card__footer">
+                <button class="btn btn--primary" onclick="window.__cnlab_openExpDemo()" style="width: 100%; border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px); border: none; cursor: pointer;">
+                  <span class="lang-ko">실험하기</span>
+                  <span class="lang-en">Try It</span>
+                </button>
+              </div>
             </div>
+            <!-- CMS-loaded cards will be appended here -->
           </div>
         </div>
 
@@ -892,6 +916,7 @@
   <!-- ===== Scripts ===== -->
   <script src="js/cms.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/experiment.js"></script>
   <script src="js/announcements.js"></script>
 
 </body>
