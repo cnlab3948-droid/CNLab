@@ -662,34 +662,13 @@
             <span class="lang-en">Online Experiments</span>
           </h3>
           <div class="survey__grid" id="exp-online-grid">
-            <!-- Built-in experiment demo card -->
-            <div class="survey-card animate-on-scroll">
-              <div class="survey-card__content">
-                <div class="survey-card__status survey-card__status--active">
-                  <span class="lang-ko">체험 가능</span>
-                  <span class="lang-en">Available</span>
-                </div>
-                <h3 class="survey-card__title">
-                  <span class="lang-ko">🧪 반응시간 실험 체험</span>
-                  <span class="lang-en">🧪 Reaction Time Demo</span>
-                </h3>
-                <p class="survey-card__description">
-                  <span class="lang-ko">단순 반응시간 과제를 직접 체험해 보세요. 초록색 원이 나타나면 최대한 빠르게 스페이스바를 누르세요!</span>
-                  <span class="lang-en">Try a simple reaction time task. Press spacebar as quickly as possible when a green circle appears!</span>
-                </p>
-                <div class="survey-card__meta">
-                  <span>⏱️ ~2분</span>
-                  <span>💻 PC 권장</span>
-                </div>
-              </div>
-              <div class="survey-card__footer">
-                <button class="btn btn--primary" onclick="window.__cnlab_openExpDemo()" style="width: 100%; border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px); border: none; cursor: pointer;">
-                  <span class="lang-ko">실험하기</span>
-                  <span class="lang-en">Try It</span>
-                </button>
-              </div>
+            <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px;">
+              <div class="empty-state__icon">⏳</div>
+              <p class="empty-state__text">
+                <span class="lang-ko">데이터를 불러오는 중입니다...</span>
+                <span class="lang-en">Loading data...</span>
+              </p>
             </div>
-            <!-- CMS-loaded cards will be appended here -->
           </div>
         </div>
 
@@ -727,6 +706,29 @@
               </p>
             </div>
           </div>
+        </div>
+
+        <!-- Experiment Demo Banner -->
+        <div class="exp-demo-banner animate-on-scroll" style="margin-top: 56px; padding: 32px; border-radius: 16px; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%); border: 1px solid #c8d6e5; display: flex; align-items: center; gap: 28px; flex-wrap: wrap;">
+          <div style="font-size: 3rem; flex-shrink: 0;">🧪</div>
+          <div style="flex: 1; min-width: 240px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #1a2340; margin-bottom: 6px;">
+              <span class="lang-ko">반응시간 실험 체험</span>
+              <span class="lang-en">Reaction Time Demo</span>
+            </h3>
+            <p style="font-size: 0.9rem; color: #4a5568; line-height: 1.6; margin: 0;">
+              <span class="lang-ko">단순 반응시간 과제를 직접 체험해 보세요. 초록색 원이 나타나면 최대한 빠르게 스페이스바를 누르세요!</span>
+              <span class="lang-en">Try a simple reaction time task. Press spacebar as fast as you can when a green circle appears!</span>
+            </p>
+            <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 0.82rem; color: #718096;">
+              <span>⏱️ ~2분</span>
+              <span>💻 PC 권장</span>
+            </div>
+          </div>
+          <button class="btn btn--primary" onclick="window.__cnlab_openExpDemo()" style="padding: 12px 28px; font-size: 0.95rem; cursor: pointer; white-space: nowrap;">
+            <span class="lang-ko">체험하기</span>
+            <span class="lang-en">Try It</span>
+          </button>
         </div>
 
       </div>
