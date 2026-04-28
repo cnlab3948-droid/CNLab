@@ -71,6 +71,9 @@
       const container = document.getElementById(containerId);
       if (!container) return;
       
+      // Remove loading placeholders first
+      container.querySelectorAll('.empty-state').forEach(el => el.remove());
+      
       if (items.length === 0) {
         // If container already has content (e.g. built-in demo card), don't overwrite
         if (container.children.length > 0) return;
