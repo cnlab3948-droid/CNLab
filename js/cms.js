@@ -106,7 +106,7 @@
         const btnDisabled = isClosed ? 'disabled' : '';
         
         return `
-          <div class="survey-card animate-on-scroll" style="animation-delay: ${index * 0.1}s">
+          <div class="survey-card animate-on-scroll visible" style="animation-delay: ${index * 0.1}s">
             <div class="survey-card__content">
               <div class="survey-card__status ${statusClass}">
                 <span class="lang-ko">${statusKo}</span>
@@ -447,7 +447,7 @@
       const date = item.date || '';
 
       return `
-        <div class="news-card animate-on-scroll" style="display: flex; align-items: flex-start; gap: 16px; background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px 22px; transition: box-shadow 0.2s, transform 0.15s; cursor: default;">
+        <div class="news-card animate-on-scroll visible" style="display: flex; align-items: flex-start; gap: 16px; background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px 22px; transition: box-shadow 0.2s, transform 0.15s; cursor: default;">
           <span class="news-badge ${badge.cls}" style="flex-shrink: 0; font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; margin-top: 2px;">${badge.icon} ${cat}</span>
           <div style="flex: 1; min-width: 0;">
             <div style="font-size: 0.95rem; font-weight: 600; color: var(--color-text); margin-bottom: 5px; line-height: 1.5;">${title}</div>
