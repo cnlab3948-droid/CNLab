@@ -243,17 +243,31 @@
         
         <h4>[글로벌 실시간 랭킹 구조]</h4>
         <ul>
-            <li>개인 PC의 기록(로컬스토리지)과 글로벌 클라우드 기록을 실시간으로 병합(Merge)하여 보여줍니다.</li>
-            <li>현재 랭킹 서버는 외부 무료 API 서비스인 <strong>JSONBlob</strong>을 사용하고 있습니다.</li>
-            <li><strong>랭킹 열람 및 초기화(리셋) 방법:</strong>
-                <br>1. <a href="https://jsonblob.com/019dfc24-5e99-71d2-af89-3eeb8d8421ab" target="_blank" style="color:#3182ce; font-weight:bold;">👉 JSONBlob 랭킹 데이터베이스 관리 접속</a>
-                <br>2. 해당 링크로 들어가면 현재 저장된 Top 10 랭킹의 코드(JSON)가 보입니다.
-                <br>3. 랭킹을 <strong>초기화</strong>하고 싶다면, 안에 있는 글자를 전부 지우고 <code>{"leaderboard":[]}</code> 만 남겨둔 뒤 상단의 <strong>[Save]</strong> 버튼을 누르시면 전 세계 랭킹이 즉시 리셋됩니다!
-                <br>4. 특정 악성 유저의 기록만 지우고 싶다면, 해당 기록 블록(<code>{ "name": "...", "score": ... }</code>)만 지우고 Save 하시면 됩니다.
-            </li>
+            <li>랭킹 데이터는 <strong>구글 스프레드시트</strong>에 저장됩니다. (Google Apps Script를 통해 읽기/쓰기)</li>
+            <li>서버가 응답하지 않을 때를 대비하여 각 PC의 로컬스토리지에도 백업 캐싱됩니다.</li>
+        </ul>
+
+        <h4>[랭킹 초기 설정 방법 (최초 1회)]</h4>
+        <div class="notice">
+            <ol>
+                <li>CNLab에서 사용 중인 구글 스프레드시트를 엽니다.</li>
+                <li>하단에서 <strong>"+" 버튼</strong>을 눌러 새 시트를 만들고, 이름을 <code>rankings</code>로 설정합니다.</li>
+                <li>rankings 시트의 1행에 다음 헤더를 입력합니다:<br>
+                    <code>A1: name</code> &nbsp; <code>B1: score</code> &nbsp; <code>C1: accuracy</code> &nbsp; <code>D1: date</code></li>
+                <li><strong>확장 프로그램 → Apps Script</strong>를 열고, 새 스크립트 파일을 만들어 깃허브 저장소의 <code>apps_script_ranking.gs</code> 파일 내용을 전부 복사 → 붙여넣기 합니다.</li>
+                <li><strong>배포 → 새 배포 → 유형: 웹 앱 → 액세스: 모든 사용자 → 배포</strong></li>
+                <li>생성된 URL을 복사하여 <code>js/experiment.js</code> 파일의 <code>RANKING_GAS_URL</code> 값에 붙여넣습니다.</li>
+            </ol>
+        </div>
+
+        <h4>[랭킹 열람 및 초기화(리셋) 방법]</h4>
+        <ul>
+            <li>구글 스프레드시트의 <code>rankings</code> 시트(탭)를 열면 현재까지 등록된 모든 랭킹 데이터를 직접 엑셀 형태로 볼 수 있습니다.</li>
+            <li><strong>초기화:</strong> rankings 시트에서 2행~끝까지 내용을 드래그로 선택 → 삭제하면 랭킹이 즉시 초기화됩니다.</li>
+            <li><strong>특정 유저 삭제:</strong> 해당 유저가 적힌 행만 우클릭 → 행 삭제하면 됩니다.</li>
         </ul>
         <div class="tip">
-            <strong>💡 타임아웃 방지:</strong> 랭킹 서버(JSONBlob) 응답이 3초 이상 지연될 경우, 브라우저가 무한 로딩에 빠지지 않도록 강제로 통신을 끊고 내 컴퓨터의 로컬 기록만 우선적으로 띄워주도록 이중 안전장치가 적용되어 있습니다.
+            <strong>💡 타임아웃 방지:</strong> 랭킹 서버 응답이 5초 이상 지연될 경우, 브라우저가 무한 로딩에 빠지지 않도록 강제로 통신을 끊고 로컬 캐시 기록만 우선적으로 띄워주도록 이중 안전장치가 적용되어 있습니다.
         </div>
     </div>
 

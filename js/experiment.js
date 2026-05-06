@@ -474,47 +474,35 @@
     return Math.round(accuracyScore + speedScore + consistencyScore);
   }
 
-  // ===== Global Leaderboard (JSONBlob) =====
-  // JSONBlob requires top-level object (not array), so we wrap: {leaderboard: [...]}
-  var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc24-5e99-71d2-af89-3eeb8d8421ab';
+  // ===== Global Leaderboard (Google Apps Script + Google Sheets) =====
+  // 이 URL을 Apps Script 배포 URL로 교체하세요 (apps_script_ranking.gs 참고)
+  var RANKING_GAS_URL = 'RANKING_GAS_URL_HERE';
+
+  function isRankingConfigured() {
+    return RANKING_GAS_URL && RANKING_GAS_URL !== 'RANKING_GAS_URL_HERE' && RANKING_GAS_URL.includes('script.google.com');
+  }
 
   function fetchGlobalLeaderboard() {
-    var fetchPromise = fetch(JSONBLOB_URL, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    });
+    if (!isRankingConfigured()) {
+      return Promise.resolve(getLocalLeaderboard());
+    }
+
+    var fetchPromise = fetch(RANKING_GAS_URL)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.result === 'success' && Array.isArray(data.leaderboard)) {
+          // 서버 데이터를 로컬에도 캐싱
+          localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(data.leaderboard));
+          return data.leaderboard;
+        }
+        return getLocalLeaderboard();
+      });
     
     var timeoutPromise = new Promise(function(resolve, reject) {
-      setTimeout(function() { reject(new Error('timeout')); }, 3000);
+      setTimeout(function() { reject(new Error('timeout')); }, 5000);
     });
 
     return Promise.race([fetchPromise, timeoutPromise])
-      .then(function(res) { 
-        if (!res.ok) throw new Error('Network response was not ok');
-        return res.json(); 
-      })
-      .then(function(data) {
-        // Unwrap from {leaderboard: [...]} object
-        var globalLb = (data && Array.isArray(data.leaderboard)) ? data.leaderboard : [];
-        
-        // Merge with local to preserve old records if any
-        var localLb = getLocalLeaderboard();
-        var merged = globalLb.concat(localLb);
-        
-        // Remove duplicates by name and score
-        var unique = [];
-        var seen = {};
-        for (var i = 0; i < merged.length; i++) {
-          var key = merged[i].name + '_' + merged[i].score;
-          if (!seen[key]) {
-            seen[key] = true;
-            unique.push(merged[i]);
-          }
-        }
-        unique.sort(function(a, b) { return b.score - a.score; });
-        if (unique.length > 10) unique = unique.slice(0, 10);
-        return unique;
-      })
       .catch(function(e) { 
         console.warn('Global LB fetch failed:', e);
         return getLocalLeaderboard(); 
@@ -527,35 +515,43 @@
   }
 
   function saveToLeaderboard(name, score, accuracy) {
-    return fetchGlobalLeaderboard().then(function(lb) {
-      lb.push({ name: name, score: score, accuracy: accuracy, date: new Date().toLocaleDateString('ko-KR') });
-      lb.sort(function(a, b) { return b.score - a.score; });
-      if (lb.length > 10) lb = lb.slice(0, 10);
-      
-      localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(lb));
-      
-      // Wrap in object for JSONBlob compatibility
-      var saveFetch = fetch(JSONBLOB_URL, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ leaderboard: lb })
+    var entry = { name: name, score: score, accuracy: accuracy, date: new Date().toLocaleDateString('ko-KR') };
+    
+    // 로컬에 즉시 저장 (오프라인 백업)
+    var localLb = getLocalLeaderboard();
+    localLb.push(entry);
+    localLb.sort(function(a, b) { return b.score - a.score; });
+    if (localLb.length > 10) localLb = localLb.slice(0, 10);
+    localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(localLb));
+
+    if (!isRankingConfigured()) {
+      return Promise.resolve(localLb);
+    }
+
+    // 서버에 POST
+    var saveFetch = fetch(RANKING_GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry)
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.result === 'success' && Array.isArray(data.leaderboard)) {
+          localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(data.leaderboard));
+          return data.leaderboard;
+        }
+        return localLb;
       });
 
-      var saveTimeout = new Promise(function(resolve, reject) {
-        setTimeout(function() { reject(new Error('timeout')); }, 3000);
-      });
-
-      return Promise.race([saveFetch, saveTimeout]).then(function(res) { 
-        if (!res.ok) console.warn('Global LB save returned:', res.status);
-        return lb; 
-      }).catch(function(e) { 
-        console.warn('Global LB save failed:', e);
-        return lb; 
-      });
+    var saveTimeout = new Promise(function(resolve, reject) {
+      setTimeout(function() { reject(new Error('timeout')); }, 5000);
     });
+
+    return Promise.race([saveFetch, saveTimeout])
+      .catch(function(e) { 
+        console.warn('Global LB save failed:', e);
+        return localLb; 
+      });
   }
 
   function buildLeaderboardHTML(lb) {
