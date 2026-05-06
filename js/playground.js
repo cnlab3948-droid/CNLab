@@ -65,7 +65,7 @@
 
     const volumeList = [
       {
-        url: 'https://niivue.github.io/niivue/images/mni152.nii.gz',
+        url: 'models/mni152.nii.gz',
         colorMap: 'gray',
         opacity: 1,
         visible: true,
