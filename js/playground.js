@@ -13,17 +13,14 @@
     const canvas = document.getElementById('gl');
     if (!canvas) return;
 
-    // Dynamically import NiiVue
-    let Niivue;
-    try {
-      const module = await import('https://niivue.github.io/niivue/features/niivue.js');
-      Niivue = module.Niivue;
-    } catch (e) {
-      console.warn('NiiVue module failed to load:', e);
+    // Use global niivue object from CDN in index.html
+    if (!window.niivue) {
+      console.warn('NiiVue library not found on window object.');
       const ui = document.getElementById('brain-quiz-ui');
       if (ui) ui.innerHTML = '⚠️ 3D 뇌 모델을 불러올 수 없습니다. 새로고침(F5)을 시도해주세요.';
       return;
     }
+    var Niivue = window.niivue.Niivue;
 
     // Brain region descriptions
     const brainRegions = {

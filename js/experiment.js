@@ -350,6 +350,10 @@
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
+    var isMobile = window.innerWidth <= 768 || navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
+    var mobileWarning = isMobile ? '<div style="margin-top:12px;color:#ef4444;font-weight:700;">⚠️ 키보드가 필요한 실험이므로 모바일/태블릿 기기에서는 참여할 수 없습니다. (PC 전용)</div>' : '';
+    var btnDisabled = isMobile ? 'disabled style="cursor:not-allowed;background:#94a3b8;border:none;width:100%;"' : 'style="cursor:pointer;background:#ef4444;border:none;width:100%;"';
+
     var controls = document.getElementById('exp-demo-controls');
     controls.innerHTML =
       '<div style="background:var(--color-bg-secondary,#f8fafc);padding:16px;border-radius:8px;border-left:4px solid #ef4444;margin-bottom:16px;font-size:0.9rem;line-height:1.6;color:var(--color-text);">' +
@@ -359,12 +363,16 @@
         '🟢 초록 글자 → <kbd style="padding:2px 6px;background:#334155;border-radius:4px;color:#fff;">G</kbd> &nbsp; ' +
         '🔵 파란 글자 → <kbd style="padding:2px 6px;background:#334155;border-radius:4px;color:#fff;">B</kbd><br>' +
         '⚠️ 200ms 미만의 반응은 무효 처리됩니다 (키 연타 방지).' +
+        mobileWarning +
       '</div>' +
-      '<button class="btn btn--primary" id="btn-start-stroop" style="cursor:pointer;background:#ef4444;border:none;width:100%;">' +
+      '<button class="btn btn--primary" id="btn-start-stroop" ' + btnDisabled + '>' +
         '▶ 스트룹 과제 시작 (' + STROOP_TOTAL + '회)' +
       '</button>';
 
-    document.getElementById('btn-start-stroop').addEventListener('click', startStroopTask);
+    if (!isMobile) {
+      document.getElementById('btn-start-stroop').addEventListener('click', startStroopTask);
+    }
+    
     document.getElementById('exp-demo-display').innerHTML =
       '<div style="text-align:center;color:var(--color-text-secondary);font-size:0.95rem;">안내사항을 읽고 시작 버튼을 누르세요</div>';
   }
