@@ -9,20 +9,40 @@
   // ==========================================
   // 1 & 3: 3D Brain Explorer (NiiVue)
   // ==========================================
+  var brainInitialized = false;
+
+  function ensureBrainModal() {
+    if (document.getElementById('brain-modal')) return;
+    var modal = document.createElement('div');
+    modal.id = 'brain-modal';
+    modal.className = 'experiment-modal';
+    modal.innerHTML =
+      '<div class="experiment-modal__overlay" onclick="window.__cnlab_closeBrainExplorer()"></div>' +
+      '<div class="experiment-modal__content" style="max-width: 800px; width: 90%; padding: 0; overflow: hidden; background: #111;">' +
+        '<button onclick="window.__cnlab_closeBrainExplorer()" style="position:absolute;top:12px;right:16px;background:rgba(0,0,0,0.5);border:none;font-size:1.5rem;cursor:pointer;color:#fff;z-index:10;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">✕</button>' +
+        '<div style="height: 60vh; position: relative;">' +
+          '<canvas id="gl" style="width: 100%; height: 100%; display: block;"></canvas>' +
+          '<div id="brain-quiz-ui" style="position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 16px; border-radius: 12px; font-size: 1rem; pointer-events: none; text-align: center; border: 1px solid rgba(255,255,255,0.2);">' +
+            '⏳ 뇌 모델을 불러오는 중입니다...' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+  }
+
   async function initBrainExplorer() {
+    if (brainInitialized) return;
     const canvas = document.getElementById('gl');
     if (!canvas) return;
 
-    // Use global niivue object from CDN in index.html
     if (!window.niivue) {
       console.warn('NiiVue library not found on window object.');
       const ui = document.getElementById('brain-quiz-ui');
-      if (ui) ui.innerHTML = '⚠️ 3D 뇌 모델을 불러올 수 없습니다. 새로고침(F5)을 시도해주세요.';
+      if (ui) ui.innerHTML = '⚠️ 3D 뇌 모델을 불러올 수 없습니다. (라이브러리 로드 실패)';
       return;
     }
     var Niivue = window.niivue.Niivue;
 
-    // Brain region descriptions
     const brainRegions = {
       0: { name: '배경', desc: '뇌 밖의 영역입니다. 뇌 위를 클릭해보세요!' },
       1: { name: '전두엽 (Frontal Lobe)', desc: '🧐 계획, 판단, 의사결정을 담당하는 당신 두뇌의 CEO!' },
@@ -56,8 +76,9 @@
       await nv.loadVolumes(volumeList);
       nv.setSliceType(nv.sliceTypeRender);
       nv.setClipPlane([-0.1, 270, 0]);
+      brainInitialized = true;
       const ui = document.getElementById('brain-quiz-ui');
-      if (ui) ui.innerHTML = '✅ 뇌 모델 로드 완료! 마우스로 돌려보고 클릭해보세요.';
+      if (ui) ui.innerHTML = '✅ 뇌 모델 로드 완료! 마우스로 돌려보고 <b>클릭</b>해보세요.';
     } catch (e) {
       console.error('NiiVue load error:', e);
       const ui = document.getElementById('brain-quiz-ui');
@@ -72,15 +93,31 @@
       const keys = Object.keys(brainRegions).map(Number).filter(k => k > 0);
 
       if (val === 0) {
-        ui.innerHTML = '마우스로 뇌를 돌려보고, 관심 있는 부위를 클릭하세요!';
+        ui.innerHTML = '마우스로 뇌를 돌려보고, <b>관심 있는 부위를 클릭</b>하세요!';
         return;
       }
 
       const regionIdx = keys[(val - 1) % keys.length];
       const region = brainRegions[regionIdx];
-      ui.innerHTML = '<b>' + region.name + '</b><br>' + region.desc;
+      ui.innerHTML = '<b style="font-size:1.2em;color:#38bdf8;">' + region.name + '</b><br><span style="color:#e2e8f0;margin-top:4px;display:inline-block;">' + region.desc + '</span>';
     }
   }
+
+  window.__cnlab_openBrainExplorer = function() {
+    ensureBrainModal();
+    var modal = document.getElementById('brain-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    initBrainExplorer();
+  };
+
+  window.__cnlab_closeBrainExplorer = function() {
+    var modal = document.getElementById('brain-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
 
   // ==========================================
   // 4: Brain Persona Test
@@ -197,28 +234,5 @@
       document.body.style.overflow = '';
     }
   };
-
-  // Init NiiVue when playground section becomes visible (lazy load)
-  var brainInitialized = false;
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting && !brainInitialized) {
-        brainInitialized = true;
-        initBrainExplorer();
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.1 });
-
-  // Observe the playground section when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      var section = document.getElementById('playground');
-      if (section) observer.observe(section);
-    });
-  } else {
-    var section = document.getElementById('playground');
-    if (section) observer.observe(section);
-  }
 
 })();
