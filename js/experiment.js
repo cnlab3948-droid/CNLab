@@ -478,10 +478,16 @@
   var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc03-c4e6-7935-8483-8ef1300a169a';
 
   function fetchGlobalLeaderboard() {
-    return fetch(JSONBLOB_URL, {
+    var fetchPromise = fetch(JSONBLOB_URL, {
       method: 'GET',
       headers: { 'Accept': 'application/json' }
-    })
+    });
+    
+    var timeoutPromise = new Promise(function(resolve, reject) {
+      setTimeout(function() { reject(new Error('timeout')); }, 3000);
+    });
+
+    return Promise.race([fetchPromise, timeoutPromise])
       .then(function(res) { 
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json(); 
@@ -524,14 +530,20 @@
       
       localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(lb));
       
-      return fetch(JSONBLOB_URL, {
+      var saveFetch = fetch(JSONBLOB_URL, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify(lb)
-      }).then(function(res) { 
+      });
+
+      var saveTimeout = new Promise(function(resolve, reject) {
+        setTimeout(function() { reject(new Error('timeout')); }, 3000);
+      });
+
+      return Promise.race([saveFetch, saveTimeout]).then(function(res) { 
         return lb; 
       }).catch(function(e) { 
         console.warn('Global LB save failed:', e);
