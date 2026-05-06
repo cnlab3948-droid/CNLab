@@ -39,6 +39,7 @@
             <li><a href="#part3">👉 3. 코드를 직접 수정하는 영역 (구성원, 메인글, 연락처)</a></li>
             <li><a href="#part4">👉 4. 서버 이미지 폴더 구조 (사진 관리)</a></li>
             <li><a href="#part5">👉 5. 구글 시트 탭 추가/연동 가이드 (Apps Script)</a></li>
+            <li><a href="#part6">👉 6. 체험 모듈 (Playground) 관리 및 랭킹 초기화 가이드</a></li>
         </ul>
     </div>
 
@@ -210,6 +211,50 @@
       .setMimeType(ContentService.MimeType.JSON);
   }
 }</code></pre>
+    </div>
+
+    <!-- Part 6 -->
+    <div class="card" id="part6">
+        <h2>6. 체험 모듈 (Playground) 관리 가이드</h2>
+        <p>홈페이지 방문객의 흥미를 유발하기 위해 새로 도입된 <strong>체험(BETA)</strong> 메뉴의 작동 방식 및 관리 방법입니다.</p>
+        
+        <h3>🧠 1. 3D 뇌 탐색기 (NiiVue)</h3>
+        <ul>
+            <li><strong>작동 원리:</strong> 의료 영상 뷰어인 NiiVue 라이브러리를 사용하여 브라우저에서 실시간으로 3D 뇌를 렌더링합니다.</li>
+            <li><strong>사용 모델:</strong> <code>models/mni152_2009.mz3</code> (약 4.7MB의 양반구 전체 뇌 3D 메쉬 파일). 흑백 MRI 단면 대신 실제 뇌와 유사한 살구색 3D 표면으로 출력되도록 설정했습니다.</li>
+            <li><strong>클릭 인식:</strong> MNI 3D 공간 좌표(X, Y, Z)를 계산하여 클릭한 부위가 전두엽, 두정엽, 후두엽, 측두엽, 소뇌 중 어디에 해당하는지 파악 후 정보를 팝업으로 제공합니다.</li>
+        </ul>
+
+        <h3>🧑‍🔬 2. 나와 닮은 뇌 영역 테스트 (Persona Quiz)</h3>
+        <ul>
+            <li><strong>유형:</strong> 총 5개의 심리/행동 패턴 질문을 통해 4가지 뇌 영역 중 하나를 결과로 도출합니다.</li>
+            <li><strong>결과 종류:</strong>
+                <ol>
+                    <li><strong>전전두피질 (PFC)</strong>: 이성적, 계획적 리더</li>
+                    <li><strong>편도체 (AMY)</strong>: 감수성 풍부, 직관적 공감러</li>
+                    <li><strong>해마 (HIPPO)</strong>: 꼼꼼함, 경험 중시 기록가</li>
+                    <li><strong>후두엽 (OCC)</strong>: 시각적, 창의적 관찰자</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h3>🎯 3. 스트룹 과제 (Stroop Task) 및 랭킹 관리</h3>
+        <p>jsPsych v8 기반으로 제작된 인지 제어 실험입니다. 속도와 정확도, 반응 일관성을 종합하여 100점 만점으로 점수를 매깁니다.</p>
+        
+        <h4>[글로벌 실시간 랭킹 구조]</h4>
+        <ul>
+            <li>개인 PC의 기록(로컬스토리지)과 글로벌 클라우드 기록을 실시간으로 병합(Merge)하여 보여줍니다.</li>
+            <li>현재 랭킹 서버는 외부 무료 API 서비스인 <strong>JSONBlob</strong>을 사용하고 있습니다.</li>
+            <li><strong>랭킹 열람 및 초기화(리셋) 방법:</strong>
+                <br>1. <a href="https://jsonblob.com/019dfc03-c4e6-7935-8483-8ef1300a169a" target="_blank" style="color:#3182ce; font-weight:bold;">👉 JSONBlob 랭킹 데이터베이스 관리 접속</a>
+                <br>2. 해당 링크로 들어가면 현재 저장된 Top 10 랭킹의 코드(JSON)가 보입니다.
+                <br>3. 랭킹을 <strong>초기화</strong>하고 싶다면, 안에 있는 글자를 전부 지우고 <code>[]</code> 대괄호 2개만 남겨둔 뒤 상단의 <strong>[Save]</strong> 버튼을 누르시면 전 세계 랭킹이 즉시 리셋됩니다!
+                <br>4. 특정 악성 유저의 기록만 지우고 싶다면, 해당 기록 블록(<code>{ "name": "...", "score": ... }</code>)만 지우고 Save 하시면 됩니다.
+            </li>
+        </ul>
+        <div class="tip">
+            <strong>💡 타임아웃 방지:</strong> 랭킹 서버(JSONBlob) 응답이 3초 이상 지연될 경우, 브라우저가 무한 로딩에 빠지지 않도록 강제로 통신을 끊고 내 컴퓨터의 로컬 기록만 우선적으로 띄워주도록 이중 안전장치가 적용되어 있습니다.
+        </div>
     </div>
 
 </body>
