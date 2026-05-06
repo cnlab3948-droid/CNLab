@@ -65,7 +65,7 @@
 
     const meshList = [
       {
-        url: 'models/bigbrain.mz3',
+        url: 'models/mni152_2009.mz3',
         rgba255: [250, 235, 235, 255], // Soft fleshy/brain color
       }
     ];
