@@ -177,6 +177,9 @@
     const display = document.getElementById('exp-demo-display');
     const controls = document.getElementById('exp-demo-controls');
 
+    // Clear instruction text before jsPsych takes over
+    display.innerHTML = '';
+
     const jsPsych = initJsPsych({
       display_element: 'exp-demo-display',
       on_finish: function () {

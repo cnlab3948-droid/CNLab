@@ -1864,6 +1864,11 @@ main {
     padding: 20px;
   }
 
+  .announcement-item__date {
+    order: 2;
+    font-size: 0.8rem;
+  }
+
   .announcement-item__arrow {
     display: none;
   }
