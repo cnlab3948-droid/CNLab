@@ -65,8 +65,8 @@
 
     const meshList = [
       {
-        url: 'models/BrainMesh_ICBM152.lh.mz3',
-        rgba255: [220, 220, 225, 255], // Light gray bone/brain color
+        url: 'models/bigbrain.mz3',
+        rgba255: [250, 235, 235, 255], // Soft fleshy/brain color
       }
     ];
 
