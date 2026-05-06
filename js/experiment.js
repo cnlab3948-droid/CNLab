@@ -476,7 +476,7 @@
 
   // ===== Global Leaderboard (Google Apps Script + Google Sheets) =====
   // 이 URL을 Apps Script 배포 URL로 교체하세요 (apps_script_ranking.gs 참고)
-  var RANKING_GAS_URL = 'RANKING_GAS_URL_HERE';
+  var RANKING_GAS_URL = 'https://script.google.com/macros/s/AKfycbyAxAez-dVekaRugKbiDwikEjkIU33m7fkEI4JNTtSsD70gLp9q-dnnhYVKW2ElLSoE/exec';
 
   function isRankingConfigured() {
     return RANKING_GAS_URL && RANKING_GAS_URL !== 'RANKING_GAS_URL_HERE' && RANKING_GAS_URL.includes('script.google.com');
