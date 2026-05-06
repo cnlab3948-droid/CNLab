@@ -337,9 +337,148 @@
     URL.revokeObjectURL(url);
   }
 
+  // ==========================================
+  // Stroop Task Demo
+  // ==========================================
+  function openStroopDemo() {
+    ensureModal();
+    injectScopedStyle();
+    const modal = document.getElementById('exp-demo-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Build Stroop info
+    const controls = document.getElementById('exp-demo-controls');
+    controls.innerHTML = `
+      <div style="background: var(--color-bg-secondary, #f8fafc); padding: 16px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 16px; font-size: 0.9rem; line-height: 1.6; color: var(--color-text);">
+        <strong><span class="lang-ko">📋 스트룹 과제 방법:</span><span class="lang-en">📋 Instructions:</span></strong><br>
+        <span class="lang-ko">1. 화면에 글자가 나타납니다. 글자의 <b>의미는 무시</b>하고 <b>글자의 색상</b>에 맞춰 키보드를 누르세요.</span><br>
+        <span class="lang-ko">2. 빨간색 글자 -> <kbd>R</kbd> 키 누름</span><br>
+        <span class="lang-ko">3. 초록색 글자 -> <kbd>G</kbd> 키 누름</span><br>
+        <span class="lang-ko">4. 파란색 글자 -> <kbd>B</kbd> 키 누름</span><br>
+        <span class="lang-ko">5. 빠르고 정확하게 누를수록 억제 조절 능력이 우수한 것입니다!</span>
+      </div>
+      <button class="btn btn--primary" id="btn-start-stroop" style="cursor: pointer; background: #ef4444; border: none; width: 100%;">
+        <span class="btn__icon">▶</span>
+        <span class="lang-ko">스트룹 과제 시작 (10회)</span><span class="lang-en">Start Stroop Task</span>
+      </button>
+    `;
+    document.getElementById('btn-start-stroop').addEventListener('click', startStroopTask);
+    
+    document.getElementById('exp-demo-display').innerHTML = `
+      <div style="text-align: center; color: var(--color-text-secondary); font-size: 0.95rem;">
+        <span class="lang-ko">안내사항을 읽고 시작 버튼을 누르세요</span>
+      </div>`;
+  }
+
+  function startStroopTask() {
+    trialData = [];
+    const display = document.getElementById('exp-demo-display');
+    const controls = document.getElementById('exp-demo-controls');
+    display.innerHTML = ''; // clear initial text
+
+    const jsPsych = initJsPsych({
+      display_element: 'exp-demo-display',
+      on_finish: function () {
+        renderStroopResults(controls, display);
+      },
+    });
+
+    const colors = ['red', 'green', 'blue'];
+    const words = ['빨강', '초록', '파랑'];
+    const keys = ['r', 'g', 'b'];
+    
+    let trials = [];
+    for(let i=0; i<10; i++) {
+      // 50% congruent, 50% incongruent
+      let isCongruent = Math.random() > 0.5;
+      let colorIdx = Math.floor(Math.random() * 3);
+      let wordIdx = isCongruent ? colorIdx : (colorIdx + 1 + Math.floor(Math.random()*2)) % 3;
+      
+      trials.push({
+        word: words[wordIdx],
+        color: colors[colorIdx],
+        correct_key: keys[colorIdx],
+        congruent: isCongruent
+      });
+    }
+
+    const timeline = [];
+    
+    trials.forEach((t, i) => {
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="font-size: 4rem; color: #64748b; font-weight: 300;">+</div>',
+        choices: 'NO_KEYS',
+        trial_duration: 500
+      });
+      
+      let colorHex = t.color === 'red' ? '#ef4444' : (t.color === 'green' ? '#10b981' : '#3b82f6');
+      timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: \`<div style="font-size: 5rem; font-weight: 900; color: \${colorHex};">\${t.word}</div>\`,
+        choices: ['r', 'g', 'b'],
+        data: { task: 'stroop', congruent: t.congruent, correct_key: t.correct_key },
+        on_finish: function(data) {
+          data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_key);
+          trialData.push({
+            trial: i + 1,
+            rt: Math.round(data.rt),
+            correct: data.correct,
+            congruent: t.congruent
+          });
+        }
+      });
+    });
+
+    jsPsych.run(timeline);
+  }
+
+  function renderStroopResults(controls, display) {
+    const congRTs = trialData.filter(d => d.correct && d.congruent).map(d => d.rt);
+    const incongRTs = trialData.filter(d => d.correct && !d.congruent).map(d => d.rt);
+    const avgCong = congRTs.length ? mean(congRTs) : 0;
+    const avgIncong = incongRTs.length ? mean(incongRTs) : 0;
+    const stroopEffect = avgIncong - avgCong;
+    
+    const accuracy = Math.round((trialData.filter(d => d.correct).length / trialData.length) * 100);
+
+    display.innerHTML = '';
+    controls.innerHTML = `
+      <div style="padding: 8px 0; text-align: center;">
+        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">🎯 스트룹 과제 결과</h3>
+        <p style="color: var(--color-text-secondary); margin-bottom: 16px;">정확도: ${accuracy}%</p>
+        
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+          <div style="background: var(--color-bg-secondary); padding: 16px; border-radius: 12px; border: 1px solid var(--color-border); width: 120px;">
+            <div style="font-size: 0.8rem; color: var(--color-text-secondary);">일치 자극 RT</div>
+            <div style="font-size: 1.5rem; font-weight: 700;">${Math.round(avgCong)}<span style="font-size:1rem;">ms</span></div>
+          </div>
+          <div style="background: var(--color-bg-secondary); padding: 16px; border-radius: 12px; border: 1px solid var(--color-border); width: 120px;">
+            <div style="font-size: 0.8rem; color: var(--color-text-secondary);">불일치 자극 RT</div>
+            <div style="font-size: 1.5rem; font-weight: 700;">${Math.round(avgIncong)}<span style="font-size:1rem;">ms</span></div>
+          </div>
+        </div>
+        
+        <div style="background: ${stroopEffect < 100 ? '#dcfce7' : '#fef08a'}; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 8px 0; color: #1a202c;">스트룹 간섭 효과: ${Math.round(stroopEffect)}ms</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: #4a5568;">
+            ${stroopEffect < 50 ? '놀랍습니다! 억제 조절 능력이 <b>상위 5%</b> 수준입니다. 방해 요소에 전혀 굴하지 않네요!' : 
+              (stroopEffect < 150 ? '우수한 억제 조절 능력을 가지고 있습니다. 의미 간섭을 잘 이겨냈네요!' : 
+              '일반적인 수준의 스트룹 간섭 효과가 관찰되었습니다. 글자의 의미가 색상 판단을 많이 방해했군요!')}
+          </p>
+        </div>
+        
+        <button class="btn btn--primary" onclick="window.__cnlab_openStroopDemo()">다시 하기</button>
+        <button class="btn btn--outline" onclick="window.__cnlab_closeExpDemo()">닫기</button>
+      </div>
+    `;
+  }
+
   // ===== Global API =====
   window.__cnlab_openExpDemo = openExpDemo;
   window.__cnlab_closeExpDemo = closeExpDemo;
   window.__cnlab_downloadDemoCSV = downloadCSV;
+  window.__cnlab_openStroopDemo = openStroopDemo;
 
 })();
