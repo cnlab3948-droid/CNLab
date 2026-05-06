@@ -338,141 +338,236 @@
   }
 
   // ==========================================
-  // Stroop Task Demo
+  // Stroop Task Demo (with anti-spam, scoring, leaderboard)
   // ==========================================
+  var STROOP_MIN_RT = 200; // ms — responses faster than this are "spam"
+  var STROOP_TOTAL = 15;   // number of trials
+
   function openStroopDemo() {
     ensureModal();
     injectScopedStyle();
-    const modal = document.getElementById('exp-demo-modal');
+    var modal = document.getElementById('exp-demo-modal');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Build Stroop info
-    const controls = document.getElementById('exp-demo-controls');
-    controls.innerHTML = `
-      <div style="background: var(--color-bg-secondary, #f8fafc); padding: 16px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 16px; font-size: 0.9rem; line-height: 1.6; color: var(--color-text);">
-        <strong><span class="lang-ko">📋 스트룹 과제 방법:</span><span class="lang-en">📋 Instructions:</span></strong><br>
-        <span class="lang-ko">1. 화면에 글자가 나타납니다. 글자의 <b>의미는 무시</b>하고 <b>글자의 색상</b>에 맞춰 키보드를 누르세요.</span><br>
-        <span class="lang-ko">2. 빨간색 글자 -> <kbd>R</kbd> 키 누름</span><br>
-        <span class="lang-ko">3. 초록색 글자 -> <kbd>G</kbd> 키 누름</span><br>
-        <span class="lang-ko">4. 파란색 글자 -> <kbd>B</kbd> 키 누름</span><br>
-        <span class="lang-ko">5. 빠르고 정확하게 누를수록 억제 조절 능력이 우수한 것입니다!</span>
-      </div>
-      <button class="btn btn--primary" id="btn-start-stroop" style="cursor: pointer; background: #ef4444; border: none; width: 100%;">
-        <span class="btn__icon">▶</span>
-        <span class="lang-ko">스트룹 과제 시작 (10회)</span><span class="lang-en">Start Stroop Task</span>
-      </button>
-    `;
+
+    var controls = document.getElementById('exp-demo-controls');
+    controls.innerHTML =
+      '<div style="background:var(--color-bg-secondary,#f8fafc);padding:16px;border-radius:8px;border-left:4px solid #ef4444;margin-bottom:16px;font-size:0.9rem;line-height:1.6;color:var(--color-text);">' +
+        '<strong>📋 스트룹 과제 안내</strong><br>' +
+        '글자의 <b>의미는 무시</b>하고 <b>색상</b>에 맞는 키를 누르세요.<br>' +
+        '🔴 빨간 글자 → <kbd style="padding:2px 6px;background:#334155;border-radius:4px;color:#fff;">R</kbd> &nbsp; ' +
+        '🟢 초록 글자 → <kbd style="padding:2px 6px;background:#334155;border-radius:4px;color:#fff;">G</kbd> &nbsp; ' +
+        '🔵 파란 글자 → <kbd style="padding:2px 6px;background:#334155;border-radius:4px;color:#fff;">B</kbd><br>' +
+        '⚠️ 200ms 미만의 반응은 무효 처리됩니다 (키 연타 방지).' +
+      '</div>' +
+      '<button class="btn btn--primary" id="btn-start-stroop" style="cursor:pointer;background:#ef4444;border:none;width:100%;">' +
+        '▶ 스트룹 과제 시작 (' + STROOP_TOTAL + '회)' +
+      '</button>';
+
     document.getElementById('btn-start-stroop').addEventListener('click', startStroopTask);
-    
-    document.getElementById('exp-demo-display').innerHTML = `
-      <div style="text-align: center; color: var(--color-text-secondary); font-size: 0.95rem;">
-        <span class="lang-ko">안내사항을 읽고 시작 버튼을 누르세요</span>
-      </div>`;
+    document.getElementById('exp-demo-display').innerHTML =
+      '<div style="text-align:center;color:var(--color-text-secondary);font-size:0.95rem;">안내사항을 읽고 시작 버튼을 누르세요</div>';
   }
 
   function startStroopTask() {
     trialData = [];
-    const display = document.getElementById('exp-demo-display');
-    const controls = document.getElementById('exp-demo-controls');
-    display.innerHTML = ''; // clear initial text
+    var display = document.getElementById('exp-demo-display');
+    var controls = document.getElementById('exp-demo-controls');
+    display.innerHTML = '';
 
-    const jsPsych = initJsPsych({
+    var jsPsych = initJsPsych({
       display_element: 'exp-demo-display',
-      on_finish: function () {
-        renderStroopResults(controls, display);
-      },
+      on_finish: function () { renderStroopResults(controls, display); },
     });
 
-    const colors = ['red', 'green', 'blue'];
-    const words = ['빨강', '초록', '파랑'];
-    const keys = ['r', 'g', 'b'];
-    
-    let trials = [];
-    for(let i=0; i<10; i++) {
-      // 50% congruent, 50% incongruent
-      let isCongruent = Math.random() > 0.5;
-      let colorIdx = Math.floor(Math.random() * 3);
-      let wordIdx = isCongruent ? colorIdx : (colorIdx + 1 + Math.floor(Math.random()*2)) % 3;
-      
-      trials.push({
-        word: words[wordIdx],
-        color: colors[colorIdx],
-        correct_key: keys[colorIdx],
-        congruent: isCongruent
-      });
+    var colors = ['red', 'green', 'blue'];
+    var hexMap = { red: '#ef4444', green: '#10b981', blue: '#3b82f6' };
+    var words = ['빨강', '초록', '파랑'];
+    var keyMap = ['r', 'g', 'b'];
+
+    var trials = [];
+    for (var i = 0; i < STROOP_TOTAL; i++) {
+      var isCongruent = Math.random() > 0.5;
+      var colorIdx = Math.floor(Math.random() * 3);
+      var wordIdx = isCongruent ? colorIdx : (colorIdx + 1 + Math.floor(Math.random() * 2)) % 3;
+      trials.push({ word: words[wordIdx], color: colors[colorIdx], correct_key: keyMap[colorIdx], congruent: isCongruent });
     }
 
-    const timeline = [];
-    
-    trials.forEach((t, i) => {
-      timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="font-size: 4rem; color: #64748b; font-weight: 300;">+</div>',
-        choices: 'NO_KEYS',
-        trial_duration: 500
-      });
-      
-      let colorHex = t.color === 'red' ? '#ef4444' : (t.color === 'green' ? '#10b981' : '#3b82f6');
-      timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: \`<div style="font-size: 5rem; font-weight: 900; color: \${colorHex};">\${t.word}</div>\`,
-        choices: ['r', 'g', 'b'],
-        data: { task: 'stroop', congruent: t.congruent, correct_key: t.correct_key },
-        on_finish: function(data) {
-          data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_key);
-          trialData.push({
-            trial: i + 1,
-            rt: Math.round(data.rt),
-            correct: data.correct,
-            congruent: t.congruent
-          });
-        }
-      });
-    });
+    var timeline = [];
+    for (var ti = 0; ti < trials.length; ti++) {
+      (function(t, idx) {
+        // fixation
+        timeline.push({
+          type: jsPsychHtmlKeyboardResponse,
+          stimulus: '<div style="font-size:4rem;color:#64748b;font-weight:300;">+</div>',
+          choices: 'NO_KEYS',
+          trial_duration: 500
+        });
+        // stimulus
+        var stim = '<div style="font-size:5rem;font-weight:900;color:' + hexMap[t.color] + ';">' + t.word + '</div>';
+        timeline.push({
+          type: jsPsychHtmlKeyboardResponse,
+          stimulus: stim,
+          choices: ['r', 'g', 'b'],
+          data: { task: 'stroop', congruent: t.congruent, correct_key: t.correct_key },
+          on_finish: function(data) {
+            var isCorrect = jsPsych.pluginAPI.compareKeys(data.response, data.correct_key);
+            var isTooFast = data.rt < STROOP_MIN_RT;
+            trialData.push({
+              trial: idx + 1,
+              rt: Math.round(data.rt),
+              correct: isCorrect && !isTooFast,
+              tooFast: isTooFast,
+              congruent: t.congruent
+            });
+          }
+        });
+      })(trials[ti], ti);
+    }
 
     jsPsych.run(timeline);
   }
 
+  /**
+   * Stroop Score Formula:
+   *   score = accuracyScore(40) + speedScore(40) + consistencyScore(20)
+   *
+   * accuracyScore = (correctTrials / totalTrials) * 40
+   * speedScore    = max(0, 40 * (1 - avgRT/2000))         // 2000ms baseline
+   * consistencyScore = max(0, 20 * (1 - stdDev(RTs)/500)) // low variance = good
+   *
+   * Penalties: tooFast trials count as incorrect
+   */
+  function calcStroopScore(data) {
+    var total = data.length;
+    var validCorrect = data.filter(function(d) { return d.correct; });
+    var accuracy = validCorrect.length / total;
+
+    var rts = validCorrect.map(function(d) { return d.rt; });
+    var avgRT = rts.length > 0 ? mean(rts) : 2000;
+    var sd = rts.length > 1 ? stdDev(rts) : 500;
+
+    var accuracyScore = accuracy * 40;
+    var speedScore = Math.max(0, 40 * (1 - avgRT / 2000));
+    var consistencyScore = Math.max(0, 20 * (1 - sd / 500));
+
+    return Math.round(accuracyScore + speedScore + consistencyScore);
+  }
+
+  // ===== Leaderboard (localStorage) =====
+  var LB_KEY = 'cnlab_stroop_leaderboard';
+
+  function getLeaderboard() {
+    try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
+    catch(e) { return []; }
+  }
+
+  function saveToLeaderboard(name, score, accuracy) {
+    var lb = getLeaderboard();
+    lb.push({ name: name, score: score, accuracy: accuracy, date: new Date().toLocaleDateString('ko-KR') });
+    lb.sort(function(a, b) { return b.score - a.score; });
+    if (lb.length > 10) lb = lb.slice(0, 10);
+    localStorage.setItem(LB_KEY, JSON.stringify(lb));
+    return lb;
+  }
+
+  function buildLeaderboardHTML(lb) {
+    if (lb.length === 0) return '<p style="color:var(--color-text-secondary);font-size:0.85rem;">아직 기록이 없습니다.</p>';
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:8px;">';
+    html += '<tr style="border-bottom:1px solid var(--color-border);">' +
+      '<th style="padding:6px 4px;text-align:center;width:30px;">🏅</th>' +
+      '<th style="padding:6px 4px;text-align:left;">이름</th>' +
+      '<th style="padding:6px 4px;text-align:center;">점수</th>' +
+      '<th style="padding:6px 4px;text-align:center;">정확도</th>' +
+      '<th style="padding:6px 4px;text-align:right;">날짜</th></tr>';
+    for (var i = 0; i < lb.length; i++) {
+      var medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : (i + 1)));
+      html += '<tr style="border-bottom:1px solid var(--color-border,#333);">' +
+        '<td style="padding:6px 4px;text-align:center;">' + medal + '</td>' +
+        '<td style="padding:6px 4px;">' + lb[i].name + '</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-weight:700;">' + lb[i].score + '</td>' +
+        '<td style="padding:6px 4px;text-align:center;">' + lb[i].accuracy + '%</td>' +
+        '<td style="padding:6px 4px;text-align:right;color:var(--color-text-tertiary,#999);font-size:0.8rem;">' + lb[i].date + '</td></tr>';
+    }
+    html += '</table>';
+    return html;
+  }
+
   function renderStroopResults(controls, display) {
-    const congRTs = trialData.filter(d => d.correct && d.congruent).map(d => d.rt);
-    const incongRTs = trialData.filter(d => d.correct && !d.congruent).map(d => d.rt);
-    const avgCong = congRTs.length ? mean(congRTs) : 0;
-    const avgIncong = incongRTs.length ? mean(incongRTs) : 0;
-    const stroopEffect = avgIncong - avgCong;
-    
-    const accuracy = Math.round((trialData.filter(d => d.correct).length / trialData.length) * 100);
+    var validTrials = trialData.filter(function(d) { return !d.tooFast; });
+    var spamCount = trialData.filter(function(d) { return d.tooFast; }).length;
+    var correctTrials = trialData.filter(function(d) { return d.correct; });
+    var accuracy = trialData.length > 0 ? Math.round((correctTrials.length / trialData.length) * 100) : 0;
+
+    var congRTs = trialData.filter(function(d) { return d.correct && d.congruent; }).map(function(d) { return d.rt; });
+    var incongRTs = trialData.filter(function(d) { return d.correct && !d.congruent; }).map(function(d) { return d.rt; });
+    var avgCong = congRTs.length ? Math.round(mean(congRTs)) : 0;
+    var avgIncong = incongRTs.length ? Math.round(mean(incongRTs)) : 0;
+    var stroopEffect = avgIncong - avgCong;
+    var score = calcStroopScore(trialData);
+
+    var feedback;
+    if (stroopEffect < 50) feedback = '놀랍습니다! 억제 조절 능력이 <b>상위 5%</b> 수준입니다!';
+    else if (stroopEffect < 150) feedback = '우수한 억제 조절 능력을 가지고 있습니다!';
+    else feedback = '일반적인 수준의 스트룹 간섭 효과가 관찰되었습니다.';
+
+    var spamWarn = spamCount > 0 ? '<p style="color:#ef4444;font-size:0.8rem;">⚠️ ' + spamCount + '개 시행이 너무 빨라 무효 처리됨 (200ms 미만)</p>' : '';
+
+    var scoreBg = score >= 70 ? '#dcfce7' : (score >= 40 ? '#fef08a' : '#fee2e2');
+    var lb = getLeaderboard();
 
     display.innerHTML = '';
-    controls.innerHTML = `
-      <div style="padding: 8px 0; text-align: center;">
-        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">🎯 스트룹 과제 결과</h3>
-        <p style="color: var(--color-text-secondary); margin-bottom: 16px;">정확도: ${accuracy}%</p>
-        
-        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
-          <div style="background: var(--color-bg-secondary); padding: 16px; border-radius: 12px; border: 1px solid var(--color-border); width: 120px;">
-            <div style="font-size: 0.8rem; color: var(--color-text-secondary);">일치 자극 RT</div>
-            <div style="font-size: 1.5rem; font-weight: 700;">${Math.round(avgCong)}<span style="font-size:1rem;">ms</span></div>
-          </div>
-          <div style="background: var(--color-bg-secondary); padding: 16px; border-radius: 12px; border: 1px solid var(--color-border); width: 120px;">
-            <div style="font-size: 0.8rem; color: var(--color-text-secondary);">불일치 자극 RT</div>
-            <div style="font-size: 1.5rem; font-weight: 700;">${Math.round(avgIncong)}<span style="font-size:1rem;">ms</span></div>
-          </div>
-        </div>
-        
-        <div style="background: ${stroopEffect < 100 ? '#dcfce7' : '#fef08a'}; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
-          <h4 style="margin: 0 0 8px 0; color: #1a202c;">스트룹 간섭 효과: ${Math.round(stroopEffect)}ms</h4>
-          <p style="margin: 0; font-size: 0.9rem; color: #4a5568;">
-            ${stroopEffect < 50 ? '놀랍습니다! 억제 조절 능력이 <b>상위 5%</b> 수준입니다. 방해 요소에 전혀 굴하지 않네요!' : 
-              (stroopEffect < 150 ? '우수한 억제 조절 능력을 가지고 있습니다. 의미 간섭을 잘 이겨냈네요!' : 
-              '일반적인 수준의 스트룹 간섭 효과가 관찰되었습니다. 글자의 의미가 색상 판단을 많이 방해했군요!')}
-          </p>
-        </div>
-        
-        <button class="btn btn--primary" onclick="window.__cnlab_openStroopDemo()">다시 하기</button>
-        <button class="btn btn--outline" onclick="window.__cnlab_closeExpDemo()">닫기</button>
-      </div>
-    `;
+    controls.innerHTML =
+      '<div style="padding:8px 0;text-align:center;">' +
+        '<h3 style="font-size:1.5rem;font-weight:700;margin-bottom:4px;">🎯 스트룹 과제 결과</h3>' +
+        spamWarn +
+        '<div style="background:' + scoreBg + ';padding:20px;border-radius:12px;margin:16px 0;">' +
+          '<div style="font-size:0.85rem;color:#4a5568;font-weight:600;">종합 점수</div>' +
+          '<div style="font-size:3rem;font-weight:900;color:#1a202c;">' + score + '<span style="font-size:1rem;"> / 100</span></div>' +
+          '<p style="margin:8px 0 0;font-size:0.85rem;color:#4a5568;">' + feedback + '</p>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">' +
+          '<div style="background:var(--color-bg-secondary);padding:12px;border-radius:10px;border:1px solid var(--color-border);min-width:90px;">' +
+            '<div style="font-size:0.75rem;color:var(--color-text-secondary);">정확도</div>' +
+            '<div style="font-size:1.3rem;font-weight:700;">' + accuracy + '%</div>' +
+          '</div>' +
+          '<div style="background:var(--color-bg-secondary);padding:12px;border-radius:10px;border:1px solid var(--color-border);min-width:90px;">' +
+            '<div style="font-size:0.75rem;color:var(--color-text-secondary);">일치 RT</div>' +
+            '<div style="font-size:1.3rem;font-weight:700;">' + avgCong + 'ms</div>' +
+          '</div>' +
+          '<div style="background:var(--color-bg-secondary);padding:12px;border-radius:10px;border:1px solid var(--color-border);min-width:90px;">' +
+            '<div style="font-size:0.75rem;color:var(--color-text-secondary);">불일치 RT</div>' +
+            '<div style="font-size:1.3rem;font-weight:700;">' + avgIncong + 'ms</div>' +
+          '</div>' +
+          '<div style="background:var(--color-bg-secondary);padding:12px;border-radius:10px;border:1px solid var(--color-border);min-width:90px;">' +
+            '<div style="font-size:0.75rem;color:var(--color-text-secondary);">간섭 효과</div>' +
+            '<div style="font-size:1.3rem;font-weight:700;">' + Math.round(stroopEffect) + 'ms</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="margin-bottom:16px;">' +
+          '<input id="stroop-name" type="text" placeholder="닉네임을 입력하세요" maxlength="10" style="width:100%;padding:10px 12px;border:1px solid var(--color-border);border-radius:8px;background:var(--color-bg-secondary);color:var(--color-text);font-size:0.9rem;box-sizing:border-box;margin-bottom:8px;" />' +
+          '<button class="btn btn--primary" id="btn-save-stroop" style="width:100%;background:#8b5cf6;border:none;cursor:pointer;">🏆 랭킹 등록</button>' +
+        '</div>' +
+        '<div id="stroop-leaderboard" style="text-align:left;background:var(--color-bg-secondary);padding:16px;border-radius:12px;border:1px solid var(--color-border);margin-bottom:16px;">' +
+          '<h4 style="margin:0 0 8px;font-size:0.95rem;">🏆 Top 10 랭킹</h4>' +
+          buildLeaderboardHTML(lb) +
+        '</div>' +
+        '<div style="display:flex;gap:8px;">' +
+          '<button class="btn btn--primary" onclick="window.__cnlab_openStroopDemo()" style="flex:1;">다시 하기</button>' +
+          '<button class="btn btn--outline" onclick="window.__cnlab_closeExpDemo()" style="flex:1;">닫기</button>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('btn-save-stroop').addEventListener('click', function() {
+      var nameInput = document.getElementById('stroop-name');
+      var name = (nameInput.value || '').trim();
+      if (!name) { nameInput.style.borderColor = '#ef4444'; nameInput.focus(); return; }
+      var newLb = saveToLeaderboard(name, score, accuracy);
+      document.getElementById('stroop-leaderboard').innerHTML =
+        '<h4 style="margin:0 0 8px;font-size:0.95rem;">🏆 Top 10 랭킹</h4>' + buildLeaderboardHTML(newLb);
+      document.getElementById('btn-save-stroop').disabled = true;
+      document.getElementById('btn-save-stroop').textContent = '✅ 등록 완료!';
+    });
   }
 
   // ===== Global API =====
