@@ -63,22 +63,20 @@
 
     nv.attachTo('gl');
 
-    const volumeList = [
+    const meshList = [
       {
-        url: 'models/mni152.nii.gz',
-        colorMap: 'gray',
-        opacity: 1,
-        visible: true,
+        url: 'models/BrainMesh_ICBM152.lh.mz3',
+        rgba255: [220, 220, 225, 255], // Light gray bone/brain color
       }
     ];
 
     try {
-      await nv.loadVolumes(volumeList);
-      nv.setSliceType(nv.sliceTypeRender);
-      nv.setClipPlane([-0.1, 270, 0]);
+      await nv.loadMeshes(meshList);
+      // Removed slice type and clip plane because meshes are pure 3D
+      nv.setClipPlane([0, 0, 0]); // no clipping
       brainInitialized = true;
       const ui = document.getElementById('brain-quiz-ui');
-      if (ui) ui.innerHTML = '✅ 뇌 모델 로드 완료! 마우스로 돌려보고 <b>클릭</b>해보세요.';
+      if (ui) ui.innerHTML = '✅ 뇌 모델 로드 완료! 마우스로 돌려보고 <b>표면을 클릭</b>해보세요.';
     } catch (e) {
       console.error('NiiVue load error:', e);
       const ui = document.getElementById('brain-quiz-ui');
@@ -87,19 +85,37 @@
 
     function handleLocationChange(data) {
       const ui = document.getElementById('brain-quiz-ui');
-      if (!ui || !data.values || data.values.length < 1) return;
+      if (!ui || !data.mm) return;
 
-      const val = Math.abs(Math.round(data.values[0].value));
-      const keys = Object.keys(brainRegions).map(Number).filter(k => k > 0);
+      const [x, y, z] = data.mm;
 
-      if (val === 0) {
-        ui.innerHTML = '마우스로 뇌를 돌려보고, <b>관심 있는 부위를 클릭</b>하세요!';
+      // If clicked far outside, show default
+      if (x === 0 && y === 0 && z === 0) {
+        ui.innerHTML = '마우스로 뇌를 돌려보고, <b>관심 있는 겉면 부위를 클릭</b>하세요!';
         return;
       }
 
-      const regionIdx = keys[(val - 1) % keys.length];
-      const region = brainRegions[regionIdx];
-      ui.innerHTML = '<b style="font-size:1.2em;color:#38bdf8;">' + region.name + '</b><br><span style="color:#e2e8f0;margin-top:4px;display:inline-block;">' + region.desc + '</span>';
+      // Coordinate-based heuristic for brain lobes (MNI space)
+      let regionKey = 0; // background
+      if (y > 20) {
+        regionKey = 1; // Frontal
+      } else if (y < -50 && z > -10) {
+        regionKey = 4; // Occipital
+      } else if (y < -40 && z <= -10) {
+        regionKey = 7; // Cerebellum
+      } else if (y > -50 && y <= 20 && z > 30) {
+        regionKey = 3; // Parietal
+      } else if (y > -50 && y <= 20 && z <= 30 && Math.abs(x) > 30) {
+        regionKey = 2; // Temporal
+      } else if (Math.abs(x) <= 30 && z < 10 && y > -30 && y < 10) {
+        // Inner parts (rough estimate)
+        regionKey = (y < -10) ? 5 : 6; // Hippocampus or Amygdala
+      } else {
+        regionKey = 3; // Default to Parietal for mid-top
+      }
+
+      const region = brainRegions[regionKey];
+      ui.innerHTML = '<b style="font-size:1.2em;color:#38bdf8;">' + region.name + '</b><br><span style="color:#e2e8f0;margin-top:4px;display:inline-block;">' + region.desc + '</span><br><span style="font-size:0.7em;color:#94a3b8;">(좌표: ' + Math.round(x) + ', ' + Math.round(y) + ', ' + Math.round(z) + ')</span>';
     }
   }
 
