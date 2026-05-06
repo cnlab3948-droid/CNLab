@@ -478,9 +478,37 @@
   var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc03-c4e6-7935-8483-8ef1300a169a';
 
   function fetchGlobalLeaderboard() {
-    return fetch(JSONBLOB_URL)
-      .then(function(res) { return res.json(); })
-      .catch(function() { return getLocalLeaderboard(); });
+    return fetch(JSONBLOB_URL, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(function(res) { 
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json(); 
+      })
+      .then(function(globalLb) {
+        // Merge with local to preserve old records if any
+        var localLb = getLocalLeaderboard();
+        var merged = globalLb.concat(localLb);
+        
+        // Remove duplicates by name and score
+        var unique = [];
+        var seen = {};
+        for (var i = 0; i < merged.length; i++) {
+          var key = merged[i].name + '_' + merged[i].score;
+          if (!seen[key]) {
+            seen[key] = true;
+            unique.push(merged[i]);
+          }
+        }
+        unique.sort(function(a, b) { return b.score - a.score; });
+        if (unique.length > 10) unique = unique.slice(0, 10);
+        return unique;
+      })
+      .catch(function(e) { 
+        console.warn('Global LB fetch failed:', e);
+        return getLocalLeaderboard(); 
+      });
   }
 
   function getLocalLeaderboard() {
@@ -498,9 +526,17 @@
       
       return fetch(JSONBLOB_URL, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify(lb)
-      }).then(function() { return lb; }).catch(function() { return lb; });
+      }).then(function(res) { 
+        return lb; 
+      }).catch(function(e) { 
+        console.warn('Global LB save failed:', e);
+        return lb; 
+      });
     });
   }
 
