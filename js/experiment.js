@@ -475,7 +475,8 @@
   }
 
   // ===== Global Leaderboard (JSONBlob) =====
-  var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc03-c4e6-7935-8483-8ef1300a169a';
+  // JSONBlob requires top-level object (not array), so we wrap: {leaderboard: [...]}
+  var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc24-5e99-71d2-af89-3eeb8d8421ab';
 
   function fetchGlobalLeaderboard() {
     var fetchPromise = fetch(JSONBLOB_URL, {
@@ -492,7 +493,10 @@
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json(); 
       })
-      .then(function(globalLb) {
+      .then(function(data) {
+        // Unwrap from {leaderboard: [...]} object
+        var globalLb = (data && Array.isArray(data.leaderboard)) ? data.leaderboard : [];
+        
         // Merge with local to preserve old records if any
         var localLb = getLocalLeaderboard();
         var merged = globalLb.concat(localLb);
@@ -530,13 +534,14 @@
       
       localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(lb));
       
+      // Wrap in object for JSONBlob compatibility
       var saveFetch = fetch(JSONBLOB_URL, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(lb)
+        body: JSON.stringify({ leaderboard: lb })
       });
 
       var saveTimeout = new Promise(function(resolve, reject) {
@@ -544,6 +549,7 @@
       });
 
       return Promise.race([saveFetch, saveTimeout]).then(function(res) { 
+        if (!res.ok) console.warn('Global LB save returned:', res.status);
         return lb; 
       }).catch(function(e) { 
         console.warn('Global LB save failed:', e);
