@@ -365,6 +365,9 @@
         '⚠️ 200ms 미만의 반응은 무효 처리됩니다 (키 연타 방지).' +
         mobileWarning +
       '</div>' +
+      '<div id="start-leaderboard" style="text-align:left;background:var(--color-bg-secondary);padding:16px;border-radius:12px;border:1px solid var(--color-border);margin-bottom:16px;">' +
+        '<h4 style="margin:0 0 8px;font-size:0.95rem;">🏆 실시간 Top 10 랭킹 로딩 중...</h4>' +
+      '</div>' +
       '<button class="btn btn--primary" id="btn-start-stroop" ' + btnDisabled + '>' +
         '▶ 스트룹 과제 시작 (' + STROOP_TOTAL + '회)' +
       '</button>';
@@ -375,6 +378,14 @@
     
     document.getElementById('exp-demo-display').innerHTML =
       '<div style="text-align:center;color:var(--color-text-secondary);font-size:0.95rem;">안내사항을 읽고 시작 버튼을 누르세요</div>';
+
+    // Fetch and show global leaderboard on start
+    fetchGlobalLeaderboard().then(function(lb) {
+      var lbContainer = document.getElementById('start-leaderboard');
+      if (lbContainer) {
+        lbContainer.innerHTML = '<h4 style="margin:0 0 8px;font-size:0.95rem;">🌍 실시간 명예의 전당</h4>' + buildLeaderboardHTML(lb);
+      }
+    });
   }
 
   function startStroopTask() {
@@ -419,7 +430,8 @@
           choices: ['r', 'g', 'b'],
           data: { task: 'stroop', congruent: t.congruent, correct_key: t.correct_key },
           on_finish: function(data) {
-            var isCorrect = jsPsych.pluginAPI.compareKeys(data.response, data.correct_key);
+            // Fix: compare directly instead of jsPsych.pluginAPI.compareKeys to prevent crash on wrong answer
+            var isCorrect = (data.response === data.correct_key);
             var isTooFast = data.rt < STROOP_MIN_RT;
             trialData.push({
               trial: idx + 1,
@@ -462,21 +474,34 @@
     return Math.round(accuracyScore + speedScore + consistencyScore);
   }
 
-  // ===== Leaderboard (localStorage) =====
-  var LB_KEY = 'cnlab_stroop_leaderboard';
+  // ===== Global Leaderboard (JSONBlob) =====
+  var JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019dfc03-c4e6-7935-8483-8ef1300a169a';
 
-  function getLeaderboard() {
-    try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
+  function fetchGlobalLeaderboard() {
+    return fetch(JSONBLOB_URL)
+      .then(function(res) { return res.json(); })
+      .catch(function() { return getLocalLeaderboard(); });
+  }
+
+  function getLocalLeaderboard() {
+    try { return JSON.parse(localStorage.getItem('cnlab_stroop_leaderboard')) || []; }
     catch(e) { return []; }
   }
 
   function saveToLeaderboard(name, score, accuracy) {
-    var lb = getLeaderboard();
-    lb.push({ name: name, score: score, accuracy: accuracy, date: new Date().toLocaleDateString('ko-KR') });
-    lb.sort(function(a, b) { return b.score - a.score; });
-    if (lb.length > 10) lb = lb.slice(0, 10);
-    localStorage.setItem(LB_KEY, JSON.stringify(lb));
-    return lb;
+    return fetchGlobalLeaderboard().then(function(lb) {
+      lb.push({ name: name, score: score, accuracy: accuracy, date: new Date().toLocaleDateString('ko-KR') });
+      lb.sort(function(a, b) { return b.score - a.score; });
+      if (lb.length > 10) lb = lb.slice(0, 10);
+      
+      localStorage.setItem('cnlab_stroop_leaderboard', JSON.stringify(lb));
+      
+      return fetch(JSONBLOB_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lb)
+      }).then(function() { return lb; }).catch(function() { return lb; });
+    });
   }
 
   function buildLeaderboardHTML(lb) {
@@ -515,17 +540,27 @@
     var score = calcStroopScore(trialData);
 
     var feedback;
-    if (stroopEffect < 50) feedback = '놀랍습니다! 억제 조절 능력이 <b>상위 5%</b> 수준입니다!';
-    else if (stroopEffect < 150) feedback = '우수한 억제 조절 능력을 가지고 있습니다!';
-    else feedback = '일반적인 수준의 스트룹 간섭 효과가 관찰되었습니다.';
+    if (score >= 90) {
+      feedback = '🔥 <b>신의 경지!</b> 엄청난 인지 제어 능력입니다. 상위 1% 수준의 놀라운 집중력!';
+    } else if (score >= 80) {
+      feedback = '🚀 <b>매우 우수함!</b> 상위 10% 안에 드는 뛰어난 억제 조절 능력을 가졌습니다.';
+    } else if (score >= 60) {
+      feedback = '👍 <b>평균 이상!</b> 준수한 반응 속도와 정확도를 보여주었습니다.';
+    } else if (score >= 40) {
+      feedback = '🤔 <b>일반적인 수준!</b> 스트룹 간섭 효과에 정직하게 반응하셨군요. 다시 도전해보세요!';
+    } else {
+      feedback = '😅 <b>앗, 아쉽습니다.</b> 글자의 의미에 조금 휘둘렸을 수 있어요. 집중해서 재도전!';
+    }
 
     var spamWarn = spamCount > 0 ? '<p style="color:#ef4444;font-size:0.8rem;">⚠️ ' + spamCount + '개 시행이 너무 빨라 무효 처리됨 (200ms 미만)</p>' : '';
 
-    var scoreBg = score >= 70 ? '#dcfce7' : (score >= 40 ? '#fef08a' : '#fee2e2');
-    var lb = getLeaderboard();
+    var scoreBg = score >= 80 ? '#dcfce7' : (score >= 60 ? '#fef08a' : '#fee2e2');
 
-    display.innerHTML = '';
-    controls.innerHTML =
+    display.innerHTML = '<div style="text-align:center;padding:20px;">결과 분석 중...</div>';
+
+    fetchGlobalLeaderboard().then(function(lb) {
+      display.innerHTML = '';
+      controls.innerHTML =
       '<div style="padding:8px 0;text-align:center;">' +
         '<h3 style="font-size:1.5rem;font-weight:700;margin-bottom:4px;">🎯 스트룹 과제 결과</h3>' +
         spamWarn +
@@ -557,24 +592,30 @@
           '<button class="btn btn--primary" id="btn-save-stroop" style="width:100%;background:#8b5cf6;border:none;cursor:pointer;">🏆 랭킹 등록</button>' +
         '</div>' +
         '<div id="stroop-leaderboard" style="text-align:left;background:var(--color-bg-secondary);padding:16px;border-radius:12px;border:1px solid var(--color-border);margin-bottom:16px;">' +
-          '<h4 style="margin:0 0 8px;font-size:0.95rem;">🏆 Top 10 랭킹</h4>' +
+          '<h4 style="margin:0 0 8px;font-size:0.95rem;">🌍 실시간 명예의 전당</h4>' +
           buildLeaderboardHTML(lb) +
         '</div>' +
         '<div style="display:flex;gap:8px;">' +
           '<button class="btn btn--primary" onclick="window.__cnlab_openStroopDemo()" style="flex:1;">다시 하기</button>' +
           '<button class="btn btn--outline" onclick="window.__cnlab_closeExpDemo()" style="flex:1;">닫기</button>' +
         '</div>' +
+        '</div>' +
       '</div>';
 
-    document.getElementById('btn-save-stroop').addEventListener('click', function() {
-      var nameInput = document.getElementById('stroop-name');
-      var name = (nameInput.value || '').trim();
-      if (!name) { nameInput.style.borderColor = '#ef4444'; nameInput.focus(); return; }
-      var newLb = saveToLeaderboard(name, score, accuracy);
-      document.getElementById('stroop-leaderboard').innerHTML =
-        '<h4 style="margin:0 0 8px;font-size:0.95rem;">🏆 Top 10 랭킹</h4>' + buildLeaderboardHTML(newLb);
-      document.getElementById('btn-save-stroop').disabled = true;
-      document.getElementById('btn-save-stroop').textContent = '✅ 등록 완료!';
+      document.getElementById('btn-save-stroop').addEventListener('click', function() {
+        var nameInput = document.getElementById('stroop-name');
+        var name = (nameInput.value || '').trim();
+        if (!name) { nameInput.style.borderColor = '#ef4444'; nameInput.focus(); return; }
+        
+        document.getElementById('btn-save-stroop').disabled = true;
+        document.getElementById('btn-save-stroop').textContent = '⏳ 서버에 저장 중...';
+
+        saveToLeaderboard(name, score, accuracy).then(function(newLb) {
+          document.getElementById('stroop-leaderboard').innerHTML =
+            '<h4 style="margin:0 0 8px;font-size:0.95rem;">🌍 실시간 명예의 전당</h4>' + buildLeaderboardHTML(newLb);
+          document.getElementById('btn-save-stroop').textContent = '✅ 등록 완료!';
+        });
+      });
     });
   }
 
